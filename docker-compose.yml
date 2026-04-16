@@ -6,7 +6,7 @@ x-var:
 x-postgres-vars: &postgres-vars
   POSTGRES_DATABASE: postgres
   POSTGRES_HOST: sat-db
-  POSTGRES_PASSWORD: default
+  POSTGRES_PASSWORD: postgres
   POSTGRES_USER: *POSTGRES_USER
 
 name: Capstone-Project-2026
@@ -55,7 +55,7 @@ services:
       LOG_LEVEL: info
       PORT: 3000
       <<: *postgres-vars
-      DATABASE_URL: ${DATABASE_URL}
+      DATABASE_URL: postgresql://postgres:postgres@sat-db:5432/postgres?schema=public
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:3000/api/health"]
       interval: 30s

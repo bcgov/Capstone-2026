@@ -12,7 +12,6 @@ generator client {
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
-  schemas  = ["User", "Coverage_Report"]
 }
 
 model User {
@@ -20,8 +19,6 @@ model User {
   email           String?           @unique
   name            String?
   cov_reports     Coverage_Report[]
-
-  @@schema("User")
 }
 
 model Coverage_Report {
@@ -31,6 +28,4 @@ model Coverage_Report {
   coverage_percentage Int?
   coverage_picture    String?
   userId              Int?
-
-  @@schema("Coverage_Report")
 }

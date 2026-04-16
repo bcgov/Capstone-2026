@@ -16,9 +16,9 @@ const corsOptions = {
   origin: (origin: string, callback: any) => {
     if (!origin) return callback(null, true);
 
-    const isAllowed = allowedOrigins.some(allowedOrigin =>
-      allowedOrigin instanceof RegExp
-        ? allowedOrigin.test(origin)
+    const isAllowed = allowedOrigins.some(allowedOrigin => 
+      allowedOrigin instanceof RegExp 
+        ? allowedOrigin.test(origin) 
         : allowedOrigin === origin
     );
 
