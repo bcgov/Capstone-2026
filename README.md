@@ -14,6 +14,8 @@ The starter stack includes a frontend (React, Vite, Caddy), backend (Nest/Node) 
 
 ## Getting Started
 
+In the root folder copy .env.template and rename .env then add the database password to var DATABASE_URL.
+
 Run docker compose up and Compose will start and run your entire app.
 ```
 Docker compose up

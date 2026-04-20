@@ -1,49 +1,18 @@
 # Base image for the container
-FROM node:20.19.2 AS dependencies
-
-RUN apt-get update -y && apt-get install -y --no-install-recommends\
-  openssl \
-  curl
+FROM node:20.19.2-alpine3.21
 
 WORKDIR /app
 
-COPY --chown=node:node package*.json ./
+COPY  . ./
 
 RUN npm ci
 
-USER node
+COPY . .
 
-FROM node:20.19.2 AS build
+RUN apk --no-cache add curl
 
-WORKDIR /app
+# Install OpenSSL for Prisma and generate client
+RUN apk add --no-cache openssl && \
+  npx prisma generate
 
-COPY --chown=node:node --from=dependencies /app/node_modules ./node_modules
-COPY --chown=node:node . .
-
-RUN npx prisma generate
-
-RUN npm run build
-
-FROM node:20.19.2-slim AS prod
-
-RUN apt-get update -y && apt-get install -y --no-install-recommends\
-  openssl \
-  curl
-WORKDIR /app
-
-COPY --from=build /app/dist ./dist
-COPY --from=build /app/node_modules/@prisma ./node_modules/@prisma
-COPY --from=build /app/node_modules/.prisma ./node_modules/.prisma
-COPY --from=build /app/node_modules ./node_modules
-COPY prisma ./prisma
-COPY package*.json ./
-
-# RUN npx prisma migrate deploy
-# CMD ["npm", "run", "serve"]
-
-COPY --chown=node:node start.sh /app/start.sh
-RUN chmod +x /app/start.sh
-
-USER node
-
-CMD ["sh", "/app/start.sh"]
+CMD ["sh", "-c", "npm run db:deploy && npm run dev"]
