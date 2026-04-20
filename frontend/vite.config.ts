@@ -1,19 +1,32 @@
 import { defineConfig } from 'vite'
 import { fileURLToPath, URL } from 'node:url'
 import react from '@vitejs/plugin-react'
-import { TanStackRouterVite } from '@tanstack/router-plugin/vite'
 
-// https://vitejs.dev/config/
+// https://vite.dev/config/
 export default defineConfig({
   plugins: [
-    TanStackRouterVite({
-      target: 'react',
-      autoCodeSplitting: true,
-    }),
-    react(),
+    {
+      name: 'build-html',
+      apply: 'build',
+      transformIndexHtml: (html) => {
+        return {
+          html,
+          tags: [
+            {
+              tag: 'script',
+              attrs: {
+                src: '/env.js',
+              },
+              injectTo: 'head',
+            },
+          ],
+        }
+      },
+    },
+    react()
   ],
-  server: {
-    port: parseInt(process.env.PORT),
+    server: {
+    // port: parseInt(process.env.VITE_PORT) || 3001,
     fs: {
       // Allow serving files from one level up to the project root
       allow: ['..'],
@@ -21,43 +34,18 @@ export default defineConfig({
     proxy: {
       // Proxy API requests to the backend
       '/api': {
-        target: 'http://localhost:3001',
+        target: process.env.VITE_API_URL,
         changeOrigin: true,
       },
     },
+    watch: {
+      ignored: ['**/coverage/**', '**/playwright-report/**'],
+    },
   },
   resolve: {
-    // https://vitejs.dev/config/shared-options.html#resolve-alias
-    tsconfigPaths: true,
     alias: {
-      '~bootstrap': fileURLToPath(
-        new URL('./node_modules/bootstrap', import.meta.url),
-      ),
+      '@': fileURLToPath(new URL('./src', import.meta.url)),
+      // '~': fileURLToPath(new URL('./node_modules', import.meta.url)),
     },
-    extensions: ['.js', '.json', '.jsx', '.mjs', '.ts', '.tsx', '.vue'],
-  },
-  build: {
-    // Build Target
-    // https://vitejs.dev/config/build-options.html#build-target
-    target: 'esnext',
-    // Minify option
-    // https://vitejs.dev/config/build-options.html#build-minify
-    minify: 'esbuild',
-    // Rollup Options
-    // https://vitejs.dev/config/build-options.html#build-rollupoptions
-    rollupOptions: {},
-  },
-  css: {
-    preprocessorOptions: {
-      scss: {
-        // Silence deprecation warnings caused by Bootstrap SCSS
-        // which is out of our control.
-        silenceDeprecations: [
-          'color-functions',
-          'global-builtin',
-          'import',
-        ],
-      },
-    },
-  },
+  }
 })

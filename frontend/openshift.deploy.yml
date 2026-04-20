@@ -101,7 +101,7 @@ objects:
         app: ${REPO}-${TARGET}
       name: ${REPO}-${TARGET}-${COMPONENT}
     spec:
-      host: soil-assessment-tool-${TARGET}.apps.silver.devops.gov.bc.ca
+      host: ${TARGET}.apps.silver.devops.gov.bc.ca
       port:
         targetPort: http-5173
       to:

@@ -3,7 +3,7 @@ kind: Template
 parameters:
   - name: REPO
     description: Repository name
-    value: nr-sustainment-capstone-2025
+    value: capstone-2026
   - name: TAG
     description: Image tag; e.g. PR number or latest
     required: true
