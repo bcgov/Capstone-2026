@@ -30,7 +30,7 @@ jobs:
           oc_namespace: ${{ vars.OC_NAMESPACE }}
           oc_server: ${{ vars.OC_SERVER }}
           oc_token: ${{ secrets.OC_TOKEN }}
-          file: common/openshift.init.yml
+          file: common/openshift.deploy.yml
           overwrite: true
           parameters:
             -p TARGET=${{ inputs.target }} -p POSTGRES_PASSWORD=${{ secrets.POSTGRES_PASSWORD }} -p
@@ -70,8 +70,8 @@ jobs:
             -p TAG=${{ inputs.tag }} -p TARGET=${{ inputs.target }} -p POSTGRES_PASSWORD=${{
             secrets.POSTGRES_PASSWORD }}
           verification_path: /api/health
-          verification_retry_attempts: '5'
-          verification_retry_seconds: '15'
+          verification_retry_attempts: "5"
+          verification_retry_seconds: "15"
 
   frontend:
     name: Frontend
