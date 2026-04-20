@@ -1,7 +1,7 @@
 # 🚀 capstone-2026
 This repo is for the 2026 camosun capstone team.
 
-The starter stack includes a frontend (React, Bootstrap, Vite, Caddy), backend (Nest/Node) and Postgres or PostGIS database.
+The starter stack includes a frontend (React, Vite, Caddy), backend (Nest/Node) and Postgres or PostGIS database.
 **Application stack:**
   * 🗄️ Database: Crunchy (Postgres, PostGIS), backups
   * 🎨 Frontend: TypeScript, Caddy Server

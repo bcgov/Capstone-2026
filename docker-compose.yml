@@ -1,11 +1,14 @@
 # Reusable vars
 x-var:
   - &POSTGRES_USER postgres
+  - &POSTGRES_PASSWORD default
+  - &POSTGRES_DATABASE postgres
+  - &node-image node:22
 
 # Postgres envars
 x-postgres-vars: &postgres-vars
   POSTGRES_DATABASE: postgres
-  POSTGRES_HOST: database
+  POSTGRES_HOST: db
   POSTGRES_PASSWORD: default
   POSTGRES_USER: *POSTGRES_USER
 
@@ -71,7 +74,6 @@ services:
   # Frontend
   frontend:
     container_name: frontend
-    profiles: ["frontend"]
     image: node:20.19.2
     working_dir: /app/frontend
     command: sh -c "npm ci && npm run dev -- --host"
