@@ -36,9 +36,9 @@ COPY --from=build /app/node_modules ./node_modules
 COPY prisma ./prisma
 COPY package*.json ./
 
-COPY --chown=node:node start.sh /app/start.sh
-RUN chmod +x /app/start.sh
+CMD sh -c "echo 'Running Prisma migrate...' && \
+  npx prisma migrate deploy && \
+  echo 'Starting server...' && \
+  npm run serve"
 
 USER node
-
-CMD ["sh", "/app/start.sh"]
