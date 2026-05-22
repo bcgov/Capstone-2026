@@ -24,7 +24,7 @@ function Home() {
               font: '700 1.25rem/2.125rem \'BC Sans\''
             }}
           >
-            This dialog contains a form
+            Tell us about your experience!
           </span>
             <Form
               style={{
@@ -35,12 +35,11 @@ function Home() {
             >
               <TextField
                 isRequired
-                label="Name"
+                label="What color showed up when you clicked the button?"
               />
               <TextField
                 isRequired
-                label="Email address"
-                type="email"
+                label="Does the color affect the visibility of the other content on the page?"
               />
               <Select isRequired
                 items={[
@@ -121,9 +120,16 @@ function Home() {
               isOpen={isAlertOpen}
               onOpenChange={setIsAlertOpen}
               isDismissable
+              style={{
+                  position: "absolute",
+                  bottom: "1rem",
+                  right: "1rem"
+              }}
             >
-              <Dialog isCloseable>
-                <div style={{ padding: "1rem" }}>
+              <Dialog
+                isCloseable
+              >
+                <div style={{ padding: "1rem"}}>
                   <h2>Would you like to tell us about your experience?</h2>
                   <Button onPress={() => setIsFormOpen(true)}>
                     Yes
@@ -158,3 +164,4 @@ function Home() {
 }
 
 export default Home;
+
