@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "@bcgov/bc-sans": "^2.1.0",
     "@prisma/client": "^6.19.3"
   },
   "devDependencies": {
