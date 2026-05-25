@@ -1,7 +1,28 @@
 import { Response, Request } from 'express';
 import { PrismaClient } from '@prisma/client';
 
+// Initialize Express app and Prisma client
+const express = require('express');
+const app = express(); // <--- Creates the application instance
 const prisma = new PrismaClient();
+
+app.post('/users', async (req: Request, res: Response) => {
+  const { form, email } = req.body; // Do not destructure "id" here
+
+  try {
+    const newSubmission = await prisma.feedbackSubmission.create({
+      data: {
+        form,
+        email,
+      },
+    });
+
+    // The returned "newUser" object will include the auto-generated ID
+    res.status(201).json(newSubmission); 
+  } catch (error) {
+    res.status(500).json({ error: 'Failed to create user' });
+  }
+});
 
 /**
  * @summary Add report is the main adding report page and from there
