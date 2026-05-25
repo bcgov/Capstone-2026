@@ -1,6 +1,8 @@
 import { Footer, Header, Button, Dialog, DialogTrigger, Modal } from "@bcgov/design-system-react-components";
 import { useState } from "react";
 import FeedbackForm from "./FeedbackForm";
+import Typography from 'typography';
+import '@bcgov/bc-sans/css/BC_Sans.css';
 
 function Home() {
   const [isAlertOpen, setIsAlertOpen] = useState(false);
@@ -23,8 +25,7 @@ function Home() {
           }}
         >
           <span style={{ display: "inline-block", margin: "20px 10px" }} />
-          <h1>Welcome Capstone 2026!</h1>
-
+          <h1 style={{ fontFamily: "BC Sans" }}>Welcome Capstone 2026!</h1>
           <DialogTrigger>
             <Button onPress={() => {
               changeBackground();
@@ -47,7 +48,7 @@ function Home() {
                 isCloseable
               >
                 <div style={{ padding: "1rem" }}>
-                  <h2>Would you like to tell us about your experience?</h2>
+                  <h2 style={{ fontFamily: "BC Sans" }}>Would you like to tell us about your experience?</h2>
 
                   <Button onPress={() => {
                     setIsFormOpen(true);
