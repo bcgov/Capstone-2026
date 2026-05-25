@@ -72,14 +72,16 @@ function Home() {
           <FeedbackForm isFormOpen={isFormOpen} setIsFormOpen={setIsFormOpen} />
 
 
-          <h3 className="row">Here are some helpful resources:</h3>
-          <a href="https://mvp.developer.gov.bc.ca/docs/default/component/bc-design-system">
+          <h3 className="row" style={{ fontFamily: "BC Sans" }}>
+            Here are some helpful resources:
+          </h3>
+          <a href="https://mvp.developer.gov.bc.ca/docs/default/component/bc-design-system" style={{ fontFamily: "BC Sans" }}>
             B.C. Design System
           </a>
-          <a href="https://www2.gov.bc.ca/gov/content/digital/design-system">
+          <a href="https://www2.gov.bc.ca/gov/content/digital/design-system" style={{ fontFamily: "BC Sans" }}>
             B.C. Design System Component Library
           </a>
-          <a href="https://developer.gov.bc.ca/docs/default/component/bc-developer-guide">
+          <a href="https://developer.gov.bc.ca/docs/default/component/bc-developer-guide" style={{ fontFamily: "BC Sans" }}>
             BC Developer Guide
           </a>
           <span style={{ display: "inline-block", margin: "80px 10px" }} />
