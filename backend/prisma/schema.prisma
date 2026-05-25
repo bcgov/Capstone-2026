@@ -18,14 +18,115 @@ model User {
   id              Int               @id @default(autoincrement())
   email           String?           @unique
   name            String?
-  cov_reports     Coverage_Report[]
+  cov_reports     CoverageReport[]
+  submissions     FeedbackSubmission[]
+
+  createdAt    DateTime              @default(now())
 }
 
-model Coverage_Report {
+model CoverageReport {
   id                  Int      @id @default(autoincrement())
   createdAt           DateTime @default(now())
   User                User?    @relation(fields: [userId], references: [id])
   coverage_percentage Int?
   coverage_picture    String?
   userId              Int?
+}
+
+model FeedbackForm {
+  id                  Int      @id @default(autoincrement())
+  name                String?
+  description         String?
+  is_active           Boolean  @default(true)
+  version             Int      @default(1)
+
+  questions           Question[]
+  submissions         FeedbackSubmission[]
+
+  createdAt           DateTime @default(now())
+}
+
+//Enum for question type to prevent bad data 
+enum QuestionType {
+  TEXT
+  RATING
+  BOOLEAN
+  MULTIPLE_CHOICE
+  CHECKBOX
+  DROPDOWN
+  NPS
+}
+
+//Find way to format foreign key and jsonb in prism
+model Question {
+  id                  Int      @id @default(autoincrement())
+  
+  //Foriegn keys in prisma need the FK column (form_id) and relational object (form)
+  formId          Int
+  form            FeedbackForm @relation(fields: [formId], references: [id])
+  
+  question_text       String
+
+  is_required         Boolean
+  display_order       Int
+
+  metadata            Json?
+
+  answers             Answer[]
+  options             QuestionOption[]
+
+  createdAt           DateTime @default(now())
+}
+
+// to maintain anonymous systems nullable help keep flexible for future authentication
+model FeedbackSubmission {
+  id                  Int      @id @default(autoincrement())
+  
+  formId              Int
+  form                FeedbackForm @relation(fields: [formId], references: [id])
+
+  submitted_at        DateTime  @default(now())
+
+  session_id          String?
+  anonymous_id        String?
+
+  page_url            String?
+
+  userId              Int?
+  user                User?     @relation(fields: [userId], references: [id])
+
+  answers             Answer[]
+
+  createdAt           DateTime @default(now())
+}
+
+model Answer {
+  id                  Int      @id @default(autoincrement())
+  
+  submissionId      Int
+  submission        FeedbackSubmission @relation(fields: [submissionId], references: [id])
+
+  questionId        Int
+  question          Question  @relation(fields: [questionId], references: [id])
+
+  answerText        String?
+  answerNumber      Float?
+  answerBoolean     Boolean?
+  answerJson        Json?
+
+  createdAt         DateTime  @default(now())
+}
+
+model QuestionOption {
+  id              Int       @id @default(autoincrement())
+
+  questionId      Int
+  question        Question  @relation(fields: [questionId], references: [id])
+
+  optionText      String
+  optionValue     String
+
+  displayOrder    Int
+
+  createdAt       DateTime  @default(now())
 }
