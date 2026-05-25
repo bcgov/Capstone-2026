@@ -1,12 +1,19 @@
-import { Footer, Header, Button, AlertDialog, Dialog, DialogTrigger, Modal } from "@bcgov/design-system-react-components";
+import { Footer, Header, Button, Dialog, DialogTrigger, Modal } from "@bcgov/design-system-react-components";
+import { useState } from "react";
+import FeedbackForm from "./FeedbackForm";
+
 function Home() {
+  const [isAlertOpen, setIsAlertOpen] = useState(false);
+  const [isFormOpen, setIsFormOpen] = useState(false);
+
   function changeBackground() {
     const randomColor = '#' + Math.floor(Math.random() * 16777215).toString(16).padStart(6, '0');
     document.body.style.backgroundColor = randomColor;
   }
+
   return (
     <>
-      <body style={{ margin: 0 }}>
+      <div style={{ margin: 0 }}>
         <Header title={"Capstone 2026"}> </Header>
         <div
           style={{
@@ -17,18 +24,53 @@ function Home() {
         >
           <span style={{ display: "inline-block", margin: "20px 10px" }} />
           <h1>Welcome Capstone 2026!</h1>
-          {/* <DialogTrigger> */}
-          <Button onPress={changeBackground} variant="primary">
-            Click Me
-          </Button>
-          {/* 
-            <AlertDialog
-              title="Dialog title"
-              variant="info"
+
+          <DialogTrigger>
+            <Button onPress={() => {
+              changeBackground();
+              setIsAlertOpen(true);
+            }}>
+              Change Background Color
+            </Button>
+
+            <Modal
+              isOpen={isAlertOpen}
+              onOpenChange={setIsAlertOpen}
+              isDismissable
+              style={{
+                position: "absolute",
+                bottom: "1rem",
+                right: "1rem"
+              }}
             >
-              Hello world
-            </AlertDialog>
-          </DialogTrigger> */}
+              <Dialog
+                isCloseable
+              >
+                <div style={{ padding: "1rem" }}>
+                  <h2>Would you like to tell us about your experience?</h2>
+
+                  <Button onPress={() => {
+                    setIsFormOpen(true);
+                    setIsAlertOpen(false);
+                  }}
+                    style={{ margin: "5px" }}
+                  >
+                    Yes
+                  </Button>
+                  <Button variant="secondary"
+                    onPress={() => setIsAlertOpen(false)}
+                    style={{ margin: "5px" }}
+                  >
+                    No
+                  </Button>
+                </div>
+              </Dialog>
+            </Modal>
+          </DialogTrigger>
+
+          <FeedbackForm isFormOpen={isFormOpen} setIsFormOpen={setIsFormOpen} />
+
+
           <h3 className="row">Here are some helpful resources:</h3>
           <a href="https://mvp.developer.gov.bc.ca/docs/default/component/bc-design-system">
             B.C. Design System
@@ -45,9 +87,10 @@ function Home() {
           <Footer />
         </div>
 
-      </body>
+      </div>
     </>
   );
 }
 
 export default Home;
+

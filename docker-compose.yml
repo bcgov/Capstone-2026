@@ -25,7 +25,7 @@ services:
       <<: *postgres-vars
     ports: [5432:5432]
     healthcheck:
-      test: ["CMD", "pg_isready", "-U", *POSTGRES_USER]
+      test: ["CMD", "pg_isready", "-U", "postgres"]
     volumes:
       - postgres_data:/var/lib/postgresql/data
 
@@ -45,15 +45,16 @@ services:
       context: ./backend
       dockerfile: Dockerfile
     container_name: api
+    command: sh -c "npx prisma migrate deploy && npm run serve"
     depends_on:
       database:
         condition: service_healthy
     develop:
-     watch:
-       - action: sync
-         path: ./backend/
-         target: /app
-         ignore: [node_modules]
+      watch:
+        - action: sync
+          path: ./backend
+          target: /app
+          ignore: [node_modules]
     environment:
       LOG_LEVEL: info
       PORT: 3000
