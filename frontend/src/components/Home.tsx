@@ -1,7 +1,6 @@
 import { Footer, Header, Button, Dialog, DialogTrigger, Modal } from "@bcgov/design-system-react-components";
 import { useState } from "react";
 import FeedbackForm from "./FeedbackForm";
-import Typography from 'typography';
 import '@bcgov/bc-sans/css/BC_Sans.css';
 
 function Home() {
