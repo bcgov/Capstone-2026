@@ -46,29 +46,31 @@ model FeedbackForms {
   createdAt           DateTime @default(now())
 }
 
+//Enum for question type to prevent bad data 
+enum QuestionType {
+  TEXT
+  RATING
+  BOOLEAN
+  MULTIPLE_CHOICE
+  CHECKBOX
+  DROPDOWN
+  NPS
+}
+
 //Find way to format foreign key and jsonb in prism
 model Question {
   id                  Int      @id @default(autoincrement())
   
   //Foriegn keys in prisma need the FK column (form_id) and relational object (form)
-  form_id          Int
+  formId          Int
   form            FeedbackForm @relation(fields: [formId], references: [id])
   
   question_text       String
-  //Enum for question type to prevent bad data 
-  enum QuestionType {
-    TEXT
-    RATING
-    BOOLEAN
-    MULTIPLE_CHOICE
-    CHECKBOX
-    DROPDOWN
-    NPS
-  }
+
   is_required         Boolean
   display_order       Int
 
-  metadata            json?
+  metadata            Json?
 
   answers             Answer[]
   options             QuestionOption[]
