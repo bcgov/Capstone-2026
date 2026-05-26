@@ -11,7 +11,7 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  url      = env("DATABASE_URL")
+ url      = env("DATABASE_URL")
 }
 
 model User {
@@ -29,7 +29,7 @@ model CoverageReport {
   createdAt           DateTime @default(now())
   User                User?    @relation(fields: [userId], references: [id])
   coverage_percentage Int?
-  coverage_picture    String?
+  coverage_picture    String? 
   userId              Int?
 }
 
