@@ -1,4 +1,5 @@
 import app from './express';
+import reportRoutes from "./routes/data-router";
 
 const port = 3000;
 
