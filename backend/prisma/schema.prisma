@@ -65,6 +65,7 @@ model Question {
   formId          Int
   form            FeedbackForm @relation(fields: [formId], references: [id])
   
+  questionType        String
   question_text       String
 
   is_required         Boolean
