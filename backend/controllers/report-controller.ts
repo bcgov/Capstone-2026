@@ -11,6 +11,23 @@ const prisma = new PrismaClient();
  * 05-26-2026 - This is a starting point, submission row will be included later. 
  */ 
 
+app.get('/form', async (req: Request, res: Response) => {
+  try {
+    const forms = await prisma.feedbackForm.findMany({
+      include: {
+        questions: {
+          include: {
+            answers: true,
+          },
+        },
+      },
+    });
+    res.status(200).json(forms);
+  } catch (error) {
+    res.status(500).json({ error: 'Failed to fetch forms' });
+  }
+});
+
 app.post('/form', async (req: Request, res: Response) => {
   try {
     const newForm = await prisma.feedbackForm.create({
