@@ -13,6 +13,7 @@ const getForms = async (req: Request, res: Response) => {
         questions: {
           include: {
             answers: true,
+            options: true
           },
         },
       },
@@ -109,8 +110,7 @@ const deleteForm = async (req: Request, res: Response) => {
     res.status(204).send();
   } catch (error) {
     console.error(error);
-    res.status(500).json(error); 
-    res.status(500).json({ error: 'Failed to delete form' });
+    res.status(500).json({ error: 'Failed to delete form', details: error });
   }
 };
 
