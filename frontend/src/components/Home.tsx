@@ -1,11 +1,21 @@
 import { Footer, Header, Button, Dialog, DialogTrigger, Modal } from "@bcgov/design-system-react-components";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import FeedbackForm from "./FeedbackForm";
 import '@bcgov/bc-sans/css/BC_Sans.css';
 
 function Home() {
   const [isAlertOpen, setIsAlertOpen] = useState(false);
   const [isFormOpen, setIsFormOpen] = useState(false);
+  const [formData, setFormData] = useState<any[]>([]);
+
+  useEffect(() => {
+    fetch('/form')
+      .then((res) => res.json())
+      .then((data) => {
+        setFormData(data);
+      })
+      .catch((err) => console.error("DB Fetch Error:", err));
+  }, []);
 
   function changeBackground() {
     const randomColor = '#' + Math.floor(Math.random() * 16777215).toString(16).padStart(6, '0');
@@ -68,8 +78,11 @@ function Home() {
             </Modal>
           </DialogTrigger>
 
-          <FeedbackForm isFormOpen={isFormOpen} setIsFormOpen={setIsFormOpen} />
-
+          <FeedbackForm
+            isFormOpen={isFormOpen}
+            setIsFormOpen={setIsFormOpen}
+            forms={formData}
+          />
 
           <h3 className="row" style={{ fontFamily: "BC Sans" }}>
             Here are some helpful resources:

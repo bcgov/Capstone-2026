@@ -1,11 +1,37 @@
 import { ButtonGroup, Button, Dialog, Select, Modal, Form, TextField, RadioGroup, Radio } from "@bcgov/design-system-react-components";
 
+interface Option {
+    id: number;
+    optionText: string;
+    optionValue: string;
+    displayOrder: number;
+}
+
+interface Question {
+    id: number;
+    questionType: string;
+    question_text: string;
+    is_required: boolean;
+    display_order: number;
+    options?: Option[];
+}
+
+interface FormData {
+    id: number;
+    name: string;
+    description: string;
+    questions: Question[];
+}
+
 interface FeedbackFormProps {
     isFormOpen: boolean;
     setIsFormOpen: (open: boolean) => void;
+    forms: FormData[];
 }
 
-function FeedbackForm({ isFormOpen, setIsFormOpen }: FeedbackFormProps) {
+function FeedbackForm({ isFormOpen, setIsFormOpen, forms }: FeedbackFormProps) {
+    const form = forms[0];
+    if (!form) return null;
     if (!isFormOpen) return null;
 
     return (
@@ -31,57 +57,55 @@ function FeedbackForm({ isFormOpen, setIsFormOpen }: FeedbackFormProps) {
                                 gap: '0.5rem'
                             }}
                         >
-                            <TextField
-                                isRequired
-                                label="What color showed up when you clicked the button?"
-                            />
+                            {form.questions.map((question) => {
+                                switch (question.questionType) {
+                                    case "textarea":
+                                        return (
+                                            <TextField
+                                                key={question.id}
+                                                isRequired={question.is_required}
+                                                label={question.question_text}
+                                            />
+                                        );
 
-                            <RadioGroup
-                                isRequired
-                                label="Does the color affect the visibility of the other content on the page?"
-                                orientation="horizontal"
-                            >
-                                <Radio value="yes">
-                                    Yes
-                                </Radio>
-                                <Radio value="no">
-                                    No
-                                </Radio>
-                            </RadioGroup>
+                                    case "radio":
+                                        return (
+                                            <RadioGroup
+                                                key={question.id}
+                                                isRequired={question.is_required}
+                                                label={question.question_text}
+                                                orientation="horizontal"
+                                            >
+                                                {question.options?.map((option) => (
+                                                    <Radio
+                                                        key={option.id}
+                                                        value={option.optionValue}
+                                                    >
+                                                        {option.optionText}
+                                                    </Radio>
+                                                ))}
+                                            </RadioGroup>
+                                        );
 
-                            <Select isRequired
-                                items={[
-                                    {
-                                        id: 'chilliwack',
-                                        label: 'Chilliwack'
-                                    },
-                                    {
-                                        id: 'kelowna',
-                                        label: 'Kelowna'
-                                    },
-                                    {
-                                        id: 'kamloops',
-                                        label: 'Kamloops'
-                                    },
-                                    {
-                                        id: 'nanaimo',
-                                        label: 'Nanaimo'
-                                    },
-                                    {
-                                        id: 'princegeorge',
-                                        label: 'Prince George'
-                                    },
-                                    {
-                                        id: 'vancouver',
-                                        label: 'Vancouver'
-                                    },
-                                    {
-                                        id: 'victoria',
-                                        label: 'Victoria'
-                                    }
-                                ]}
-                                label="City"
-                            />
+                                    case "dropdown":
+                                        return (
+                                            <Select
+                                                key={question.id}
+                                                isRequired={question.is_required}
+                                                label={question.question_text}
+                                                items={
+                                                    question.options?.map((option) => ({
+                                                        id: option.optionValue,
+                                                        label: option.optionText
+                                                    })) || []
+                                                }
+                                            />
+                                        );
+
+                                    default:
+                                        return null;
+                                }
+                            })}
 
                             <ButtonGroup alignment="start" orientation="horizontal">
                                 <Button type="submit" variant="primary">
