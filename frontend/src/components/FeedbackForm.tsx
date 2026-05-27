@@ -1,5 +1,6 @@
 import { ButtonGroup, Button, Dialog, Select, Modal, Form, TextField, RadioGroup, Radio } from "@bcgov/design-system-react-components";
 
+// INTERFACES 
 interface Option {
     id: number;
     optionText: string;
@@ -29,7 +30,10 @@ interface FeedbackFormProps {
     forms: FormData[];
 }
 
+// COMPONENT
 function FeedbackForm({ isFormOpen, setIsFormOpen, forms }: FeedbackFormProps) {
+    // eventually home.tsx will be getting a from with a specific id 
+    // so the data being passed in will just be for one form
     const form = forms[0];
     if (!form) return null;
     if (!isFormOpen) return null;
@@ -57,6 +61,7 @@ function FeedbackForm({ isFormOpen, setIsFormOpen, forms }: FeedbackFormProps) {
                                 gap: '0.5rem'
                             }}
                         >
+                            {/* Make more cases for other types of questions (slider) */}
                             {form.questions.map((question) => {
                                 switch (question.questionType) {
                                     case "textarea":

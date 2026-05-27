@@ -8,6 +8,7 @@ function Home() {
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [formData, setFormData] = useState<any[]>([]);
 
+  // currently gets all forms but will eventually get only one form with a given id
   useEffect(() => {
     fetch('/form')
       .then((res) => res.json())
