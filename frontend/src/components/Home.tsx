@@ -10,7 +10,7 @@ function Home() {
 
   // currently gets all forms but will eventually get only one form with a given id
   useEffect(() => {
-    fetch('/form')
+    fetch('http://localhost:3000/api/form')
       .then((res) => res.json())
       .then((data) => {
         setFormData(data);

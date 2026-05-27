@@ -1,5 +1,8 @@
 import express from 'express';
-import {createForm,deleteForm,getForms, test} from '../controllers/report-controller';
+
+console.log("DATA ROUTER LOADED");
+
+import { createForm, deleteForm, getForms, test } from '../controllers/report-controller';
 
 const router = express.Router();
 
