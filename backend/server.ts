@@ -1,9 +1,11 @@
 import app from './express';
-import reportRoutes from "./routes/data-router";
+import dataRouter from "./routes/data-router";
+import healthRouter from "./routes/health-router";
 
 const port = 3000;
 
-app.use(reportRoutes);
+app.use('/api', healthRouter);
+app.use('/api', dataRouter);
 
 app.get('/hello', (req, res) => {
   res.send('hello world');

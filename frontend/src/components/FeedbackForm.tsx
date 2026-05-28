@@ -45,7 +45,8 @@ function FeedbackForm({ isFormOpen, setIsFormOpen, forms }: FeedbackFormProps) {
                 isOpen={isFormOpen}
                 onOpenChange={setIsFormOpen}
             >
-                <Dialog isCloseable>
+                <Dialog isCloseable
+                aria-label="Feedback form dialog">
                     <div
                         style={{ padding: '1rem' }}
                     >
@@ -62,7 +63,7 @@ function FeedbackForm({ isFormOpen, setIsFormOpen, forms }: FeedbackFormProps) {
                             }}
                         >
                             {/* Make more cases for other types of questions (slider) */}
-                            {form.questions.map((question) => {
+                            {form.questions?.map((question) => {
                                 switch (question.questionType) {
                                     case "textarea":
                                         return (

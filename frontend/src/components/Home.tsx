@@ -10,7 +10,7 @@ function Home() {
 
   // currently gets all forms but will eventually get only one form with a given id
   useEffect(() => {
-    fetch('http://localhost:3000/api/form')
+      fetch('http://localhost:3000/api/form')
       .then((res) => res.json())
       .then((data) => {
         setFormData(data);
@@ -56,6 +56,7 @@ function Home() {
             >
               <Dialog
                 isCloseable
+                aria-label="Feedback form prompt dialog"
               >
                 <div style={{ padding: "1rem" }}>
                   <h2 style={{ fontFamily: "BC Sans" }}>Would you like to tell us about your experience?</h2>
