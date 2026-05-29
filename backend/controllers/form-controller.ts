@@ -3,7 +3,7 @@ import { PrismaClient } from '@prisma/client';
 
 // Initialize Express app and Prisma client
 const express = require('express');
-const app = express(); // <--- Creates the application instance
+//const app = express(); // <--- Creates the application instance
 const prisma = new PrismaClient();
 
 const getForms = async (req: Request, res: Response) => {

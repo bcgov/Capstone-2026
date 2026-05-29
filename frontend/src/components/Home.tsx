@@ -1,12 +1,22 @@
 import { Footer, Header, Button, Dialog, DialogTrigger, Modal } from "@bcgov/design-system-react-components";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import FeedbackForm from "./FeedbackForm";
-import Typography from 'typography';
 import '@bcgov/bc-sans/css/BC_Sans.css';
 
 function Home() {
   const [isAlertOpen, setIsAlertOpen] = useState(false);
   const [isFormOpen, setIsFormOpen] = useState(false);
+  const [formData, setFormData] = useState<any[]>([]);
+
+  // currently gets all forms but will eventually get only one form with a given id
+  useEffect(() => {
+      fetch('http://localhost:3000/api/form')
+      .then((res) => res.json())
+      .then((data) => {
+        setFormData(data);
+      })
+      .catch((err) => console.error("DB Fetch Error:", err));
+  }, []);
 
   function changeBackground() {
     const randomColor = '#' + Math.floor(Math.random() * 16777215).toString(16).padStart(6, '0');
@@ -46,6 +56,7 @@ function Home() {
             >
               <Dialog
                 isCloseable
+                aria-label="Feedback form prompt dialog"
               >
                 <div style={{ padding: "1rem" }}>
                   <h2 style={{ fontFamily: "BC Sans" }}>Would you like to tell us about your experience?</h2>
@@ -69,8 +80,11 @@ function Home() {
             </Modal>
           </DialogTrigger>
 
-          <FeedbackForm isFormOpen={isFormOpen} setIsFormOpen={setIsFormOpen} />
-
+          <FeedbackForm
+            isFormOpen={isFormOpen}
+            setIsFormOpen={setIsFormOpen}
+            forms={formData}
+          />
 
           <h3 className="row" style={{ fontFamily: "BC Sans" }}>
             Here are some helpful resources:
