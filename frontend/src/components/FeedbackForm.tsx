@@ -30,6 +30,7 @@ interface FeedbackFormProps {
     forms: FormData[];
 }
 
+
 // COMPONENT
 function FeedbackForm({ isFormOpen, setIsFormOpen, forms }: FeedbackFormProps) {
     // eventually home.tsx will be getting a from with a specific id 
@@ -37,6 +38,9 @@ function FeedbackForm({ isFormOpen, setIsFormOpen, forms }: FeedbackFormProps) {
     const form = forms[0];
     if (!form) return null;
     if (!isFormOpen) return null;
+
+    //Happiness Slider info
+    const [showHappinessSlider, setShowHappinessSlider] = useState(false);
 
     return (
         <>

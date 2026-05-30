@@ -8,6 +8,20 @@ function Home() {
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [formData, setFormData] = useState<any[]>([]);
 
+  //Happiness Slider states 
+  const [showSlider, setShowSlider] = useState(false);
+  const [showForm, setShowForm] = useState(false);
+  const [selectedRating, setSelectedRating] = useState<number | null>(null);
+
+// When we want to pass data back from the happiness slider 
+//   if (selectedRating !== null) {
+//     await fetch("/api/feedback", {
+//         method: "POST",
+//         body: JSON.stringify({
+//             happinessRating: selectedRating
+//         })
+//     });
+// }
   // currently gets all forms but will eventually get only one form with a given id
   useEffect(() => {
       fetch('http://localhost:3000/api/form')
@@ -62,12 +76,13 @@ function Home() {
                   <h2 style={{ fontFamily: "BC Sans" }}>Would you like to tell us about your experience?</h2>
 
                   <Button onPress={() => {
-                    setIsFormOpen(true);
                     setIsAlertOpen(false);
+                    setShowSlider(true);
                   }}
                     style={{ margin: "5px" }}
                   >
                     Yes
+
                   </Button>
                   <Button variant="secondary"
                     onPress={() => setIsAlertOpen(false)}
@@ -80,7 +95,17 @@ function Home() {
             </Modal>
           </DialogTrigger>
 
-          <FeedbackForm
+        
+        <HappinessSlider
+              isOpen={showSlider}
+              onSelect={(rating) => {
+                  setSelectedRating(rating);
+
+                  setShowSlider(false);
+                  setIsFormOpen(true);
+              }}
+          />
+       <FeedbackForm
             isFormOpen={isFormOpen}
             setIsFormOpen={setIsFormOpen}
             forms={formData}
