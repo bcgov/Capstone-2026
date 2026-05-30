@@ -65,7 +65,7 @@ model Question {
   formId          Int
   form            FeedbackForm @relation(fields: [formId], references: [id], onDelete: Cascade)
   
-  questionType        String
+  questionType        QuestionType
   question_text       String
 
   is_required         Boolean
