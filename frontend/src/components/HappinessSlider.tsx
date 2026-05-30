@@ -1,3 +1,10 @@
+import {
+    Button,
+    Dialog,
+    Modal
+} from "@bcgov/design-system-react-components";
+
+
 interface HappinessSliderProps {
     isOpen: boolean;
     onSelect: (rating: number) => void;
