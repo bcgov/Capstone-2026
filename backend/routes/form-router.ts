@@ -1,6 +1,6 @@
 import express from 'express';
 
-import { createForm, deleteForm, getFormById, getForms test } from '../controllers/form-controller';
+import { createForm, deleteForm, getFormById, getForms, test } from '../controllers/form-controller';
 
 const dataRouter = express.Router();
 

@@ -17,7 +17,7 @@ const getSubmissionById = async (req: Request, res: Response) => {
     });
     if (submission) {
       res.status(200).json(submission);
-    } else {    
+    } else {
       res.status(404).json({ error: 'Submission not found' });
     }
   } catch (error) {
@@ -82,7 +82,7 @@ const deleteSubmission = async (req: Request, res: Response) => {
 
 // model FeedbackSubmission {
 //   id                  Int      @id @default(autoincrement())
-  
+
 //   formId              Int
 //   form                FeedbackForm @relation(fields: [formId], references: [id])
 
@@ -103,7 +103,7 @@ const deleteSubmission = async (req: Request, res: Response) => {
 
 // model Answer {
 //   id                  Int      @id @default(autoincrement())
-  
+
 //   submissionId      Int
 //   submission        FeedbackSubmission @relation(fields: [submissionId], references: [id])
 
@@ -117,4 +117,4 @@ const deleteSubmission = async (req: Request, res: Response) => {
 
 //   createdAt         DateTime  @default(now())
 // }
-export default {getSubmissionById, getAllSubmissions, createSubmission, deleteSubmission};
+export { getSubmissionById, getAllSubmissions, createSubmission, deleteSubmission };
