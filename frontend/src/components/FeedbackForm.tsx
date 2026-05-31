@@ -10,7 +10,7 @@ interface Option {
 
 interface Question {
     id: number;
-    questionType: string;
+    questionType: QuestionType;
     question_text: string;
     is_required: boolean;
     display_order: number;
@@ -30,7 +30,38 @@ interface FeedbackFormProps {
     forms: FormData[];
 }
 
+async function handleSubmit() {
+    try {
+        const response = await fetch(
+            "http://localhost:3000/api/form",
+            {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    test: true
+                })
+            }
+        );
 
+        if (response.ok) {
+            setShowSuccess(true);
+        } else {
+            setErrorMessage(
+                `Server returned ${response.status}`
+            );
+
+            setShowError(true);
+        }
+    } catch (error) {
+        setErrorMessage(
+            "Unable to connect to server."
+        );
+
+        setShowError(true);
+    }
+}
 // COMPONENT
 function FeedbackForm({ isFormOpen, setIsFormOpen, forms }: FeedbackFormProps) {
     // eventually home.tsx will be getting a from with a specific id 
@@ -41,6 +72,16 @@ function FeedbackForm({ isFormOpen, setIsFormOpen, forms }: FeedbackFormProps) {
 
     //Happiness Slider info
     const [showHappinessSlider, setShowHappinessSlider] = useState(false);
+
+    //Success message state 
+    const [showSuccess, setShowSuccess] = useState(false);
+
+    //Error modal state
+    const [showError, setShowError] = useState(false);
+
+    //Error message state
+    const [errorMessage, setErrorMessage] =
+    useState("");
 
     return (
         <>
@@ -118,7 +159,7 @@ function FeedbackForm({ isFormOpen, setIsFormOpen, forms }: FeedbackFormProps) {
                             })}
 
                             <ButtonGroup alignment="start" orientation="horizontal">
-                                <Button type="submit" variant="primary">
+                                <Button variant="primary" onPress={handleSubmit}>
                                     Submit
                                 </Button>
                                 <Button type="reset" variant="secondary">
@@ -129,6 +170,19 @@ function FeedbackForm({ isFormOpen, setIsFormOpen, forms }: FeedbackFormProps) {
                     </div>
                 </Dialog>
             </Modal>
+            <SuccessModal
+                isOpen={showSuccess}
+                onClose={() => {
+                    setShowSuccess(false);
+                    setIsFormOpen(false);
+                }}
+            />
+
+            <ErrorModal
+                isOpen={showError}
+                message={errorMessage}
+                onClose={() => setShowError(false)}
+            />
         </>
     );
 }
