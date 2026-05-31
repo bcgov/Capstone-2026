@@ -1,5 +1,16 @@
 import { ButtonGroup, Button, Dialog, Select, Modal, Form, TextField, RadioGroup, Radio } from "@bcgov/design-system-react-components";
 
+
+enum QuestionType {
+  TEXT,
+  RATING,
+  BOOLEAN,
+  MULTIPLE_CHOICE,
+  CHECKBOX,
+  DROPDOWN,
+  NPS
+}
+
 // INTERFACES 
 interface Option {
     id: number;
@@ -30,7 +41,41 @@ interface FeedbackFormProps {
     forms: FormData[];
 }
 
-async function handleSubmit() {
+// COMPONENT
+function FeedbackForm({ isFormOpen, setIsFormOpen, forms }: FeedbackFormProps) {
+    // eventually home.tsx will be getting a from with a specific id 
+    // so the data being passed in will just be for one form
+    console.log("FeedbackForm open:", isFormOpen);
+    console.log("Forms:", forms);
+
+    const form = forms[0];
+
+    console.log("Form:", form);
+
+    if (!form) {
+        console.log("No form found");
+        return null;
+    }
+
+    if (!isFormOpen) {
+        console.log("Form not open");
+        return null;
+    }
+
+    //Happiness Slider info
+    const [showHappinessSlider, setShowHappinessSlider] = useState(false);
+
+    //Success message state 
+    const [showSuccess, setShowSuccess] = useState(false);
+
+    //Error modal state
+    const [showError, setShowError] = useState(false);
+
+    //Error message state
+    const [errorMessage, setErrorMessage] =
+    useState("");
+
+    async function handleSubmit() {
     try {
         const response = await fetch(
             "http://localhost:3000/api/form",
@@ -55,33 +100,13 @@ async function handleSubmit() {
             setShowError(true);
         }
     } catch (error) {
-        setErrorMessage(
-            "Unable to connect to server."
-        );
+            setErrorMessage(
+                "Unable to connect to server."
+            );
 
-        setShowError(true);
+            setShowError(true);
+        }
     }
-}
-// COMPONENT
-function FeedbackForm({ isFormOpen, setIsFormOpen, forms }: FeedbackFormProps) {
-    // eventually home.tsx will be getting a from with a specific id 
-    // so the data being passed in will just be for one form
-    const form = forms[0];
-    if (!form) return null;
-    if (!isFormOpen) return null;
-
-    //Happiness Slider info
-    const [showHappinessSlider, setShowHappinessSlider] = useState(false);
-
-    //Success message state 
-    const [showSuccess, setShowSuccess] = useState(false);
-
-    //Error modal state
-    const [showError, setShowError] = useState(false);
-
-    //Error message state
-    const [errorMessage, setErrorMessage] =
-    useState("");
 
     return (
         <>
