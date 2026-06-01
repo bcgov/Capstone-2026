@@ -32,8 +32,7 @@ interface FeedbackFormProps {
 
 // COMPONENT
 function FeedbackForm({ isFormOpen, setIsFormOpen, formData }: FeedbackFormProps) {
-    const form = formData;
-    if (!form) return null;
+    if (!formData) return null;
     if (!isFormOpen) return null;
 
     return (
@@ -61,7 +60,7 @@ function FeedbackForm({ isFormOpen, setIsFormOpen, formData }: FeedbackFormProps
                             }}
                         >
                             {/* Make more cases for other types of questions (slider) */}
-                            {form.questions?.map((question) => {
+                            {formData.questions?.map((question) => {
                                 switch (question.questionType) {
                                     case "textarea":
                                         return (
