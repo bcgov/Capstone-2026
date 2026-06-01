@@ -1,7 +1,9 @@
 {
   "dependencies": {
     "@bcgov/bc-sans": "^2.1.0",
-    "@prisma/client": "^6.19.3"
+    "@bcgov/design-system-react-components": "^0.7.0",
+    "@prisma/client": "^6.19.3",
+    "react": "^19.2.7"
   },
   "devDependencies": {
     "prisma": "^6.19.3"

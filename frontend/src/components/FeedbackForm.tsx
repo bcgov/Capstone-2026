@@ -1,4 +1,7 @@
 import { ButtonGroup, Button, Dialog, Select, Modal, Form, TextField, RadioGroup, Radio } from "@bcgov/design-system-react-components";
+import ErrorModal from './ErrorModal';
+import SuccessModal from './SuccessModal';
+import { useState } from 'react';
 
 // 🟢 Update your frontend enum to use explicit string values
 enum QuestionType {
