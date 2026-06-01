@@ -1,5 +1,5 @@
 import { Response, Request } from 'express';
-import { PrismaClient } from '@prisma/client';
+import { PrismaClient, QuestionType } from '@prisma/client';
 
 // Initialize Express app and Prisma client
 const express = require('express');
@@ -55,8 +55,10 @@ const getForms = async (req: Request, res: Response) => {
 
 const createForm = async (req: Request, res: Response) => {
   try {
-    const newForm = await prisma.feedbackForm.create({
-          data: {
+    const newForm = await prisma.feedbackForm.upsert({
+          where: { id: req.body.id},
+          update: {},
+          create: {
             name: "Color change form",
             description: "A feedback form about the background color change button",
             is_active: true,
@@ -64,13 +66,13 @@ const createForm = async (req: Request, res: Response) => {
             questions: {
               create: [
                 {
-                  questionType: "textarea", //this field tells the frontend how to render the question 
+                  questionType: QuestionType.TEXTAREA, //this field tells the frontend how to render the question 
                   question_text: "How color showed up when you clicked the button?",
                   is_required: true,
                   display_order: 1,
                 },
                 {
-                  questionType: "radio", //this field tells the frontend how to render the question 
+                  questionType: QuestionType.RADIO, //this field tells the frontend how to render the question 
                   question_text: "Does the color affect the visibility of the other content of the page?",
                   options:{
                     create:[
@@ -90,7 +92,7 @@ const createForm = async (req: Request, res: Response) => {
                   display_order: 1, 
                 },
                 {
-                  questionType: "dropdown",
+                  questionType: QuestionType.DROPDOWN,
                   question_text: "City",
                   options:{
                     create:[
