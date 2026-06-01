@@ -6,6 +6,29 @@ const express = require('express');
 //const app = express(); // <--- Creates the application instance
 const prisma = new PrismaClient();
 
+const getFormById = async(req: Request, res: Response) => {
+  const formId = Number(req.params.id);
+  try {
+    const form = await prisma.feedbackForm.findUnique({
+      where: { id: formId },
+      include: {
+        questions: {
+          include: {
+            answers: true,
+            options: true
+          },
+        },
+      },
+    });
+    if (form) {
+      res.status(200).json(form);
+    } else {
+      res.status(404).json({ error: 'Form not found' });
+    }
+  } catch (error) {
+    res.status(500).json({ error: 'Failed to fetch form' });
+  }
+}
 const getForms = async (req: Request, res: Response) => {
   try {
     const forms = await prisma.feedbackForm.findMany({
@@ -151,4 +174,4 @@ const test = async (req: Request, res: Response)=> {
   res.status(200).send('this is a test');
 }
 
-export {createForm, deleteForm, getForms, test};
+export {createForm, getFormById, getForms, deleteForm, test};
