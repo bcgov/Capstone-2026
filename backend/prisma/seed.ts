@@ -32,7 +32,7 @@ async function main() {
             display_order: 1,
           },
           {
-            questionType: QuestionType.MULTIPLE_CHOICE, 
+            questionType: QuestionType.RADIO, 
             question_text: "Does the color affect the visibility of the other content of the page?",
             options: {
               create: [
