@@ -27,14 +27,12 @@ interface FormData {
 interface FeedbackFormProps {
     isFormOpen: boolean;
     setIsFormOpen: (open: boolean) => void;
-    forms: FormData[];
+    formData: FormData;
 }
 
 // COMPONENT
-function FeedbackForm({ isFormOpen, setIsFormOpen, forms }: FeedbackFormProps) {
-    // eventually home.tsx will be getting a from with a specific id 
-    // so the data being passed in will just be for one form
-    const form = forms[0];
+function FeedbackForm({ isFormOpen, setIsFormOpen, formData }: FeedbackFormProps) {
+    const form = formData;
     if (!form) return null;
     if (!isFormOpen) return null;
 
@@ -46,7 +44,7 @@ function FeedbackForm({ isFormOpen, setIsFormOpen, forms }: FeedbackFormProps) {
                 onOpenChange={setIsFormOpen}
             >
                 <Dialog isCloseable
-                aria-label="Feedback form dialog">
+                    aria-label="Feedback form dialog">
                     <div
                         style={{ padding: '1rem' }}
                     >
