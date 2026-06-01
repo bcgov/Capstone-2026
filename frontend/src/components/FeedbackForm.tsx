@@ -1,5 +1,4 @@
 import { ButtonGroup, Button, Dialog, Select, Modal, Form, TextField, RadioGroup, Radio } from "@bcgov/design-system-react-components";
-
 // INTERFACES 
 interface Option {
     id: number;
