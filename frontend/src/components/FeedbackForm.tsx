@@ -2,12 +2,12 @@ import { ButtonGroup, Button, Dialog, Select, Modal, Form, TextField, RadioGroup
 
 
 enum QuestionType {
-  TEXT,
-  RATING,
+  TEXTAREA,
+  RADIO,
+  DROPDOWN,
   BOOLEAN,
   MULTIPLE_CHOICE,
   CHECKBOX,
-  DROPDOWN,
   NPS
 }
 
@@ -135,7 +135,7 @@ function FeedbackForm({ isFormOpen, setIsFormOpen, forms }: FeedbackFormProps) {
                             {/* Make more cases for other types of questions (slider) */}
                             {form.questions?.map((question) => {
                                 switch (question.questionType) {
-                                    case "textarea":
+                                    case 1:
                                         return (
                                             <TextField
                                                 key={question.id}
@@ -144,7 +144,7 @@ function FeedbackForm({ isFormOpen, setIsFormOpen, forms }: FeedbackFormProps) {
                                             />
                                         );
 
-                                    case "radio":
+                                    case 2:
                                         return (
                                             <RadioGroup
                                                 key={question.id}
@@ -163,7 +163,7 @@ function FeedbackForm({ isFormOpen, setIsFormOpen, forms }: FeedbackFormProps) {
                                             </RadioGroup>
                                         );
 
-                                    case "dropdown":
+                                    case 3:
                                         return (
                                             <Select
                                                 key={question.id}

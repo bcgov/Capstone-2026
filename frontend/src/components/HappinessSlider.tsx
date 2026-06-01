@@ -4,6 +4,10 @@ import {
     Modal
 } from "@bcgov/design-system-react-components";
 
+import React, {useState} from 'react';
+import Slider from 'rc-slider';
+import 'rc-slider/assets/index.css';
+
 
 interface HappinessSliderProps {
     isOpen: boolean;
@@ -17,42 +21,47 @@ function HappinessSlider({
 
     if (!isOpen) return null;
 
+    const [value, setValue]= useState(3);
+
     const emojis = [
-        { value: 1, emoji: "😡" },
-        { value: 2, emoji: "🙁" },
-        { value: 3, emoji: "😐" },
-        { value: 4, emoji: "🙂" },
-        { value: 5, emoji: "😁" },
+        "😡",
+        "🙁" ,
+        "😐",
+        "🙂",
+        "😁"
     ];
 
-    return (
-        <Modal isOpen={isOpen}>
-            <Dialog aria-label="Happiness rating">
-                <div style={{ padding: "1rem" }}>
-                    <h2>How was your experience?</h2>
+    const currentEmoji = emojis[value-1];
 
-                    <div
-                        style={{
-                            display: "flex",
-                            gap: "1rem",
-                            justifyContent: "center"
-                        }}
-                    >
-                        {emojis.map((emoji) => (
-                            <Button
-                                key={emoji.value}
-                                onPress={() =>
-                                    onSelect(emoji.value)
-                                }
-                            >
-                                {emoji.emoji}
-                            </Button>
-                        ))}
+    const handleSliderChange = (newValue: number) => {
+        setValue(newValue);
+        console.log(newValue);
+    }
+
+    const EmojiHandle = (props:any) => {
+        const {value, dragging, index, ...restProps } = props;
+    
+        return (
+            <Modal isOpen={isOpen}>
+                <Dialog aria-label="Happiness rating">
+                    <div style={{ padding: "1rem" }}>
+                        <h2>How was your experience?</h2>
+
+                        <div
+                            style={{
+                                display: "flex",
+                                gap: "1rem",
+                                justifyContent: "center"
+                            }}
+                        >
+                            <Slider value={value} onChange={handleSliderChange}/>
+                        
+                        </div>
                     </div>
-                </div>
-            </Dialog>
-        </Modal>
-    );
+                </Dialog>
+            </Modal>
+        );
+    }
 }
 
 export default HappinessSlider;
