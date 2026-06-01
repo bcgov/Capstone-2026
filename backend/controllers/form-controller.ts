@@ -52,8 +52,10 @@ const getForms = async (req: Request, res: Response) => {
  */ 
 const createForm = async (req: Request, res: Response) => {
   try {
-    const newForm = await prisma.feedbackForm.create({
-          data: {
+    const newForm = await prisma.feedbackForm.upsert({
+          where: { id: req.body.id},
+          update: {},
+          create: {
             name: "Color change form",
             description: "A feedback form about the background color change button",
             is_active: true,
