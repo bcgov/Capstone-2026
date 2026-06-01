@@ -1,14 +1,14 @@
 import { ButtonGroup, Button, Dialog, Select, Modal, Form, TextField, RadioGroup, Radio } from "@bcgov/design-system-react-components";
 
-
+// 🟢 Update your frontend enum to use explicit string values
 enum QuestionType {
-  TEXTAREA,
-  RADIO,
-  DROPDOWN,
-  BOOLEAN,
-  MULTIPLE_CHOICE,
-  CHECKBOX,
-  NPS
+  TEXTAREA = "TEXTAREA",
+  RADIO = "RADIO",
+  DROPDOWN = "DROPDOWN",
+  BOOLEAN = "BOOLEAN",
+  MULTIPLE_CHOICE = "MULTIPLE_CHOICE",
+  CHECKBOX = "CHECKBOX",
+  NPS = "NPS"
 }
 
 // INTERFACES 
@@ -135,7 +135,7 @@ function FeedbackForm({ isFormOpen, setIsFormOpen, forms }: FeedbackFormProps) {
                             {/* Make more cases for other types of questions (slider) */}
                             {form.questions?.map((question) => {
                                 switch (question.questionType) {
-                                    case 1:
+                                    case QuestionType.TEXTAREA:
                                         return (
                                             <TextField
                                                 key={question.id}
@@ -144,7 +144,7 @@ function FeedbackForm({ isFormOpen, setIsFormOpen, forms }: FeedbackFormProps) {
                                             />
                                         );
 
-                                    case 2:
+                                    case QuestionType.RADIO:
                                         return (
                                             <RadioGroup
                                                 key={question.id}
@@ -163,7 +163,7 @@ function FeedbackForm({ isFormOpen, setIsFormOpen, forms }: FeedbackFormProps) {
                                             </RadioGroup>
                                         );
 
-                                    case 3:
+                                    case QuestionType.DROPDOWN:
                                         return (
                                             <Select
                                                 key={question.id}
