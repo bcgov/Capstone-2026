@@ -1,4 +1,16 @@
 import { ButtonGroup, Button, Dialog, Select, Modal, Form, TextField, RadioGroup, Radio } from "@bcgov/design-system-react-components";
+
+// 🟢 Update your frontend enum to use explicit string values
+enum QuestionType {
+  TEXTAREA = "TEXTAREA",
+  RADIO = "RADIO",
+  DROPDOWN = "DROPDOWN",
+  BOOLEAN = "BOOLEAN",
+  MULTIPLE_CHOICE = "MULTIPLE_CHOICE",
+  CHECKBOX = "CHECKBOX",
+  NPS = "NPS"
+}
+
 // INTERFACES 
 interface Option {
     id: number;
@@ -9,7 +21,7 @@ interface Option {
 
 interface Question {
     id: number;
-    questionType: string;
+    questionType: QuestionType;
     question_text: string;
     is_required: boolean;
     display_order: number;
@@ -61,7 +73,7 @@ function FeedbackForm({ isFormOpen, setIsFormOpen, formData }: FeedbackFormProps
                             {/* Make more cases for other types of questions (slider) */}
                             {formData.questions?.map((question) => {
                                 switch (question.questionType) {
-                                    case "textarea":
+                                    case QuestionType.TEXTAREA:
                                         return (
                                             <TextField
                                                 key={question.id}
@@ -70,7 +82,7 @@ function FeedbackForm({ isFormOpen, setIsFormOpen, formData }: FeedbackFormProps
                                             />
                                         );
 
-                                    case "radio":
+                                    case QuestionType.RADIO:
                                         return (
                                             <RadioGroup
                                                 key={question.id}
@@ -89,7 +101,7 @@ function FeedbackForm({ isFormOpen, setIsFormOpen, formData }: FeedbackFormProps
                                             </RadioGroup>
                                         );
 
-                                    case "dropdown":
+                                    case QuestionType.DROPDOWN:
                                         return (
                                             <Select
                                                 key={question.id}
