@@ -45,7 +45,7 @@ services:
       context: ./backend
       dockerfile: Dockerfile
     container_name: api
-    command: sh -c "npx prisma migrate deploy && npm run serve"
+    command: sh -c "npx prisma migrate deploy && npx prisma db seed && npm run serve"
     depends_on:
       database:
         condition: service_healthy

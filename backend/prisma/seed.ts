@@ -1,12 +1,20 @@
-import { PrismaClient } from '@prisma/client'
+import { PrismaClient, QuestionType } from '@prisma/client'
 
 const prisma = new PrismaClient()
 
 async function main() {
   console.log('🌱 Starting database seeding...')
-
-  // Clean up existing data to prevent duplicate keys or clutter on re-runs
+  
+  // 1. Explicitly clear children first to prevent key/state locking issues
+  await prisma.answer.deleteMany({})
+  await prisma.questionOption.deleteMany({})
+  await prisma.question.deleteMany({})
   await prisma.feedbackForm.deleteMany({})
+
+  console.log('🧹 Existing database records cleared successfully.')
+
+  // ... your prisma.feedbackForm.create code goes right below here
+
 
   // Your exact form configuration from your controller
   const feedbackForm = await prisma.feedbackForm.create({
@@ -18,13 +26,13 @@ async function main() {
       questions: {
         create: [
           {
-            questionType: "textarea", 
+            questionType: QuestionType.TEXTAREA, 
             question_text: "How color showed up when you clicked the button?",
             is_required: true,
             display_order: 1,
           },
           {
-            questionType: "radio", 
+            questionType: QuestionType.MULTIPLE_CHOICE, 
             question_text: "Does the color affect the visibility of the other content of the page?",
             options: {
               create: [
@@ -44,7 +52,7 @@ async function main() {
             display_order: 1, 
           },
           {
-            questionType: "dropdown",
+            questionType: QuestionType.DROPDOWN,
             question_text: "City",
             options: {
               create: [
