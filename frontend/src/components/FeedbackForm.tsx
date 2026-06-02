@@ -67,7 +67,7 @@ function FeedbackForm({ isFormOpen, setIsFormOpen, forms }: FeedbackFormProps) {
     }
 
     //Happiness Slider info
-    const [showHappinessSlider, setShowHappinessSlider] = useState(false);
+    const [happiness, setHappiness] = useState(3);
 
     //Success message state 
     const [showSuccess, setShowSuccess] = useState(false);
