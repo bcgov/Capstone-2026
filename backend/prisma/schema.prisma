@@ -48,12 +48,12 @@ model FeedbackForm {
 
 //Enum for question type to prevent bad data 
 enum QuestionType {
-  TEXT
-  RATING
+  TEXTAREA
+  RADIO
+  DROPDOWN
   BOOLEAN
   MULTIPLE_CHOICE
   CHECKBOX
-  DROPDOWN
   NPS
 }
 
