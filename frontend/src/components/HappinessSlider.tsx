@@ -4,8 +4,8 @@ import {
     Modal
 } from "@bcgov/design-system-react-components";
 
-import React, {useState} from 'react';
-import Slider from '@mui/material';
+import React, { useState } from 'react';
+import Slider from '@mui/material/Slider';
 
 
 interface HappinessSliderProps {
@@ -18,13 +18,13 @@ function HappinessSlider({
     onSelect
 }: HappinessSliderProps) {
 
-    const [value, setValue]= useState(3);
+    const [value, setValue] = useState(3);
 
     if (!isOpen) return null;
 
     const emojis = [
         "😡",
-        "🙁" ,
+        "🙁",
         "😐",
         "🙂",
         "😁"
@@ -35,11 +35,11 @@ function HappinessSlider({
         console.log(newValue);
     }
 
-    const EmojiHandle = (props:any) => {
+    const EmojiHandle = (props: any) => {
         const handleValue = props.value;
-        
+
         return (
-            <div 
+            <div
                 {...props}
                 style={{
                     width: "40px",
@@ -59,56 +59,56 @@ function HappinessSlider({
     };
 
 
-        return (
-            <Modal isOpen={isOpen}>
-                <Dialog aria-label="Happiness rating">
-                    <div style={{ padding: "1rem" }}>
-                        <h2>How was your experience?</h2>
+    return (
+        <Modal isOpen={isOpen}>
+            <Dialog aria-label="Happiness rating">
+                <div style={{ padding: "1rem" }}>
+                    <h2>How was your experience?</h2>
 
-                        <div
-                            style={{
-                                display: "flex",
-                                gap: "1rem",
-                                justifyContent: "center"
-                            }}
-                        >
-                            {emoji[value -1]}
-                            </div>
-                            <Slider 
-                                min={1}
-                                max={5}
-                                step={1}
-                                value={value} 
-
-                                onChange={(newValue) => 
-                                    handleSliderChange(newValue as number)
-                                }
-                                onChangeComplete={(newValue) => 
-                                    onSelect(newValue as number)
-                                }
-                                handleRender={(node, props) => (
-                                    <EmojiHandle {...props} />
-                                )}
-                            />
-
-                            <div>
-                                style=={{
-                                    display: "flex",
-                                    justifyContent: "space-between",
-                                    marginTop: "1rem",
-                                    fontSize: "2rem"
-                                }}
-                                
-                                {emojis.map((emoji) => (
-                                    <span key={emoji}>{emoji}</span>
-                                ))}
-                            
-                        </div>
+                    <div
+                        style={{
+                            display: "flex",
+                            gap: "1rem",
+                            justifyContent: "center"
+                        }}
+                    >
+                        {emoji[value - 1]}
                     </div>
-                </Dialog>
-            </Modal>
-        );
-    }
+                    <Slider
+                        min={1}
+                        max={5}
+                        step={1}
+                        value={value}
+
+                        onChange={(newValue) =>
+                            handleSliderChange(newValue as number)
+                        }
+                        onChangeComplete={(newValue) =>
+                            onSelect(newValue as number)
+                        }
+                        handleRender={(node, props) => (
+                            <EmojiHandle {...props} />
+                        )}
+                    />
+
+                    <div>
+                        style=={{
+                            display: "flex",
+                            justifyContent: "space-between",
+                            marginTop: "1rem",
+                            fontSize: "2rem"
+                        }}
+
+                        {emojis.map((emoji) => (
+                            <span key={emoji}>{emoji}</span>
+                        ))}
+
+                    </div>
+                </div>
+            </Dialog>
+        </Modal>
+    );
+}
 
 
 export default HappinessSlider;
