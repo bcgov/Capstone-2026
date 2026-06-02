@@ -16,7 +16,7 @@ function Home() {
 
   // currently gets all forms but will eventually get only one form with a given id
   useEffect(() => {
-      fetch('http://localhost:3000/api/form')
+    fetch('http://localhost:3000/api/form')
       .then((res) => res.json())
       .then((data) => {
         setFormData(data);
@@ -88,13 +88,13 @@ function Home() {
           </DialogTrigger>
 
           <HappinessSlider
-                isOpen={showSlider}
-                onSelect={(rating) => {
-                    setSelectedRating(rating);
+            isOpen={showSlider}
+            onSelect={(rating) => {
+              setSelectedRating(rating);
 
-                    setShowSlider(false);
-                    setIsFormOpen(true);
-                }}
+              setShowSlider(false);
+              setIsFormOpen(true);
+            }}
           />
           <FeedbackForm
             isFormOpen={isFormOpen}

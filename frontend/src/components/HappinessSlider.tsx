@@ -4,6 +4,7 @@ import {
     Modal
 } from "@bcgov/design-system-react-components";
 
+import { useState } from "react";
 
 interface HappinessSliderProps {
     isOpen: boolean;
@@ -15,15 +16,9 @@ function HappinessSlider({
     onSelect
 }: HappinessSliderProps) {
 
-    if (!isOpen) return null;
+    const [value, setValue] = useState(3);
 
-    const emojis = [
-        { value: 1, emoji: "😡" },
-        { value: 2, emoji: "🙁" },
-        { value: 3, emoji: "😐" },
-        { value: 4, emoji: "🙂" },
-        { value: 5, emoji: "😁" },
-    ];
+    if (!isOpen) return null;
 
     return (
         <Modal isOpen={isOpen}>
@@ -34,20 +29,49 @@ function HappinessSlider({
                     <div
                         style={{
                             display: "flex",
+                            alignItems: "center",
                             gap: "1rem",
-                            justifyContent: "center"
+                            marginTop: "1rem"
                         }}
                     >
-                        {emojis.map((emoji) => (
-                            <Button
-                                key={emoji.value}
-                                onPress={() =>
-                                    onSelect(emoji.value)
-                                }
-                            >
-                                {emoji.emoji}
-                            </Button>
-                        ))}
+                        <span style={{ fontSize: "2rem" }}>😡</span>
+
+                        <input
+                            type="range"
+                            min="1"
+                            max="5"
+                            step="1"
+                            value={value}
+                            onChange={(e) =>
+                                setValue(Number(e.target.value))
+                            }
+                            style={{ flex: 1 }}
+                        />
+
+                        <span style={{ fontSize: "2rem" }}>😁</span>
+                    </div>
+
+                    <p
+                        style={{
+                            textAlign: "center",
+                            marginTop: "1rem"
+                        }}
+                    >
+                        Rating: {value}
+                    </p>
+
+                    <div
+                        style={{
+                            display: "flex",
+                            justifyContent: "center",
+                            marginTop: "1rem"
+                        }}
+                    >
+                        <Button
+                            onPress={() => onSelect(value)}
+                        >
+                            Submit
+                        </Button>
                     </div>
                 </div>
             </Dialog>

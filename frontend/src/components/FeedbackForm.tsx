@@ -1,14 +1,15 @@
 import { ButtonGroup, Button, Dialog, Select, Modal, Form, TextField, RadioGroup, Radio } from "@bcgov/design-system-react-components";
+import { useState } from 'react';
 
 // 🟢 Update your frontend enum to use explicit string values
 enum QuestionType {
-  TEXTAREA = "TEXTAREA",
-  RADIO = "RADIO",
-  DROPDOWN = "DROPDOWN",
-  BOOLEAN = "BOOLEAN",
-  MULTIPLE_CHOICE = "MULTIPLE_CHOICE",
-  CHECKBOX = "CHECKBOX",
-  NPS = "NPS"
+    TEXTAREA = "TEXTAREA",
+    RADIO = "RADIO",
+    DROPDOWN = "DROPDOWN",
+    BOOLEAN = "BOOLEAN",
+    MULTIPLE_CHOICE = "MULTIPLE_CHOICE",
+    CHECKBOX = "CHECKBOX",
+    NPS = "NPS"
 }
 
 // INTERFACES 
@@ -61,7 +62,7 @@ function FeedbackForm({ isFormOpen, setIsFormOpen, forms }: FeedbackFormProps) {
                 onOpenChange={setIsFormOpen}
             >
                 <Dialog isCloseable
-                aria-label="Feedback form dialog">
+                    aria-label="Feedback form dialog">
                     <div
                         style={{ padding: '1rem' }}
                     >
