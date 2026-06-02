@@ -1,81 +1,42 @@
-import {
-    Button,
-    Dialog,
-    Modal
-} from "@bcgov/design-system-react-components";
 
-import { useState } from "react";
 
 interface HappinessSliderProps {
-    isOpen: boolean;
-    onSelect: (rating: number) => void;
+    value: number;
+    onChange: (value: number) => void;
 }
 
 function HappinessSlider({
-    isOpen,
-    onSelect
+    value,
+    onChange
 }: HappinessSliderProps) {
 
-    const [value, setValue] = useState(3);
-
-    if (!isOpen) return null;
-
     return (
-        <Modal isOpen={isOpen}>
-            <Dialog aria-label="Happiness rating">
-                <div style={{ padding: "1rem" }}>
-                    <h2>How was your experience?</h2>
+        <div>
+            <label>How happy are you?</label>
 
-                    <div
-                        style={{
-                            display: "flex",
-                            alignItems: "center",
-                            gap: "1rem",
-                            marginTop: "1rem"
-                        }}
-                    >
-                        <span style={{ fontSize: "2rem" }}>😡</span>
+            <div
+                style={{
+                    display: "flex",
+                    alignItems: "center",
+                    gap: "1rem"
+                }}
+            >
+                <span>😡</span>
 
-                        <input
-                            type="range"
-                            min="1"
-                            max="5"
-                            step="1"
-                            value={value}
-                            onChange={(e) =>
-                                setValue(Number(e.target.value))
-                            }
-                            style={{ flex: 1 }}
-                        />
+                <input
+                    type="range"
+                    min={1}
+                    max={5}
+                    step={1}
+                    value={value}
+                    onChange={(e) =>
+                        onChange(Number(e.target.value))
+                    }
+                />
 
-                        <span style={{ fontSize: "2rem" }}>😁</span>
-                    </div>
-
-                    <p
-                        style={{
-                            textAlign: "center",
-                            marginTop: "1rem"
-                        }}
-                    >
-                        Rating: {value}
-                    </p>
-
-                    <div
-                        style={{
-                            display: "flex",
-                            justifyContent: "center",
-                            marginTop: "1rem"
-                        }}
-                    >
-                        <Button
-                            onPress={() => onSelect(value)}
-                        >
-                            Submit
-                        </Button>
-                    </div>
-                </div>
-            </Dialog>
-        </Modal>
+                <span>😁</span>
+            </div>
+        </div>
     );
 }
 

@@ -1,5 +1,6 @@
 import { ButtonGroup, Button, Dialog, Select, Modal, Form, TextField, RadioGroup, Radio } from "@bcgov/design-system-react-components";
 import { useState } from 'react';
+import HappinessSlider from "./HappinessSlider";
 
 // 🟢 Update your frontend enum to use explicit string values
 enum QuestionType {
@@ -48,11 +49,16 @@ function FeedbackForm({ isFormOpen, setIsFormOpen, forms }: FeedbackFormProps) {
     // eventually home.tsx will be getting a from with a specific id 
     // so the data being passed in will just be for one form
     const form = forms[0];
+
+    console.log("forms:", forms);
+    console.log("form:", form);
+    console.log("isFormOpen:", isFormOpen);
     if (!form) return null;
     if (!isFormOpen) return null;
 
     //Happiness Slider info
-    const [showHappinessSlider, setShowHappinessSlider] = useState(false);
+    //const [showHappinessSlider, setShowHappinessSlider] = useState(false);
+    const [happiness, setHappiness] = useState(3);
 
     return (
         <>
@@ -128,6 +134,11 @@ function FeedbackForm({ isFormOpen, setIsFormOpen, forms }: FeedbackFormProps) {
                                         return null;
                                 }
                             })}
+
+                            <HappinessSlider
+                                value={happiness}
+                                onChange={setHappiness}
+                            />
 
                             <ButtonGroup alignment="start" orientation="horizontal">
                                 <Button type="submit" variant="primary">

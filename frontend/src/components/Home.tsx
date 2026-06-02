@@ -69,7 +69,7 @@ function Home() {
 
                   <Button onPress={() => {
                     setIsAlertOpen(false);
-                    setShowSlider(true);
+                    setIsFormOpen(true);
                   }}
                     style={{ margin: "5px" }}
                   >
@@ -87,15 +87,6 @@ function Home() {
             </Modal>
           </DialogTrigger>
 
-          <HappinessSlider
-            isOpen={showSlider}
-            onSelect={(rating) => {
-              setSelectedRating(rating);
-
-              setShowSlider(false);
-              setIsFormOpen(true);
-            }}
-          />
           <FeedbackForm
             isFormOpen={isFormOpen}
             setIsFormOpen={setIsFormOpen}
