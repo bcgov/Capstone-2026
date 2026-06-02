@@ -188,7 +188,8 @@ function FeedbackForm({ isFormOpen, setIsFormOpen, forms }: FeedbackFormProps) {
                             })}
 
                             <HappinessSlider>
-
+                                happiness={happiness}
+                                setHappiness={setHappiness}
                             </HappinessSlider>
 
                             <ButtonGroup alignment="start" orientation="horizontal">
