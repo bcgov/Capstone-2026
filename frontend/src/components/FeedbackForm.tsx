@@ -2,16 +2,17 @@ import { ButtonGroup, Button, Dialog, Select, Modal, Form, TextField, RadioGroup
 import ErrorModal from './ErrorModal';
 import SuccessModal from './SuccessModal';
 import { useState } from 'react';
+import HappinessSlider from "./HappinessSlider";
 
 // 🟢 Update your frontend enum to use explicit string values
 enum QuestionType {
-  TEXTAREA = "TEXTAREA",
-  RADIO = "RADIO",
-  DROPDOWN = "DROPDOWN",
-  BOOLEAN = "BOOLEAN",
-  MULTIPLE_CHOICE = "MULTIPLE_CHOICE",
-  CHECKBOX = "CHECKBOX",
-  NPS = "NPS"
+    TEXTAREA = "TEXTAREA",
+    RADIO = "RADIO",
+    DROPDOWN = "DROPDOWN",
+    BOOLEAN = "BOOLEAN",
+    MULTIPLE_CHOICE = "MULTIPLE_CHOICE",
+    CHECKBOX = "CHECKBOX",
+    NPS = "NPS"
 }
 
 // INTERFACES 
@@ -76,33 +77,33 @@ function FeedbackForm({ isFormOpen, setIsFormOpen, forms }: FeedbackFormProps) {
 
     //Error message state
     const [errorMessage, setErrorMessage] =
-    useState("");
+        useState("");
 
     async function handleSubmit() {
-    try {
-        const response = await fetch(
-            "http://localhost:3000/api/form",
-            {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify({
-                    test: true
-                })
-            }
-        );
-
-        if (response.ok) {
-            setShowSuccess(true);
-        } else {
-            setErrorMessage(
-                `Server returned ${response.status}`
+        try {
+            const response = await fetch(
+                "http://localhost:3000/api/form",
+                {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({
+                        test: true
+                    })
+                }
             );
 
-            setShowError(true);
-        }
-    } catch (error) {
+            if (response.ok) {
+                setShowSuccess(true);
+            } else {
+                setErrorMessage(
+                    `Server returned ${response.status}`
+                );
+
+                setShowError(true);
+            }
+        } catch (error) {
             setErrorMessage(
                 "Unable to connect to server."
             );
@@ -119,7 +120,7 @@ function FeedbackForm({ isFormOpen, setIsFormOpen, forms }: FeedbackFormProps) {
                 onOpenChange={setIsFormOpen}
             >
                 <Dialog isCloseable
-                aria-label="Feedback form dialog">
+                    aria-label="Feedback form dialog">
                     <div
                         style={{ padding: '1rem' }}
                     >
@@ -185,6 +186,10 @@ function FeedbackForm({ isFormOpen, setIsFormOpen, forms }: FeedbackFormProps) {
                                         return null;
                                 }
                             })}
+
+                            <HappinessSlider>
+
+                            </HappinessSlider>
 
                             <ButtonGroup alignment="start" orientation="horizontal">
                                 <Button variant="primary" onPress={handleSubmit}>

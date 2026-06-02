@@ -1,18 +1,17 @@
 import { Footer, Header, Button, Dialog, DialogTrigger, Modal } from "@bcgov/design-system-react-components";
 import { useState, useEffect } from "react";
-import HappinessSlider from "./HappinessSlider";
 import FeedbackForm from "./FeedbackForm";
 import '@bcgov/bc-sans/css/BC_Sans.css';
 
 function Home() {
   useEffect(() => {
-      fetch('http://localhost:3000/api/form')
-          .then((res) => res.json())
-          .then((data) => {
-              console.log("API returned:", data);
-              setFormData(data);
-          })
-          .catch((err) => console.error("DB Fetch Error:", err));
+    fetch('http://localhost:3000/api/form')
+      .then((res) => res.json())
+      .then((data) => {
+        console.log("API returned:", data);
+        setFormData(data);
+      })
+      .catch((err) => console.error("DB Fetch Error:", err));
   }, []);
   //console.log("Home opens");
 
@@ -27,7 +26,7 @@ function Home() {
 
   // currently gets all forms but will eventually get only one form with a given id
   useEffect(() => {
-      fetch('http://localhost:3000/api/form')
+    fetch('http://localhost:3000/api/form')
       .then((res) => res.json())
       .then((data) => {
         setFormData(data);
@@ -41,7 +40,7 @@ function Home() {
   }
 
 
-  
+
   return (
     <>
       <div style={{ margin: 0 }}>
@@ -82,7 +81,7 @@ function Home() {
 
                   <Button onPress={() => {
                     setIsAlertOpen(false);
-                    setShowSlider(true);
+                    setIsFormOpen(true);
                   }}
                     style={{ margin: "5px" }}
                   >
@@ -100,19 +99,6 @@ function Home() {
             </Modal>
           </DialogTrigger>
 
-          <HappinessSlider
-                isOpen={showSlider}
-                onSelect={(rating) => {
-                    console.log("Emoji clicked:", rating);
-
-                    setSelectedRating(rating);
-
-                    setShowSlider(false);
-                    setIsFormOpen(true);
-
-                    console.log("OPENING FORM");
-                }}
-          />
           <FeedbackForm
             isFormOpen={isFormOpen}
             setIsFormOpen={setIsFormOpen}
