@@ -46,6 +46,7 @@ interface FeedbackFormProps {
 function FeedbackForm({ isFormOpen, setIsFormOpen, formData }: FeedbackFormProps) {
     if (!formData) return null;
     if (!isFormOpen) return null;
+    console.log(formData);
 
     const [answers, setAnswers] = useState<Record<number, any>>({});
 
