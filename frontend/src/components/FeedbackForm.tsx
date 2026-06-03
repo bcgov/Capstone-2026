@@ -1,52 +1,11 @@
 import { ButtonGroup, Button, Dialog, Select, Modal, Form, TextField, RadioGroup, Radio } from "@bcgov/design-system-react-components";
 import { useState } from "react";
+import type { FeedbackFormProps } from '../types/feedback';
+import { QuestionType } from "../types/feedback";
 
-// 🟢 Update your frontend enum to use explicit string values
-enum QuestionType {
-    TEXTAREA = "TEXTAREA",
-    RADIO = "RADIO",
-    DROPDOWN = "DROPDOWN",
-    BOOLEAN = "BOOLEAN",
-    MULTIPLE_CHOICE = "MULTIPLE_CHOICE",
-    CHECKBOX = "CHECKBOX",
-    NPS = "NPS"
-}
-
-// INTERFACES 
-interface Option {
-    id: number;
-    optionText: string;
-    optionValue: string;
-    displayOrder: number;
-}
-
-interface Question {
-    id: number;
-    questionType: QuestionType;
-    question_text: string;
-    is_required: boolean;
-    display_order: number;
-    options?: Option[];
-}
-
-interface FormData {
-    id: number;
-    name: string;
-    description: string;
-    questions: Question[];
-}
-
-interface FeedbackFormProps {
-    isFormOpen: boolean;
-    setIsFormOpen: (open: boolean) => void;
-    formData: FormData;
-}
-
-// COMPONENT
 function FeedbackForm({ isFormOpen, setIsFormOpen, formData }: FeedbackFormProps) {
     if (!formData) return null;
     if (!isFormOpen) return null;
-    console.log(formData);
 
     const [answers, setAnswers] = useState<Record<number, any>>({});
 
@@ -92,6 +51,8 @@ function FeedbackForm({ isFormOpen, setIsFormOpen, formData }: FeedbackFormProps
         const data = await response.json();
 
         console.log("Submission created:", data);
+        setAnswers({});
+        setIsFormOpen(false);
     };
 
     return (

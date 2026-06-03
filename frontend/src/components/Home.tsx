@@ -2,11 +2,13 @@ import { Footer, Header, Button, Dialog, DialogTrigger, Modal } from "@bcgov/des
 import { useState, useEffect } from "react";
 import FeedbackForm from "./FeedbackForm";
 import '@bcgov/bc-sans/css/BC_Sans.css';
+import type { FeedbackFormData } from "../types/feedback";
+
 
 function Home() {
   const [isAlertOpen, setIsAlertOpen] = useState(false);
   const [isFormOpen, setIsFormOpen] = useState(false);
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<FeedbackFormData>({
     id: 0,
     name: '',
     description: '',
@@ -114,4 +116,3 @@ function Home() {
 }
 
 export default Home;
-
