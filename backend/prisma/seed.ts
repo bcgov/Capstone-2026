@@ -13,12 +13,9 @@ async function main() {
 
   console.log('🧹 Existing database records cleared successfully.')
 
-  // ... your prisma.feedbackForm.create code goes right below here
-
-
-  // Your exact form configuration from your controller
   const feedbackForm = await prisma.feedbackForm.create({
     data: {
+      id: 1,
       name: "Color change form",
       description: "A feedback form about the background color change button",
       is_active: true,
@@ -27,7 +24,7 @@ async function main() {
         create: [
           {
             questionType: QuestionType.TEXTAREA, 
-            question_text: "How color showed up when you clicked the button?",
+            question_text: "What color showed up when you clicked the button?",
             is_required: true,
             display_order: 1,
           },
