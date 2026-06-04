@@ -15,6 +15,7 @@ async function main() {
 
   const feedbackForm = await prisma.feedbackForm.create({
     data: {
+      id: 1,
       name: "Color change form",
       description: "A feedback form about the background color change button",
       is_active: true,
