@@ -1,28 +1,45 @@
 import { ButtonGroup, Button, Dialog, Select, Modal, Form, TextField, RadioGroup, Radio } from "@bcgov/design-system-react-components";
-import ErrorModal from './ErrorModal';
-import SuccessModal from './SuccessModal';
-import HappinessSlider from "./HappinessSlider";
+//import ErrorModal from './ErrorModal';
+//import SuccessModal from './SuccessModal';
+//import HappinessSlider from "./HappinessSlider";
 import { useState } from "react";
 import type { FeedbackFormProps } from '../types/feedback';
 import { QuestionType } from "../types/feedback";
+import SubmissionConfirmationModal from "./SubmissionConfirmationModal";
 
 function FeedbackForm({ isFormOpen, setIsFormOpen, formData }: FeedbackFormProps) {
     if (!formData) return null;
-    if (!isFormOpen) return null;
+    //if (!isFormOpen) return null;
 
     const [answers, setAnswers] = useState<Record<number, any>>({});
-    //Happiness Slider info
-    const [happiness, setHappiness] = useState(3);
 
-    //Success message state 
-    const [showSuccess, setShowSuccess] = useState(false);
+    //const [happiness, setHappiness] = useState(3);
+    //const [showSuccess, setShowSuccess] = useState(false);
+    //const [showError, setShowError] = useState(false);
+    //const [errorMessage, setErrorMessage] = useState("");
 
-    //Error modal state
-    const [showError, setShowError] = useState(false);
+    const [showConfirmation, setShowConfirmation] = useState(false);
+    const [confirmationMessage, setConfirmationMessage] = useState("");
+    const [confirmationTitle, setConfirmationTitle] = useState("");
+    const [isSuccess, setIsSuccess] = useState(false);
 
-    //Error message state
-    const [errorMessage, setErrorMessage] =
-        useState("");
+    const handleCloseConfirmation = () => {
+        setShowConfirmation(false);
+        if (isSuccess) {
+            setIsFormOpen(false);
+        }
+    };
+
+    if (!isFormOpen) {
+        return (
+            <SubmissionConfirmationModal
+                isOpen={showConfirmation}
+                message={confirmationMessage}
+                onClose={handleCloseConfirmation}
+                title={confirmationTitle}
+            />
+        );
+    }
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -30,16 +47,9 @@ function FeedbackForm({ isFormOpen, setIsFormOpen, formData }: FeedbackFormProps
         const formattedAnswers = Object.entries(answers).map(
             ([questionId, value]) => ({
                 questionId: Number(questionId),
-
-                answerText:
-                    typeof value === "string" ? value : null,
-
-                answerBoolean:
-                    typeof value === "boolean" ? value : null,
-
-                answerNumber:
-                    typeof value === "number" ? value : null,
-
+                answerText: typeof value === "string" ? value : null,
+                answerBoolean: typeof value === "boolean" ? value : null,
+                answerNumber: typeof value === "number" ? value : null,
                 answerJson: null
             })
         );
@@ -67,21 +77,26 @@ function FeedbackForm({ isFormOpen, setIsFormOpen, formData }: FeedbackFormProps
 
             if (response.ok) {
                 console.log("Submission created:", data);
+                setIsSuccess(true);
+                setConfirmationTitle("Successful Feedback Submission!");
+                setConfirmationMessage("Submission ID: " + data.id);
                 setAnswers({});
-                setShowSuccess(true);
+                setShowConfirmation(true);
+                setIsFormOpen(false);
+                //setShowSuccess(true);
             } else {
-                setErrorMessage(
-                    `Server returned ${response.status}`
-                );
-
-                setShowError(true);
+                setIsSuccess(false);
+                setConfirmationTitle("Unsuccessful Feedback Submission");
+                setConfirmationMessage(`Server returned ${response.status}`);
+                setShowConfirmation(true);
+                //setShowError(true);
             }
         } catch (error) {
-            setErrorMessage(
-                "Unable to connect to server."
-            );
-
-            setShowError(true);
+            setIsSuccess(false);
+            setConfirmationTitle("Unsuccessful Feedback Submission");
+            setConfirmationMessage("Unable to connect to server.");
+            setShowConfirmation(true);
+            //setShowError(true);
         }
     };
 
@@ -178,7 +193,7 @@ function FeedbackForm({ isFormOpen, setIsFormOpen, formData }: FeedbackFormProps
                                         return null;
                                 }
                             })}
-                            {/* temp comment out 
+                            {/*
                             <HappinessSlider>
                                 value={happiness}
                                 onChange={setHappiness}
@@ -196,6 +211,7 @@ function FeedbackForm({ isFormOpen, setIsFormOpen, formData }: FeedbackFormProps
                     </div>
                 </Dialog>
             </Modal>
+            {/*
             <SuccessModal
                 isOpen={showSuccess}
                 onClose={() => {
@@ -209,6 +225,17 @@ function FeedbackForm({ isFormOpen, setIsFormOpen, formData }: FeedbackFormProps
                 message={errorMessage}
                 onClose={() => setShowError(false)}
             />
+
+            <SubmissionConfirmationModal
+                isOpen={showConfirmation}
+                message={confirmationMessage}
+                onClose={() => {
+                    setShowConfirmation(false);
+                    setIsFormOpen(false);
+                }}
+                title={confirmationTitle}
+            />
+            */}
         </>
     );
 }

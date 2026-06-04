@@ -6,6 +6,7 @@ import type { FeedbackFormData } from "../types/feedback";
 
 
 function Home() {
+  /*
   useEffect(() => {
     fetch('http://localhost:3000/api/form')
       .then((res) => res.json())
@@ -15,8 +16,8 @@ function Home() {
       })
       .catch((err) => console.error("DB Fetch Error:", err));
   }, []);
-  //console.log("Home opens");
-
+  console.log("Home opens");
+*/
   const [isAlertOpen, setIsAlertOpen] = useState(false);
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [formData, setFormData] = useState<FeedbackFormData>({
@@ -27,9 +28,9 @@ function Home() {
   });
 
   //Happiness Slider states 
-  const [showSlider, setShowSlider] = useState(false);
+  //const [showSlider, setShowSlider] = useState(false);
   //const [showForm, setShowForm] = useState(false);
-  const [selectedRating, setSelectedRating] = useState<number | null>(null);
+  //const [selectedRating, setSelectedRating] = useState<number | null>(null);
 
   // currently gets all forms but will eventually get only one form with a given id
   useEffect(() => {
