@@ -68,7 +68,6 @@ function FeedbackForm({ isFormOpen, setIsFormOpen, formData }: FeedbackFormProps
             if (response.ok) {
                 console.log("Submission created:", data);
                 setAnswers({});
-                setIsFormOpen(false);
                 setShowSuccess(true);
             } else {
                 setErrorMessage(
