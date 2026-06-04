@@ -179,12 +179,12 @@ function FeedbackForm({ isFormOpen, setIsFormOpen, formData }: FeedbackFormProps
                                         return null;
                                 }
                             })}
-
+                            {/* temp comment out 
                             <HappinessSlider>
                                 value={happiness}
                                 onChange={setHappiness}
                             </HappinessSlider>
-
+                            */}
                             <ButtonGroup alignment="start" orientation="horizontal">
                                 <Button variant="primary" type="submit">
                                     Submit
