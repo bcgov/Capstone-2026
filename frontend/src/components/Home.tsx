@@ -2,6 +2,8 @@ import { Footer, Header, Button, Dialog, DialogTrigger, Modal } from "@bcgov/des
 import { useState, useEffect } from "react";
 import FeedbackForm from "./FeedbackForm";
 import '@bcgov/bc-sans/css/BC_Sans.css';
+import type { FeedbackFormData } from "../types/feedback";
+
 
 function Home() {
   useEffect(() => {
@@ -17,7 +19,12 @@ function Home() {
 
   const [isAlertOpen, setIsAlertOpen] = useState(false);
   const [isFormOpen, setIsFormOpen] = useState(false);
-  const [formData, setFormData] = useState<any[]>([]);
+  const [formData, setFormData] = useState<FeedbackFormData>({
+    id: 0,
+    name: '',
+    description: '',
+    questions: []
+  });
 
   //Happiness Slider states 
   const [showSlider, setShowSlider] = useState(false);
@@ -26,7 +33,7 @@ function Home() {
 
   // currently gets all forms but will eventually get only one form with a given id
   useEffect(() => {
-    fetch('http://localhost:3000/api/form')
+    fetch('http://localhost:3000/api/form/1')
       .then((res) => res.json())
       .then((data) => {
         setFormData(data);
@@ -102,7 +109,7 @@ function Home() {
           <FeedbackForm
             isFormOpen={isFormOpen}
             setIsFormOpen={setIsFormOpen}
-            forms={formData}
+            formData={formData}
           />
 
           <h3 className="row" style={{ fontFamily: "BC Sans" }}>
@@ -129,4 +136,3 @@ function Home() {
 }
 
 export default Home;
-

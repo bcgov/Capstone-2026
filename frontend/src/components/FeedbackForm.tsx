@@ -1,71 +1,16 @@
 import { ButtonGroup, Button, Dialog, Select, Modal, Form, TextField, RadioGroup, Radio } from "@bcgov/design-system-react-components";
 import ErrorModal from './ErrorModal';
 import SuccessModal from './SuccessModal';
-import { useState } from 'react';
 import HappinessSlider from "./HappinessSlider";
+import { useState } from "react";
+import type { FeedbackFormProps } from '../types/feedback';
+import { QuestionType } from "../types/feedback";
 
-// 🟢 Update your frontend enum to use explicit string values
-enum QuestionType {
-    TEXTAREA = "TEXTAREA",
-    RADIO = "RADIO",
-    DROPDOWN = "DROPDOWN",
-    BOOLEAN = "BOOLEAN",
-    MULTIPLE_CHOICE = "MULTIPLE_CHOICE",
-    CHECKBOX = "CHECKBOX",
-    NPS = "NPS"
-}
+function FeedbackForm({ isFormOpen, setIsFormOpen, formData }: FeedbackFormProps) {
+    if (!formData) return null;
+    if (!isFormOpen) return null;
 
-// INTERFACES 
-interface Option {
-    id: number;
-    optionText: string;
-    optionValue: string;
-    displayOrder: number;
-}
-
-interface Question {
-    id: number;
-    questionType: QuestionType;
-    question_text: string;
-    is_required: boolean;
-    display_order: number;
-    options?: Option[];
-}
-
-interface FormData {
-    id: number;
-    name: string;
-    description: string;
-    questions: Question[];
-}
-
-interface FeedbackFormProps {
-    isFormOpen: boolean;
-    setIsFormOpen: (open: boolean) => void;
-    forms: FormData[];
-}
-
-// COMPONENT
-function FeedbackForm({ isFormOpen, setIsFormOpen, forms }: FeedbackFormProps) {
-    // eventually home.tsx will be getting a from with a specific id 
-    // so the data being passed in will just be for one form
-    console.log("FeedbackForm open:", isFormOpen);
-    console.log("Forms:", forms);
-
-    const form = forms[0];
-
-    console.log("Form:", form);
-
-    if (!form) {
-        console.log("No form found");
-        return null;
-    }
-
-    if (!isFormOpen) {
-        console.log("Form not open");
-        return null;
-    }
-
+    const [answers, setAnswers] = useState<Record<number, any>>({});
     //Happiness Slider info
     const [happiness, setHappiness] = useState(3);
 
@@ -79,22 +24,51 @@ function FeedbackForm({ isFormOpen, setIsFormOpen, forms }: FeedbackFormProps) {
     const [errorMessage, setErrorMessage] =
         useState("");
 
-    async function handleSubmit() {
+    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+
+        const formattedAnswers = Object.entries(answers).map(
+            ([questionId, value]) => ({
+                questionId: Number(questionId),
+
+                answerText:
+                    typeof value === "string" ? value : null,
+
+                answerBoolean:
+                    typeof value === "boolean" ? value : null,
+
+                answerNumber:
+                    typeof value === "number" ? value : null,
+
+                answerJson: null
+            })
+        );
+
+        const payload = {
+            formId: formData.id,
+            session_id: null,
+            anonymous_id: null,
+            page_url: window.location.href,
+            answers: formattedAnswers
+        };
         try {
             const response = await fetch(
-                "http://localhost:3000/api/form",
+                "http://localhost:3000/api/submissions",
                 {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json"
                     },
-                    body: JSON.stringify({
-                        test: true
-                    })
+                    body: JSON.stringify(payload)
                 }
             );
 
+            const data = await response.json();
+
             if (response.ok) {
+                console.log("Submission created:", data);
+                setAnswers({});
+                setIsFormOpen(false);
                 setShowSuccess(true);
             } else {
                 setErrorMessage(
@@ -110,7 +84,7 @@ function FeedbackForm({ isFormOpen, setIsFormOpen, forms }: FeedbackFormProps) {
 
             setShowError(true);
         }
-    }
+    };
 
     return (
         <>
@@ -130,6 +104,7 @@ function FeedbackForm({ isFormOpen, setIsFormOpen, forms }: FeedbackFormProps) {
                             Tell us about your experience!
                         </span>
                         <Form
+                            onSubmit={handleSubmit}
                             style={{
                                 display: 'flex',
                                 flexDirection: 'column',
@@ -137,7 +112,7 @@ function FeedbackForm({ isFormOpen, setIsFormOpen, forms }: FeedbackFormProps) {
                             }}
                         >
                             {/* Make more cases for other types of questions (slider) */}
-                            {form.questions?.map((question) => {
+                            {formData.questions?.map((question) => {
                                 switch (question.questionType) {
                                     case QuestionType.TEXTAREA:
                                         return (
@@ -145,6 +120,12 @@ function FeedbackForm({ isFormOpen, setIsFormOpen, forms }: FeedbackFormProps) {
                                                 key={question.id}
                                                 isRequired={question.is_required}
                                                 label={question.question_text}
+                                                onChange={(value) =>
+                                                    setAnswers(prev => ({
+                                                        ...prev,
+                                                        [question.id]: value
+                                                    }))
+                                                }
                                             />
                                         );
 
@@ -155,6 +136,12 @@ function FeedbackForm({ isFormOpen, setIsFormOpen, forms }: FeedbackFormProps) {
                                                 isRequired={question.is_required}
                                                 label={question.question_text}
                                                 orientation="horizontal"
+                                                onChange={(value) =>
+                                                    setAnswers(prev => ({
+                                                        ...prev,
+                                                        [question.id]: value
+                                                    }))
+                                                }
                                             >
                                                 {question.options?.map((option) => (
                                                     <Radio
@@ -179,6 +166,12 @@ function FeedbackForm({ isFormOpen, setIsFormOpen, forms }: FeedbackFormProps) {
                                                         label: option.optionText
                                                     })) || []
                                                 }
+                                                onChange={(value) =>
+                                                    setAnswers(prev => ({
+                                                        ...prev,
+                                                        [question.id]: value
+                                                    }))
+                                                }
                                             />
                                         );
 
@@ -193,7 +186,7 @@ function FeedbackForm({ isFormOpen, setIsFormOpen, forms }: FeedbackFormProps) {
                             </HappinessSlider>
 
                             <ButtonGroup alignment="start" orientation="horizontal">
-                                <Button variant="primary" onPress={handleSubmit}>
+                                <Button variant="primary" type="submit">
                                     Submit
                                 </Button>
                                 <Button type="reset" variant="secondary">
