@@ -1,6 +1,4 @@
 import { ButtonGroup, Button, Dialog, Select, Modal, Form, TextField, RadioGroup, Radio } from "@bcgov/design-system-react-components";
-//import ErrorModal from './ErrorModal';
-//import SuccessModal from './SuccessModal';
 //import HappinessSlider from "./HappinessSlider";
 import { useState } from "react";
 import type { FeedbackFormProps } from '../types/feedback';
@@ -9,14 +7,10 @@ import SubmissionConfirmationModal from "./SubmissionConfirmationModal";
 
 function FeedbackForm({ isFormOpen, setIsFormOpen, formData }: FeedbackFormProps) {
     if (!formData) return null;
-    //if (!isFormOpen) return null;
 
     const [answers, setAnswers] = useState<Record<number, any>>({});
 
     //const [happiness, setHappiness] = useState(3);
-    //const [showSuccess, setShowSuccess] = useState(false);
-    //const [showError, setShowError] = useState(false);
-    //const [errorMessage, setErrorMessage] = useState("");
 
     const [showConfirmation, setShowConfirmation] = useState(false);
     const [confirmationMessage, setConfirmationMessage] = useState("");
@@ -61,6 +55,7 @@ function FeedbackForm({ isFormOpen, setIsFormOpen, formData }: FeedbackFormProps
             page_url: window.location.href,
             answers: formattedAnswers
         };
+
         try {
             const response = await fetch(
                 "http://localhost:3000/api/submissions",
@@ -83,20 +78,17 @@ function FeedbackForm({ isFormOpen, setIsFormOpen, formData }: FeedbackFormProps
                 setAnswers({});
                 setShowConfirmation(true);
                 setIsFormOpen(false);
-                //setShowSuccess(true);
             } else {
                 setIsSuccess(false);
                 setConfirmationTitle("Unsuccessful Feedback Submission");
                 setConfirmationMessage(`Server returned ${response.status}`);
                 setShowConfirmation(true);
-                //setShowError(true);
             }
         } catch (error) {
             setIsSuccess(false);
             setConfirmationTitle("Unsuccessful Feedback Submission");
             setConfirmationMessage("Unable to connect to server.");
             setShowConfirmation(true);
-            //setShowError(true);
         }
     };
 
@@ -211,31 +203,6 @@ function FeedbackForm({ isFormOpen, setIsFormOpen, formData }: FeedbackFormProps
                     </div>
                 </Dialog>
             </Modal>
-            {/*
-            <SuccessModal
-                isOpen={showSuccess}
-                onClose={() => {
-                    setShowSuccess(false);
-                    setIsFormOpen(false);
-                }}
-            />
-
-            <ErrorModal
-                isOpen={showError}
-                message={errorMessage}
-                onClose={() => setShowError(false)}
-            />
-
-            <SubmissionConfirmationModal
-                isOpen={showConfirmation}
-                message={confirmationMessage}
-                onClose={() => {
-                    setShowConfirmation(false);
-                    setIsFormOpen(false);
-                }}
-                title={confirmationTitle}
-            />
-            */}
         </>
     );
 }

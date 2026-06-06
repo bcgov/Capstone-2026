@@ -6,18 +6,6 @@ import type { FeedbackFormData } from "../types/feedback";
 
 
 function Home() {
-  /*
-  useEffect(() => {
-    fetch('http://localhost:3000/api/form')
-      .then((res) => res.json())
-      .then((data) => {
-        console.log("API returned:", data);
-        setFormData(data);
-      })
-      .catch((err) => console.error("DB Fetch Error:", err));
-  }, []);
-  console.log("Home opens");
-*/
   const [isAlertOpen, setIsAlertOpen] = useState(false);
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [formData, setFormData] = useState<FeedbackFormData>({
@@ -32,7 +20,6 @@ function Home() {
   //const [showForm, setShowForm] = useState(false);
   //const [selectedRating, setSelectedRating] = useState<number | null>(null);
 
-  // currently gets all forms but will eventually get only one form with a given id
   useEffect(() => {
     fetch('http://localhost:3000/api/form/1')
       .then((res) => res.json())
@@ -46,8 +33,6 @@ function Home() {
     const randomColor = '#' + Math.floor(Math.random() * 16777215).toString(16).padStart(6, '0');
     document.body.style.backgroundColor = randomColor;
   }
-
-
 
   return (
     <>
