@@ -1,6 +1,7 @@
 -- CreateEnum
 CREATE TYPE "QuestionType" AS ENUM ('TEXT', 'RATING', 'BOOLEAN', 'MULTIPLE_CHOICE', 'CHECKBOX', 'DROPDOWN', 'NPS');
 
+
 -- CreateTable
 CREATE TABLE "User" (
     "id" SERIAL NOT NULL,
@@ -8,8 +9,10 @@ CREATE TABLE "User" (
     "name" TEXT,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
+
     CONSTRAINT "User_pkey" PRIMARY KEY ("id")
 );
+
 
 -- CreateTable
 CREATE TABLE "CoverageReport" (
@@ -19,8 +22,10 @@ CREATE TABLE "CoverageReport" (
     "coverage_picture" TEXT,
     "userId" INTEGER,
 
+
     CONSTRAINT "CoverageReport_pkey" PRIMARY KEY ("id")
 );
+
 
 -- CreateTable
 CREATE TABLE "FeedbackForm" (
@@ -31,22 +36,25 @@ CREATE TABLE "FeedbackForm" (
     "version" INTEGER NOT NULL DEFAULT 1,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
+
     CONSTRAINT "FeedbackForm_pkey" PRIMARY KEY ("id")
 );
+
 
 -- CreateTable
 CREATE TABLE "Question" (
     "id" SERIAL NOT NULL,
     "formId" INTEGER NOT NULL,
-    "questionType" "QuestionType" NOT NULL,
     "question_text" TEXT NOT NULL,
     "is_required" BOOLEAN NOT NULL,
     "display_order" INTEGER NOT NULL,
     "metadata" JSONB,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
+
     CONSTRAINT "Question_pkey" PRIMARY KEY ("id")
 );
+
 
 -- CreateTable
 CREATE TABLE "FeedbackSubmission" (
@@ -59,8 +67,10 @@ CREATE TABLE "FeedbackSubmission" (
     "userId" INTEGER,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
+
     CONSTRAINT "FeedbackSubmission_pkey" PRIMARY KEY ("id")
 );
+
 
 -- CreateTable
 CREATE TABLE "Answer" (
@@ -73,8 +83,10 @@ CREATE TABLE "Answer" (
     "answerJson" JSONB,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
+
     CONSTRAINT "Answer_pkey" PRIMARY KEY ("id")
 );
+
 
 -- CreateTable
 CREATE TABLE "QuestionOption" (
@@ -85,29 +97,38 @@ CREATE TABLE "QuestionOption" (
     "displayOrder" INTEGER NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
+
     CONSTRAINT "QuestionOption_pkey" PRIMARY KEY ("id")
 );
+
 
 -- CreateIndex
 CREATE UNIQUE INDEX "User_email_key" ON "User"("email");
 
+
 -- AddForeignKey
 ALTER TABLE "CoverageReport" ADD CONSTRAINT "CoverageReport_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
+
 -- AddForeignKey
-ALTER TABLE "Question" ADD CONSTRAINT "Question_formId_fkey" FOREIGN KEY ("formId") REFERENCES "FeedbackForm"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "Question" ADD CONSTRAINT "Question_formId_fkey" FOREIGN KEY ("formId") REFERENCES "FeedbackForm"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
 
 -- AddForeignKey
 ALTER TABLE "FeedbackSubmission" ADD CONSTRAINT "FeedbackSubmission_formId_fkey" FOREIGN KEY ("formId") REFERENCES "FeedbackForm"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
+
 -- AddForeignKey
 ALTER TABLE "FeedbackSubmission" ADD CONSTRAINT "FeedbackSubmission_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+
 
 -- AddForeignKey
 ALTER TABLE "Answer" ADD CONSTRAINT "Answer_submissionId_fkey" FOREIGN KEY ("submissionId") REFERENCES "FeedbackSubmission"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
+
 -- AddForeignKey
 ALTER TABLE "Answer" ADD CONSTRAINT "Answer_questionId_fkey" FOREIGN KEY ("questionId") REFERENCES "Question"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
+
 -- AddForeignKey
-ALTER TABLE "QuestionOption" ADD CONSTRAINT "QuestionOption_questionId_fkey" FOREIGN KEY ("questionId") REFERENCES "Question"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "QuestionOption" ADD CONSTRAINT "QuestionOption_questionId_fkey" FOREIGN KEY ("questionId") REFERENCES "Question"("id") ON DELETE RESTRICT ON UPDATE CASCADE;

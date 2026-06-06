@@ -1,6 +1,6 @@
 import { Footer, Header, Button, Dialog, DialogTrigger, Modal } from "@bcgov/design-system-react-components";
 import { useState, useEffect } from "react";
-import HappinessSlider from "./HappinessSlider";
+//import HappinessSlider from "./HappinessSlider";
 import FeedbackForm from "./FeedbackForm";
 import '@bcgov/bc-sans/css/BC_Sans.css';
 import type { FeedbackFormData } from "../types/feedback";
