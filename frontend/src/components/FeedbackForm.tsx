@@ -9,7 +9,7 @@ function FeedbackForm({ isFormOpen, setIsFormOpen, formData }: FeedbackFormProps
     if (!isFormOpen) return null;
 
     const [answers, setAnswers] = useState<Record<number, any>>({});
-    const [happiness, setHappiness] = useState(3);
+    //const [happiness, setHappiness] = useState(3);
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -149,8 +149,13 @@ function FeedbackForm({ isFormOpen, setIsFormOpen, formData }: FeedbackFormProps
                                         return (
                                             <HappinessSlider
                                                 key={question.id}
-                                                value={happiness}
-                                                onChange={setHappiness}
+                                                value = {question.defaultAnswer as number}
+                                                onChange={(value) =>
+                                                setAnswers(prev => ({
+                                                    ...prev,
+                                                    [question.id]: value
+                                                }))
+                                                }
                                             />
                                         );      
                                     default:

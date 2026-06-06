@@ -116,6 +116,7 @@ const createForm = async (req: Request, res: Response) => {
                 {
                   questionType: QuestionType.SLIDER,
                   question_text: "On a scale of 1-5, how happy are you with the color change?",
+                  defaultAnswer: 3,
                   is_required: true,
                   display_order: 4,
                 }

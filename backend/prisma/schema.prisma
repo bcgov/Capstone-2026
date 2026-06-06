@@ -68,7 +68,7 @@ model Question {
   
   questionType        QuestionType
   question_text       String
-
+  defaultAnswer       Json?
   is_required         Boolean
   display_order       Int
 

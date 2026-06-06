@@ -2,13 +2,15 @@
 
 interface HappinessSliderProps {
     value: number;
-    onChange: (value: number) => void;
+    onChange: (value: number) => undefined;
 }
 
-function HappinessSlider({
+function HappinessSlider(
+    {
     value,
     onChange
-}: HappinessSliderProps) {
+}: HappinessSliderProps
+) {
 
     return (
         <div>
