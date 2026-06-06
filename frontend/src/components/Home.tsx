@@ -15,6 +15,11 @@ function Home() {
     questions: []
   });
 
+  //Happiness Slider states 
+  //const [showSlider, setShowSlider] = useState(false);
+  //const [showForm, setShowForm] = useState(false);
+  //const [selectedRating, setSelectedRating] = useState<number | null>(null);
+
   useEffect(() => {
     fetch('http://localhost:3000/api/form/1')
       .then((res) => res.json())
@@ -68,12 +73,13 @@ function Home() {
                   <h2 style={{ fontFamily: "BC Sans" }}>Would you like to tell us about your experience?</h2>
 
                   <Button onPress={() => {
-                    setIsFormOpen(true);
                     setIsAlertOpen(false);
+                    setIsFormOpen(true);
                   }}
                     style={{ margin: "5px" }}
                   >
                     Yes
+
                   </Button>
                   <Button variant="secondary"
                     onPress={() => setIsAlertOpen(false)}
