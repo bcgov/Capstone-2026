@@ -1,21 +1,31 @@
 import { ButtonGroup, Button, Dialog, Select, Modal, Form, TextField, RadioGroup, Radio } from "@bcgov/design-system-react-components";
-//import HappinessSlider from "./HappinessSlider";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import type { FeedbackFormProps } from '../types/feedback';
 import { QuestionType } from "../types/feedback";
+import HappinessSlider from "./HappinessSlider";
 import SubmissionConfirmationModal from "./SubmissionConfirmationModal";
 
 function FeedbackForm({ isFormOpen, setIsFormOpen, formData }: FeedbackFormProps) {
     if (!formData) return null;
 
     const [answers, setAnswers] = useState<Record<number, any>>({});
-
-    //const [happiness, setHappiness] = useState(3);
-
     const [showConfirmation, setShowConfirmation] = useState(false);
     const [confirmationMessage, setConfirmationMessage] = useState("");
     const [confirmationTitle, setConfirmationTitle] = useState("");
     const [isSuccess, setIsSuccess] = useState(false);
+
+    useEffect(() => {
+        const initialAnswers: Record<number, any> = {};
+
+        formData.questions.forEach(question => {
+            if (question.questionType === QuestionType.SLIDER) {
+                initialAnswers[question.id] =
+                    question.defaultAnswer ?? 3;
+            }
+        });
+
+        setAnswers(initialAnswers);
+    }, [formData]);
 
     const handleCloseConfirmation = () => {
         setShowConfirmation(false);
@@ -117,7 +127,7 @@ function FeedbackForm({ isFormOpen, setIsFormOpen, formData }: FeedbackFormProps
                                 gap: '0.5rem'
                             }}
                         >
-                            {/* Make more cases for other types of questions (slider) */}
+                            {/* Make more cases for other types of questions (multi-select) */}
                             {formData.questions?.map((question) => {
                                 switch (question.questionType) {
                                     case QuestionType.TEXTAREA:
@@ -180,17 +190,23 @@ function FeedbackForm({ isFormOpen, setIsFormOpen, formData }: FeedbackFormProps
                                                 }
                                             />
                                         );
-
+                                    case QuestionType.SLIDER:
+                                        return (
+                                            <HappinessSlider
+                                                key={question.id}
+                                                value={answers[question.id] ?? question.defaultAnswer ?? 3}
+                                                onChange={(value) =>
+                                                    setAnswers(prev => ({
+                                                        ...prev,
+                                                        [question.id]: value
+                                                    }))
+                                                }
+                                            />
+                                        );
                                     default:
                                         return null;
                                 }
                             })}
-                            {/*
-                            <HappinessSlider>
-                                value={happiness}
-                                onChange={setHappiness}
-                            </HappinessSlider>
-                            */}
                             <ButtonGroup alignment="start" orientation="horizontal">
                                 <Button variant="primary" type="submit">
                                     Submit

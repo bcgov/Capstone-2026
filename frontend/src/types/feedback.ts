@@ -1,3 +1,15 @@
+export type DefaultAnswerType = {
+    [QuestionType.SLIDER]: number;
+    [QuestionType.TEXTAREA]: string;
+    [QuestionType.RADIO]: string;
+    [QuestionType.DROPDOWN]: string;
+    [QuestionType.BOOLEAN]: boolean;
+    [QuestionType.MULTIPLE_CHOICE]: string[];
+    [QuestionType.CHECKBOX]: string[];
+    [QuestionType.NPS]: number;
+};
+
+
 export enum QuestionType {
     TEXTAREA = "TEXTAREA",
     RADIO = "RADIO",
@@ -5,7 +17,8 @@ export enum QuestionType {
     BOOLEAN = "BOOLEAN",
     MULTIPLE_CHOICE = "MULTIPLE_CHOICE",
     CHECKBOX = "CHECKBOX",
-    NPS = "NPS"
+    NPS = "NPS",
+    SLIDER = "SLIDER",
 }
 
 export interface Option {
@@ -19,10 +32,12 @@ export interface Question {
     id: number;
     questionType: QuestionType;
     question_text: string;
+    defaultAnswer?: DefaultAnswerType[QuestionType] | null;
     is_required: boolean;
     display_order: number;
     options?: Option[];
 }
+
 
 export interface FeedbackFormData {
     id: number;

@@ -86,7 +86,7 @@ const createForm = async (req: Request, res: Response) => {
                     ]
                   },
                   is_required: true,
-                  display_order: 1, 
+                  display_order: 2, 
                 },
                 {
                   questionType: QuestionType.DROPDOWN,
@@ -111,7 +111,14 @@ const createForm = async (req: Request, res: Response) => {
                      ]
                    },
                   is_required: true,
-                  display_order: 1,
+                  display_order: 3,
+                },
+                {
+                  questionType: QuestionType.SLIDER,
+                  question_text: "On a scale of 1-5, how happy are you with the color change?",
+                  defaultAnswer: 3,
+                  is_required: true,
+                  display_order: 4,
                 }
               ]
             }

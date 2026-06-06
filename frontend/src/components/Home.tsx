@@ -15,11 +15,6 @@ function Home() {
     questions: []
   });
 
-  //Happiness Slider states 
-  //const [showSlider, setShowSlider] = useState(false);
-  //const [showForm, setShowForm] = useState(false);
-  //const [selectedRating, setSelectedRating] = useState<number | null>(null);
-
   useEffect(() => {
     fetch('http://localhost:3000/api/form/1')
       .then((res) => res.json())

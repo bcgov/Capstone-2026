@@ -55,6 +55,7 @@ enum QuestionType {
   MULTIPLE_CHOICE
   CHECKBOX
   NPS
+  SLIDER
 }
 
 //Find way to format foreign key and jsonb in prism
@@ -67,7 +68,7 @@ model Question {
   
   questionType        QuestionType
   question_text       String
-
+  defaultAnswer       Json?
   is_required         Boolean
   display_order       Int
 

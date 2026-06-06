@@ -5,14 +5,16 @@ interface HappinessSliderProps {
     onChange: (value: number) => void;
 }
 
-function HappinessSlider({
-    value,
-    onChange
-}: HappinessSliderProps) {
+function HappinessSlider(
+    {
+        value,
+        onChange
+    }: HappinessSliderProps
+) {
 
     return (
         <div>
-            <label>How happy are you?</label>
+            <label>How happy does the colour make you?</label>
 
             <div
                 style={{
