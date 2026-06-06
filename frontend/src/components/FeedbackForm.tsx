@@ -1,5 +1,4 @@
 import { ButtonGroup, Button, Dialog, Select, Modal, Form, TextField, RadioGroup, Radio } from "@bcgov/design-system-react-components";
-//import HappinessSlider from "./HappinessSlider";
 import { useState } from "react";
 import type { FeedbackFormProps } from '../types/feedback';
 import { QuestionType } from "../types/feedback";
@@ -10,10 +9,6 @@ function FeedbackForm({ isFormOpen, setIsFormOpen, formData }: FeedbackFormProps
     if (!formData) return null;
 
     const [answers, setAnswers] = useState<Record<number, any>>({});
-    //const [happiness, setHappiness] = useState(3);
-
-    //const [happiness, setHappiness] = useState(3);
-
     const [showConfirmation, setShowConfirmation] = useState(false);
     const [confirmationMessage, setConfirmationMessage] = useState("");
     const [confirmationTitle, setConfirmationTitle] = useState("");
@@ -119,7 +114,7 @@ function FeedbackForm({ isFormOpen, setIsFormOpen, formData }: FeedbackFormProps
                                 gap: '0.5rem'
                             }}
                         >
-                            {/* Make more cases for other types of questions (slider) */}
+                            {/* Make more cases for other types of questions (multi-select) */}
                             {formData.questions?.map((question) => {
                                 switch (question.questionType) {
                                     case QuestionType.TEXTAREA:

@@ -14,7 +14,7 @@ function HappinessSlider(
 
     return (
         <div>
-            <label>How happy are you?</label>
+            <label>How happy does the colour make you?</label>
 
             <div
                 style={{
