@@ -9,7 +9,7 @@ const prisma = new PrismaClient();
 const getSubmissionById = async (req: Request, res: Response) => {
   const submissionId = req.params.id;
   try {
-    const submission = prisma.feedbackSubmission.findUnique({
+    const submission = await prisma.feedbackSubmission.findUnique({
       where: { id: Number(submissionId) },
       include: {
         answers: true,
