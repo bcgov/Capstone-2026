@@ -1,5 +1,5 @@
 import { ButtonGroup, Button, Dialog, Select, Modal, Form, TextField, RadioGroup, Radio } from "@bcgov/design-system-react-components";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import type { FeedbackFormProps } from '../types/feedback';
 import { QuestionType } from "../types/feedback";
 import HappinessSlider from "./HappinessSlider";
@@ -13,6 +13,19 @@ function FeedbackForm({ isFormOpen, setIsFormOpen, formData }: FeedbackFormProps
     const [confirmationMessage, setConfirmationMessage] = useState("");
     const [confirmationTitle, setConfirmationTitle] = useState("");
     const [isSuccess, setIsSuccess] = useState(false);
+
+    useEffect(() => {
+        const initialAnswers: Record<number, any> = {};
+
+        formData.questions.forEach(question => {
+            if (question.questionType === QuestionType.SLIDER) {
+                initialAnswers[question.id] =
+                    question.defaultAnswer ?? 3;
+            }
+        });
+
+        setAnswers(initialAnswers);
+    }, [formData]);
 
     const handleCloseConfirmation = () => {
         setShowConfirmation(false);
@@ -181,7 +194,7 @@ function FeedbackForm({ isFormOpen, setIsFormOpen, formData }: FeedbackFormProps
                                         return (
                                             <HappinessSlider
                                                 key={question.id}
-                                                value={question.defaultAnswer as number}
+                                                value={answers[question.id] ?? question.defaultAnswer ?? 3}
                                                 onChange={(value) =>
                                                     setAnswers(prev => ({
                                                         ...prev,
