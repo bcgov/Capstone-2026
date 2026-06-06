@@ -1,13 +1,13 @@
-import { Footer, Header, Button, Dialog, DialogTrigger, Modal } from "@bcgov/design-system-react-components";
+import { Footer, Header, Button } from "@bcgov/design-system-react-components";
 import { useState, useEffect } from "react";
 import FeedbackForm from "./FeedbackForm";
 import '@bcgov/bc-sans/css/BC_Sans.css';
 import type { FeedbackFormData } from "../types/feedback";
-
+import FeedbackPrompt from "./FeedbackPrompt";
 
 function Home() {
-  const [isAlertOpen, setIsAlertOpen] = useState(false);
-  const [isFormOpen, setIsFormOpen] = useState(false);
+  const [isFeedbackPromptOpen, setIsFeedbackPromptOpen] = useState(false);
+  const [isFeedbackFormOpen, setIsFeedbackFormOpen] = useState(false);
   const [formData, setFormData] = useState<FeedbackFormData>({
     id: 0,
     name: '',
@@ -42,54 +42,22 @@ function Home() {
         >
           <span style={{ display: "inline-block", margin: "20px 10px" }} />
           <h1 style={{ fontFamily: "BC Sans" }}>Welcome Capstone 2026!</h1>
-          <DialogTrigger>
-            <Button onPress={() => {
-              changeBackground();
-              setIsAlertOpen(true);
-            }}>
-              Change Background Color
-            </Button>
+          <Button onPress={() => {
+            changeBackground();
+            setIsFeedbackPromptOpen(true);
+          }}>
+            Change Background Color
+          </Button>
 
-            <Modal
-              isOpen={isAlertOpen}
-              onOpenChange={setIsAlertOpen}
-              isDismissable
-              style={{
-                position: "absolute",
-                bottom: "1rem",
-                right: "1rem"
-              }}
-            >
-              <Dialog
-                isCloseable
-                aria-label="Feedback form prompt dialog"
-              >
-                <div style={{ padding: "1rem" }}>
-                  <h2 style={{ fontFamily: "BC Sans" }}>Would you like to tell us about your experience?</h2>
-
-                  <Button onPress={() => {
-                    setIsAlertOpen(false);
-                    setIsFormOpen(true);
-                  }}
-                    style={{ margin: "5px" }}
-                  >
-                    Yes
-
-                  </Button>
-                  <Button variant="secondary"
-                    onPress={() => setIsAlertOpen(false)}
-                    style={{ margin: "5px" }}
-                  >
-                    No
-                  </Button>
-                </div>
-              </Dialog>
-            </Modal>
-          </DialogTrigger>
+          <FeedbackPrompt
+            isOpen={isFeedbackPromptOpen}
+            setIsOpen={setIsFeedbackPromptOpen}
+            onAccept={() => setIsFeedbackFormOpen(true)}
+          />
 
           <FeedbackForm
-            isFormOpen={isFormOpen}
-            setIsFormOpen={setIsFormOpen}
+            isFormOpen={isFeedbackFormOpen}
+            setIsFormOpen={setIsFeedbackFormOpen}
             formData={formData}
           />
 
