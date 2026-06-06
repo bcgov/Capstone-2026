@@ -1,32 +1,51 @@
 import { ButtonGroup, Button, Dialog, Select, Modal, Form, TextField, RadioGroup, Radio } from "@bcgov/design-system-react-components";
+//import HappinessSlider from "./HappinessSlider";
 import { useState } from "react";
 import type { FeedbackFormProps } from '../types/feedback';
 import { QuestionType } from "../types/feedback";
 import HappinessSlider from "./HappinessSlider";
+import SubmissionConfirmationModal from "./SubmissionConfirmationModal";
 
 function FeedbackForm({ isFormOpen, setIsFormOpen, formData }: FeedbackFormProps) {
     if (!formData) return null;
-    if (!isFormOpen) return null;
 
     const [answers, setAnswers] = useState<Record<number, any>>({});
     //const [happiness, setHappiness] = useState(3);
 
-    const handleSubmit = async (e: React.FormEvent) => {
+    //const [happiness, setHappiness] = useState(3);
+
+    const [showConfirmation, setShowConfirmation] = useState(false);
+    const [confirmationMessage, setConfirmationMessage] = useState("");
+    const [confirmationTitle, setConfirmationTitle] = useState("");
+    const [isSuccess, setIsSuccess] = useState(false);
+
+    const handleCloseConfirmation = () => {
+        setShowConfirmation(false);
+        if (isSuccess) {
+            setIsFormOpen(false);
+        }
+    };
+
+    if (!isFormOpen) {
+        return (
+            <SubmissionConfirmationModal
+                isOpen={showConfirmation}
+                message={confirmationMessage}
+                onClose={handleCloseConfirmation}
+                title={confirmationTitle}
+            />
+        );
+    }
+
+    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
         const formattedAnswers = Object.entries(answers).map(
             ([questionId, value]) => ({
                 questionId: Number(questionId),
-
-                answerText:
-                    typeof value === "string" ? value : null,
-
-                answerBoolean:
-                    typeof value === "boolean" ? value : null,
-
-                answerNumber:
-                    typeof value === "number" ? value : null,
-
+                answerText: typeof value === "string" ? value : null,
+                answerBoolean: typeof value === "boolean" ? value : null,
+                answerNumber: typeof value === "number" ? value : null,
                 answerJson: null
             })
         );
@@ -39,22 +58,40 @@ function FeedbackForm({ isFormOpen, setIsFormOpen, formData }: FeedbackFormProps
             answers: formattedAnswers
         };
 
-        const response = await fetch(
-            "http://localhost:3000/api/submissions",
-            {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify(payload)
+        try {
+            const response = await fetch(
+                "http://localhost:3000/api/submissions",
+                {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify(payload)
+                }
+            );
+
+            const data = await response.json();
+
+            if (response.ok) {
+                console.log("Submission created:", data);
+                setIsSuccess(true);
+                setConfirmationTitle("Successful Feedback Submission!");
+                setConfirmationMessage("Submission ID: " + data.id);
+                setAnswers({});
+                setShowConfirmation(true);
+                setIsFormOpen(false);
+            } else {
+                setIsSuccess(false);
+                setConfirmationTitle("Unsuccessful Feedback Submission");
+                setConfirmationMessage(`Server returned ${response.status}`);
+                setShowConfirmation(true);
             }
-        );
-
-        const data = await response.json();
-
-        console.log("Submission created:", data);
-        setAnswers({});
-        setIsFormOpen(false);
+        } catch (error) {
+            setIsSuccess(false);
+            setConfirmationTitle("Unsuccessful Feedback Submission");
+            setConfirmationMessage("Unable to connect to server.");
+            setShowConfirmation(true);
+        }
     };
 
     return (
@@ -149,21 +186,21 @@ function FeedbackForm({ isFormOpen, setIsFormOpen, formData }: FeedbackFormProps
                                         return (
                                             <HappinessSlider
                                                 key={question.id}
-                                                value = {question.defaultAnswer as number}
+                                                value={question.defaultAnswer as number}
                                                 onChange={(value) =>
-                                                setAnswers(prev => ({
-                                                    ...prev,
-                                                    [question.id]: value
-                                                }))
+                                                    setAnswers(prev => ({
+                                                        ...prev,
+                                                        [question.id]: value
+                                                    }))
                                                 }
                                             />
-                                        );      
+                                        );
                                     default:
                                         return null;
                                 }
                             })}
                             <ButtonGroup alignment="start" orientation="horizontal">
-                                <Button type="submit" variant="primary">
+                                <Button variant="primary" type="submit">
                                     Submit
                                 </Button>
                                 <Button type="reset" variant="secondary">
