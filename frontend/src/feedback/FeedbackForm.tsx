@@ -19,6 +19,14 @@ import { QuestionType } from "./types/feedback";
 import HappinessSlider from "./HappinessSlider";
 import SubmissionConfirmationModal from "./SubmissionConfirmation";
 
+type FormattedAnswer = {
+    questionId: number;
+    answerText: string | null;
+    answerBoolean: boolean | null;
+    answerNumber: number | null;
+    answerJson: any;
+};
+
 function FeedbackForm({
     isFormOpen,
     setIsFormOpen,
@@ -64,17 +72,30 @@ function FeedbackForm({
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
+        const formattedAnswers: FormattedAnswer[] = Object.entries(answers).flatMap(
+            ([questionId, value]): FormattedAnswer[] => {
 
-        const formattedAnswers = Object.entries(answers).map(
-            ([questionId, value]) => ({
-                questionId: Number(questionId),
-                answerText: typeof value === "string" ? value : null,
-                answerBoolean: typeof value === "boolean" ? value : null,
-                answerNumber: typeof value === "number" ? value : null,
-                answerJson: null
-            })
+                if (Array.isArray(value)) {
+                    return value.map((val): FormattedAnswer => ({
+                        questionId: Number(questionId),
+                        answerText: val,
+                        answerBoolean: null,
+                        answerNumber: null,
+                        answerJson: null
+                    }));
+                }
+
+                return [
+                    {
+                        questionId: Number(questionId),
+                        answerText: typeof value === "string" ? value : null,
+                        answerBoolean: typeof value === "boolean" ? value : null,
+                        answerNumber: typeof value === "number" ? value : null,
+                        answerJson: null
+                    }
+                ];
+            }
         );
-
         try {
             const response = await fetch(`${apiBaseUrl}/api/submissions`, {
                 method: "POST",
