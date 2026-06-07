@@ -7,15 +7,19 @@ import {
     TextField,
     RadioGroup,
     Radio,
-    Select
+    Select,
+    CheckboxGroup,
+    Checkbox
 } from "@bcgov/design-system-react-components";
 
 import { useEffect, useState } from "react";
-import type { FeedbackFormProps, Question } from "./types/feedback";
+import type { FormattedAnswer, FeedbackFormProps, Question } from "./types/feedback";
 import { QuestionType } from "./types/feedback";
 
 import HappinessSlider from "./HappinessSlider";
 import SubmissionConfirmationModal from "./SubmissionConfirmation";
+
+
 
 function FeedbackForm({
     isFormOpen,
@@ -62,17 +66,30 @@ function FeedbackForm({
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
+        const formattedAnswers: FormattedAnswer[] = Object.entries(answers).flatMap(
+            ([questionId, value]): FormattedAnswer[] => {
 
-        const formattedAnswers = Object.entries(answers).map(
-            ([questionId, value]) => ({
-                questionId: Number(questionId),
-                answerText: typeof value === "string" ? value : null,
-                answerBoolean: typeof value === "boolean" ? value : null,
-                answerNumber: typeof value === "number" ? value : null,
-                answerJson: null
-            })
+                if (Array.isArray(value)) {
+                    return value.map((val): FormattedAnswer => ({
+                        questionId: Number(questionId),
+                        answerText: val,
+                        answerBoolean: null,
+                        answerNumber: null,
+                        answerJson: null
+                    }));
+                }
+
+                return [
+                    {
+                        questionId: Number(questionId),
+                        answerText: typeof value === "string" ? value : null,
+                        answerBoolean: typeof value === "boolean" ? value : null,
+                        answerNumber: typeof value === "number" ? value : null,
+                        answerJson: null
+                    }
+                ];
+            }
         );
-
         try {
             const response = await fetch(`${apiBaseUrl}/api/submissions`, {
                 method: "POST",
@@ -216,7 +233,29 @@ function FeedbackForm({
                                             }
                                         />
                                     );
-
+                                case QuestionType.MULTIPLE_CHOICE:
+                                    return (
+                                        <CheckboxGroup
+                                            key={question.id}
+                                            label={question.question_text}
+                                            orientation="horizontal"
+                                            onChange={(checkedValue) =>
+                                                setAnswers((prev) => ({
+                                                    ...prev,
+                                                    [question.id]: checkedValue
+                                                }))
+                                            }
+                                        >
+                                            {question.options?.map((option) => (
+                                                <Checkbox
+                                                    key={option.id}
+                                                    value={option.optionValue}
+                                                >
+                                                    {option.optionText}
+                                                </Checkbox>
+                                            ))}
+                                        </CheckboxGroup>
+                                    );
                                 default:
                                     return null;
                             }

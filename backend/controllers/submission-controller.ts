@@ -40,6 +40,7 @@ const getAllSubmissions = async (req: Request, res: Response) => {
 
 const createSubmission = async (req: Request, res: Response) => {
   try {
+    console.log(JSON.stringify(req.body.answers, null, 2));
     const newSubmission = await prisma.feedbackSubmission.create({
       data: {
         formId: req.body.formId,
