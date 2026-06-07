@@ -1,28 +1,9 @@
-import { Footer, Header, Button, Dialog, DialogTrigger, Modal } from "@bcgov/design-system-react-components";
-import { useState, useEffect } from "react";
-import FeedbackForm from "./FeedbackForm";
+import { Footer, Header, Button } from "@bcgov/design-system-react-components";
 import '@bcgov/bc-sans/css/BC_Sans.css';
-import type { FeedbackFormData } from "../types/feedback";
-
+import { useFeedback } from "../feedback/FeedbackProvider";
 
 function Home() {
-  const [isAlertOpen, setIsAlertOpen] = useState(false);
-  const [isFormOpen, setIsFormOpen] = useState(false);
-  const [formData, setFormData] = useState<FeedbackFormData>({
-    id: 0,
-    name: '',
-    description: '',
-    questions: []
-  });
-
-  useEffect(() => {
-    fetch('http://localhost:3000/api/form/1')
-      .then((res) => res.json())
-      .then((data) => {
-        setFormData(data);
-      })
-      .catch((err) => console.error("DB Fetch Error:", err));
-  }, []);
+  const { openFeedbackForm } = useFeedback();
 
   function changeBackground() {
     const randomColor = '#' + Math.floor(Math.random() * 16777215).toString(16).padStart(6, '0');
@@ -42,56 +23,12 @@ function Home() {
         >
           <span style={{ display: "inline-block", margin: "20px 10px" }} />
           <h1 style={{ fontFamily: "BC Sans" }}>Welcome Capstone 2026!</h1>
-          <DialogTrigger>
-            <Button onPress={() => {
-              changeBackground();
-              setIsAlertOpen(true);
-            }}>
-              Change Background Color
-            </Button>
-
-            <Modal
-              isOpen={isAlertOpen}
-              onOpenChange={setIsAlertOpen}
-              isDismissable
-              style={{
-                position: "absolute",
-                bottom: "1rem",
-                right: "1rem"
-              }}
-            >
-              <Dialog
-                isCloseable
-                aria-label="Feedback form prompt dialog"
-              >
-                <div style={{ padding: "1rem" }}>
-                  <h2 style={{ fontFamily: "BC Sans" }}>Would you like to tell us about your experience?</h2>
-
-                  <Button onPress={() => {
-                    setIsAlertOpen(false);
-                    setIsFormOpen(true);
-                  }}
-                    style={{ margin: "5px" }}
-                  >
-                    Yes
-
-                  </Button>
-                  <Button variant="secondary"
-                    onPress={() => setIsAlertOpen(false)}
-                    style={{ margin: "5px" }}
-                  >
-                    No
-                  </Button>
-                </div>
-              </Dialog>
-            </Modal>
-          </DialogTrigger>
-
-          <FeedbackForm
-            isFormOpen={isFormOpen}
-            setIsFormOpen={setIsFormOpen}
-            formData={formData}
-          />
+          <Button onPress={() => {
+            changeBackground();
+            openFeedbackForm(1);
+          }}>
+            Change Background Color
+          </Button>
 
           <h3 className="row" style={{ fontFamily: "BC Sans" }}>
             Here are some helpful resources:

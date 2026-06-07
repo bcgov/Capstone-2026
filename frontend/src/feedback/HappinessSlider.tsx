@@ -1,12 +1,14 @@
 
 
 interface HappinessSliderProps {
+    question: string;
     value: number;
     onChange: (value: number) => void;
 }
 
 function HappinessSlider(
     {
+        question,
         value,
         onChange
     }: HappinessSliderProps
@@ -14,7 +16,7 @@ function HappinessSlider(
 
     return (
         <div>
-            <label>How happy does the colour make you?</label>
+            <label>{question}</label>
 
             <div
                 style={{
