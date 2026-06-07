@@ -1,7 +1,7 @@
 import { Modal, Dialog, Button } from "@bcgov/design-system-react-components";
 import '@bcgov/bc-sans/css/BC_Sans.css';
 
-interface SubmissionConfirmationProps {
+interface Props {
     isOpen: boolean;
     onClose: () => void;
     message: string;
@@ -13,7 +13,7 @@ function SubmissionConfirmationModal({
     onClose,
     message,
     title
-}: SubmissionConfirmationProps) {
+}: Props) {
     return (
         <Modal
             isOpen={isOpen}

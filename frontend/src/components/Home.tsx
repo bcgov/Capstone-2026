@@ -1,33 +1,20 @@
 import { Footer, Header, Button } from "@bcgov/design-system-react-components";
-import { useState, useEffect } from "react";
-import FeedbackForm from "./FeedbackForm";
 import '@bcgov/bc-sans/css/BC_Sans.css';
-import type { FeedbackFormData } from "../types/feedback";
-import FeedbackPrompt from "./FeedbackPrompt";
+import { useFeedback } from "../feedback/FeedbackProvider";
+import { useEffect } from "react";
 
 function Home() {
-  const [isFeedbackPromptOpen, setIsFeedbackPromptOpen] = useState(false);
-  const [isFeedbackFormOpen, setIsFeedbackFormOpen] = useState(false);
-  const [formData, setFormData] = useState<FeedbackFormData>({
-    id: 0,
-    name: '',
-    description: '',
-    questions: []
-  });
-
-  useEffect(() => {
-    fetch('http://localhost:3000/api/form/1')
-      .then((res) => res.json())
-      .then((data) => {
-        setFormData(data);
-      })
-      .catch((err) => console.error("DB Fetch Error:", err));
-  }, []);
+  const { openFeedbackForm } = useFeedback();
 
   function changeBackground() {
     const randomColor = '#' + Math.floor(Math.random() * 16777215).toString(16).padStart(6, '0');
     document.body.style.backgroundColor = randomColor;
   }
+
+  useEffect(() => {
+    // optional: preload form
+    openFeedbackForm(1);
+  }, []);
 
   return (
     <>
@@ -44,22 +31,10 @@ function Home() {
           <h1 style={{ fontFamily: "BC Sans" }}>Welcome Capstone 2026!</h1>
           <Button onPress={() => {
             changeBackground();
-            setIsFeedbackPromptOpen(true);
+            openFeedbackForm(1);
           }}>
             Change Background Color
           </Button>
-
-          <FeedbackPrompt
-            isOpen={isFeedbackPromptOpen}
-            setIsOpen={setIsFeedbackPromptOpen}
-            onAccept={() => setIsFeedbackFormOpen(true)}
-          />
-
-          <FeedbackForm
-            isFormOpen={isFeedbackFormOpen}
-            setIsFormOpen={setIsFeedbackFormOpen}
-            formData={formData}
-          />
 
           <h3 className="row" style={{ fontFamily: "BC Sans" }}>
             Here are some helpful resources:

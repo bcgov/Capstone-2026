@@ -50,4 +50,7 @@ export interface FeedbackFormProps {
     isFormOpen: boolean;
     setIsFormOpen: (open: boolean) => void;
     formData: FeedbackFormData;
+
+    apiBaseUrl: string;
+    onSuccess?: (submissionId: number) => void;
 }
