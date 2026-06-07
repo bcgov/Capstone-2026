@@ -7,7 +7,15 @@ export enum QuestionType {
     CHECKBOX = "CHECKBOX",
     NPS = "NPS",
     SLIDER = "SLIDER",
-}
+};
+
+export type FormattedAnswer = {
+    questionId: number;
+    answerText: string | null;
+    answerBoolean: boolean | null;
+    answerNumber: number | null;
+    answerJson: any;
+};
 
 export type DefaultAnswerMap = {
     [QuestionType.SLIDER]: number;

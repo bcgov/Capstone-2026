@@ -13,19 +13,13 @@ import {
 } from "@bcgov/design-system-react-components";
 
 import { useEffect, useState } from "react";
-import type { FeedbackFormProps, Question } from "./types/feedback";
+import type { FormattedAnswer, FeedbackFormProps, Question } from "./types/feedback";
 import { QuestionType } from "./types/feedback";
 
 import HappinessSlider from "./HappinessSlider";
 import SubmissionConfirmationModal from "./SubmissionConfirmation";
 
-type FormattedAnswer = {
-    questionId: number;
-    answerText: string | null;
-    answerBoolean: boolean | null;
-    answerNumber: number | null;
-    answerJson: any;
-};
+
 
 function FeedbackForm({
     isFormOpen,
