@@ -22,14 +22,49 @@ function SubmissionConfirmationModal({
         >
             <Dialog
                 isCloseable
-                aria-label="Submission failed"
+                aria-label={title}
             >
-                <div style={{ padding: "1rem" }}>
-                    <h2 style={{ fontFamily: "BC Sans" }}>{title}</h2>
-                    <p style={{ fontFamily: "BC Sans" }}>{message}</p>
-                    <Button variant="primary" onPress={onClose}>
-                        Close
-                    </Button>
+                <div
+                    style={{
+                        padding: "1.5rem",
+                        fontFamily: "BC Sans",
+                        display: "flex",
+                        flexDirection: "column",
+                        gap: "1rem",
+                        minWidth: "320px"
+                    }}
+                >
+                    <h2
+                        style={{
+                            fontFamily: "BC Sans",
+                            fontSize: "1.25rem",
+                            fontWeight: 700,
+                            margin: 0
+                        }}
+                    >
+                        {title}
+                    </h2>
+
+                    <p
+                        style={{
+                            fontFamily: "BC Sans",
+                            fontSize: "0.95rem",
+                            margin: 0
+                        }}
+                    >
+                        {message}
+                    </p>
+
+                    <div
+                        style={{
+                            display: "flex",
+                            justifyContent: "flex-end"
+                        }}
+                    >
+                        <Button onPress={onClose}>
+                            Close
+                        </Button>
+                    </div>
                 </div>
             </Dialog>
         </Modal>

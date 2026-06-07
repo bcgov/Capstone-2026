@@ -1,7 +1,6 @@
 import { Footer, Header, Button } from "@bcgov/design-system-react-components";
 import '@bcgov/bc-sans/css/BC_Sans.css';
 import { useFeedback } from "../feedback/FeedbackProvider";
-import { useEffect } from "react";
 
 function Home() {
   const { openFeedbackForm } = useFeedback();
@@ -10,11 +9,6 @@ function Home() {
     const randomColor = '#' + Math.floor(Math.random() * 16777215).toString(16).padStart(6, '0');
     document.body.style.backgroundColor = randomColor;
   }
-
-  useEffect(() => {
-    // optional: preload form
-    openFeedbackForm(1);
-  }, []);
 
   return (
     <>

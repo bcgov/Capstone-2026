@@ -74,20 +74,17 @@ function FeedbackForm({
         );
 
         try {
-            const response = await fetch(
-                `${apiBaseUrl}/api/submissions`,
-                {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json"
-                    },
-                    body: JSON.stringify({
-                        formId: formData.id,
-                        page_url: window.location.href,
-                        answers: formattedAnswers
-                    })
-                }
-            );
+            const response = await fetch(`${apiBaseUrl}/api/submissions`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    formId: formData.id,
+                    page_url: window.location.href,
+                    answers: formattedAnswers
+                })
+            });
 
             const data = await response.json();
 
@@ -114,12 +111,32 @@ function FeedbackForm({
     };
 
     return (
-        <Modal isDismissable isOpen={isFormOpen} onOpenChange={setIsFormOpen}>
-            <Dialog isCloseable aria-label="Feedback form dialog">
-                <div style={{ padding: "1rem" }}>
-                    <h2>Tell us about your experience!</h2>
+        <Modal
+            isDismissable
+            isOpen={isFormOpen}
+            onOpenChange={setIsFormOpen}
+        >
+            <Dialog
+                isCloseable
+                aria-label="Feedback form dialog"
+            >
+                <div style={{ padding: "1.5rem", fontFamily: "BC Sans" }}>
+                    <span
+                        style={{ font: "700 1.25rem/2.125rem 'BC Sans'" }}
+                    >
+                        Tell us about your experience!
+                    </span>
 
-                    <Form onSubmit={handleSubmit}>
+                    <Form
+                        onSubmit={handleSubmit}
+                        style={{
+                            display: "flex",
+                            flexDirection: "column",
+                            gap: "0.75rem",
+                            marginTop: "1rem",
+                            fontFamily: "BC Sans"
+                        }}
+                    >
                         {formData.questions.map((question: Question) => {
                             switch (question.questionType) {
                                 case QuestionType.TEXTAREA:
@@ -142,6 +159,7 @@ function FeedbackForm({
                                         <RadioGroup
                                             key={question.id}
                                             label={question.question_text}
+                                            orientation="horizontal"
                                             onChange={(value) =>
                                                 setAnswers((prev) => ({
                                                     ...prev,
@@ -184,7 +202,11 @@ function FeedbackForm({
                                     return (
                                         <HappinessSlider
                                             key={question.id}
-                                            value={answers[question.id] ?? question.defaultAnswer ?? 3}
+                                            value={
+                                                answers[question.id] ??
+                                                question.defaultAnswer ??
+                                                3
+                                            }
                                             onChange={(value) =>
                                                 setAnswers((prev) => ({
                                                     ...prev,
@@ -200,7 +222,9 @@ function FeedbackForm({
                         })}
 
                         <ButtonGroup>
-                            <Button type="submit">Submit</Button>
+                            <Button type="submit" variant="primary">
+                                Submit
+                            </Button>
 
                             <Button
                                 type="reset"
