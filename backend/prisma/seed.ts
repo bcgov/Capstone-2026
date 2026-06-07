@@ -9,6 +9,7 @@ async function main() {
   await prisma.answer.deleteMany({})
   await prisma.questionOption.deleteMany({})
   await prisma.question.deleteMany({})
+  //await prisma.feedbackSubmission.deleteMany({})
   await prisma.feedbackForm.deleteMany({})
 
   console.log('🧹 Existing database records cleared successfully.')
@@ -49,6 +50,26 @@ async function main() {
                   display_order: 2, 
                 },
                 {
+                  questionType: QuestionType.MULTIPLE_CHOICE,
+                  question_text: "If you answered 'Yes', which component does it affect most?",
+                  options:{
+                    create:[
+                    {
+                      displayOrder: 1,
+                      optionText: "Text visibility",
+                      optionValue: "text_visibility"
+                    },
+                    {
+                      displayOrder: 2,
+                      optionText: "Image visibility",
+                      optionValue: "image_visibility"
+                    }
+                     ]
+                   },
+                  is_required: true,
+                  display_order: 3,
+                },
+                {
                   questionType: QuestionType.DROPDOWN,
                   question_text: "City",
                   options:{
@@ -64,7 +85,7 @@ async function main() {
                       optionValue: "victoria"
                     },
                     {
-                      displayOrder: 3,
+                      displayOrder: 4,
                       optionText: "Kelowna",
                       optionValue: "kelowna"
                     }
@@ -77,7 +98,7 @@ async function main() {
                   questionType: QuestionType.SLIDER,
                   question_text: "On a scale of 1-5, how happy are you with the color change?",
                   is_required: true,
-                  display_order: 4,
+                  display_order: 5,
                 }
               ]
             }

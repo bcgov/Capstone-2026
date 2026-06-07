@@ -89,6 +89,26 @@ const createForm = async (req: Request, res: Response) => {
                   display_order: 2, 
                 },
                 {
+                  questionType: QuestionType.MULTIPLE_CHOICE,
+                  question_text: "If you answered 'Yes', which component does it affect most?",
+                  options:{
+                    create:[
+                    {
+                      displayOrder: 1,
+                      optionText: "Text visibility",
+                      optionValue: "text_visibility"
+                    },
+                    {
+                      displayOrder: 2,
+                      optionText: "Image visibility",
+                      optionValue: "image_visibility"
+                    }
+                     ]
+                   },
+                  is_required: true,
+                  display_order: 3,
+                },
+                {
                   questionType: QuestionType.DROPDOWN,
                   question_text: "City",
                   options:{
@@ -111,14 +131,14 @@ const createForm = async (req: Request, res: Response) => {
                      ]
                    },
                   is_required: true,
-                  display_order: 3,
+                  display_order: 4,
                 },
                 {
                   questionType: QuestionType.SLIDER,
                   question_text: "On a scale of 1-5, how happy are you with the color change?",
                   defaultAnswer: 3,
                   is_required: true,
-                  display_order: 4,
+                  display_order: 5,
                 }
               ]
             }

@@ -7,7 +7,9 @@ import {
     TextField,
     RadioGroup,
     Radio,
-    Select
+    Select,
+    CheckboxGroup,
+    Checkbox
 } from "@bcgov/design-system-react-components";
 
 import { useEffect, useState } from "react";
@@ -216,7 +218,29 @@ function FeedbackForm({
                                             }
                                         />
                                     );
-
+                                case QuestionType.MULTIPLE_CHOICE:
+                                    return (
+                                        <CheckboxGroup
+                                            key={question.id}
+                                            label={question.question_text}
+                                            orientation="horizontal"
+                                            onChange={(checkedValue) =>
+                                                setAnswers((prev) => ({
+                                                    ...prev,
+                                                    [question.id]: checkedValue
+                                                }))
+                                            }
+                                        >
+                                            {question.options?.map((option) => (
+                                                <Checkbox
+                                                    key={option.id}
+                                                    value={option.optionValue}
+                                                >
+                                                    {option.optionText}
+                                                </Checkbox>
+                                            ))}
+                                        </CheckboxGroup>
+                                    );
                                 default:
                                     return null;
                             }
