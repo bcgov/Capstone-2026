@@ -24,18 +24,20 @@ function FeedbackForm({
     apiBaseUrl,
     onSuccess
 }: FeedbackFormProps) {
-    const [answers, setAnswers] = useState<Record<number, unknown>>({});
+    if (!formData) return null;
+
+    const [answers, setAnswers] = useState<Record<number, any>>({});
     const [showConfirmation, setShowConfirmation] = useState(false);
     const [confirmationMessage, setConfirmationMessage] = useState("");
     const [confirmationTitle, setConfirmationTitle] = useState("");
     const [isSuccess, setIsSuccess] = useState(false);
 
     useEffect(() => {
-        const initialAnswers: Record<number, unknown> = {};
+        const initialAnswers: Record<number, any> = {};
 
-        formData.questions.forEach((q) => {
-            if (q.questionType === QuestionType.SLIDER) {
-                initialAnswers[q.id] = q.defaultAnswer ?? 3;
+        formData.questions.forEach((question) => {
+            if (question.questionType === QuestionType.SLIDER) {
+                initialAnswers[question.id] = question.defaultAnswer ?? 3;
             }
         });
 
@@ -72,17 +74,20 @@ function FeedbackForm({
         );
 
         try {
-            const response = await fetch(`${apiBaseUrl}/api/submissions`, {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify({
-                    formId: formData.id,
-                    page_url: window.location.href,
-                    answers: formattedAnswers
-                })
-            });
+            const response = await fetch(
+                `${apiBaseUrl}/api/submissions`,
+                {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({
+                        formId: formData.id,
+                        page_url: window.location.href,
+                        answers: formattedAnswers
+                    })
+                }
+            );
 
             const data = await response.json();
 
@@ -110,21 +115,24 @@ function FeedbackForm({
 
     return (
         <Modal isDismissable isOpen={isFormOpen} onOpenChange={setIsFormOpen}>
-            <Dialog isCloseable aria-label="Feedback form">
+            <Dialog isCloseable aria-label="Feedback form dialog">
                 <div style={{ padding: "1rem" }}>
-                    <h2>Tell us about your experience</h2>
+                    <h2>Tell us about your experience!</h2>
 
                     <Form onSubmit={handleSubmit}>
-                        {formData.questions.map((q: Question) => {
-                            switch (q.questionType) {
+                        {formData.questions.map((question: Question) => {
+                            switch (question.questionType) {
                                 case QuestionType.TEXTAREA:
                                     return (
                                         <TextField
-                                            key={q.id}
-                                            label={q.question_text}
-                                            isRequired={q.is_required}
-                                            onChange={(v) =>
-                                                setAnswers((p) => ({ ...p, [q.id]: v }))
+                                            key={question.id}
+                                            label={question.question_text}
+                                            isRequired={question.is_required}
+                                            onChange={(value) =>
+                                                setAnswers((prev) => ({
+                                                    ...prev,
+                                                    [question.id]: value
+                                                }))
                                             }
                                         />
                                     );
@@ -132,15 +140,21 @@ function FeedbackForm({
                                 case QuestionType.RADIO:
                                     return (
                                         <RadioGroup
-                                            key={q.id}
-                                            label={q.question_text}
-                                            onChange={(v) =>
-                                                setAnswers((p) => ({ ...p, [q.id]: v }))
+                                            key={question.id}
+                                            label={question.question_text}
+                                            onChange={(value) =>
+                                                setAnswers((prev) => ({
+                                                    ...prev,
+                                                    [question.id]: value
+                                                }))
                                             }
                                         >
-                                            {q.options?.map((o) => (
-                                                <Radio key={o.id} value={o.optionValue}>
-                                                    {o.optionText}
+                                            {question.options?.map((option) => (
+                                                <Radio
+                                                    key={option.id}
+                                                    value={option.optionValue}
+                                                >
+                                                    {option.optionText}
                                                 </Radio>
                                             ))}
                                         </RadioGroup>
@@ -149,16 +163,19 @@ function FeedbackForm({
                                 case QuestionType.DROPDOWN:
                                     return (
                                         <Select
-                                            key={q.id}
-                                            label={q.question_text}
+                                            key={question.id}
+                                            label={question.question_text}
                                             items={
-                                                q.options?.map((o) => ({
-                                                    id: o.optionValue,
-                                                    label: o.optionText
+                                                question.options?.map((option) => ({
+                                                    id: option.optionValue,
+                                                    label: option.optionText
                                                 })) || []
                                             }
-                                            onChange={(v) =>
-                                                setAnswers((p) => ({ ...p, [q.id]: v }))
+                                            onChange={(value) =>
+                                                setAnswers((prev) => ({
+                                                    ...prev,
+                                                    [question.id]: value
+                                                }))
                                             }
                                         />
                                     );
@@ -166,10 +183,13 @@ function FeedbackForm({
                                 case QuestionType.SLIDER:
                                     return (
                                         <HappinessSlider
-                                            key={q.id}
-                                            value={answers[q.id] ?? q.defaultAnswer ?? 3}
-                                            onChange={(v) =>
-                                                setAnswers((p) => ({ ...p, [q.id]: v }))
+                                            key={question.id}
+                                            value={answers[question.id] ?? question.defaultAnswer ?? 3}
+                                            onChange={(value) =>
+                                                setAnswers((prev) => ({
+                                                    ...prev,
+                                                    [question.id]: value
+                                                }))
                                             }
                                         />
                                     );
@@ -181,8 +201,9 @@ function FeedbackForm({
 
                         <ButtonGroup>
                             <Button type="submit">Submit</Button>
+
                             <Button
-                                type="button"
+                                type="reset"
                                 variant="secondary"
                                 onPress={() => setAnswers({})}
                             >
