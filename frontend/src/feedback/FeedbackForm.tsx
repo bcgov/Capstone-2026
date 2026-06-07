@@ -15,7 +15,7 @@ import type { FeedbackFormProps, Question } from "./types/feedback";
 import { QuestionType } from "./types/feedback";
 
 import HappinessSlider from "./HappinessSlider";
-import SubmissionConfirmationModal from "./SubmissionConfirmationModal";
+import SubmissionConfirmationModal from "./SubmissionConfirmation";
 
 function FeedbackForm({
     isFormOpen,
