@@ -202,6 +202,7 @@ function FeedbackForm({
                                     return (
                                         <HappinessSlider
                                             key={question.id}
+                                            question={question.question_text}
                                             value={
                                                 answers[question.id] ??
                                                 question.defaultAnswer ??
