@@ -1,16 +1,39 @@
 import { Footer, Header, Button } from "@bcgov/design-system-react-components";
 import '@bcgov/bc-sans/css/BC_Sans.css';
 import { useFeedback } from "../feedback/FeedbackProvider";
+import { useState } from "react";
 
 function Home() {
   const { openFeedbackForm } = useFeedback();
-  const buttonCounter = 0;
+  const apiBaseUrl="http://localhost:3000";
+  const [buttonCounter, setButtonCounter] = useState(0);
+
   function incrementButtonCounter(){
-    return buttonCounter + 1;
+    setButtonCounter(prev => prev + 1);
   }
+
   function changeBackground() {
     const randomColor = '#' + Math.floor(Math.random() * 16777215).toString(16).padStart(6, '0');
     document.body.style.backgroundColor = randomColor;
+  }
+  const handleButtonClick = async () => {
+    const response = await fetch(`${apiBaseUrl}/api/users`,{
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        button_click_count: buttonCounter
+      })
+    });
+
+    const data = await response.json();
+
+    if (response.ok) {
+      console.log("User data updated successfully:", data);
+    } else {
+      console.error("Failed to update user data:", data);
+    }
   }
 
   return (
@@ -34,6 +57,7 @@ function Home() {
           </Button>
 
           <Button style={{ margin: "10px 0px" }} onPress={() => {
+            handleButtonClick();
             openFeedbackForm(1);
           }}>
             Select Background Color

@@ -31,9 +31,9 @@ const getAllUserData = async (req: Request, res: Response) => {
 
 const createUserData = async (req: Request, res: Response) => {
   try {
-    const newUser = await prisma.user.create({
+    const newUser = await prisma.userData.create({
       data: {
-        button_click_count: req.body.button_click_count,
+        buttonClickCount: req.body.button_click_count,
       },
     });
     res.status(201).json(newUser);
