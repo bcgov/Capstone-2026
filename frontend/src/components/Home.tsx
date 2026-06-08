@@ -25,9 +25,14 @@ function Home() {
           <h1 style={{ fontFamily: "BC Sans" }}>Welcome Capstone 2026!</h1>
           <Button onPress={() => {
             changeBackground();
-            openFeedbackForm(1);
           }}>
             Change Background Color
+          </Button>
+
+          <Button style={{ margin: "10px 0px" }} onPress={() => {
+            openFeedbackForm(1);
+          }}>
+            Select Background Color
           </Button>
 
           <h3 className="row" style={{ fontFamily: "BC Sans" }}>
