@@ -137,7 +137,13 @@ function FeedbackForm({
                 isCloseable
                 aria-label="Feedback form dialog"
             >
-                <div style={{ padding: "1.5rem", fontFamily: "BC Sans" }}>
+                <div style={{
+                    padding: "1.5rem",
+                    fontFamily: "BC Sans",
+                    maxHeight: "80vh",
+                    overflowY: "auto",
+                    overflowX: "hidden"
+                }}>
                     <span
                         style={{ font: "700 1.25rem/2.125rem 'BC Sans'" }}
                     >
