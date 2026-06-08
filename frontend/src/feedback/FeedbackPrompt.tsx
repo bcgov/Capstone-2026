@@ -9,6 +9,7 @@ interface Props {
 
 function FeedbackPrompt({ isOpen, setIsOpen, onAccept }: Props) {
     return (
+
         <Modal
             isOpen={isOpen}
             onOpenChange={setIsOpen}
