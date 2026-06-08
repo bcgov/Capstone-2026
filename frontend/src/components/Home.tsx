@@ -4,7 +4,10 @@ import { useFeedback } from "../feedback/FeedbackProvider";
 
 function Home() {
   const { openFeedbackForm } = useFeedback();
-
+  const buttonCounter = 0;
+  function incrementButtonCounter(){
+    return buttonCounter + 1;
+  }
   function changeBackground() {
     const randomColor = '#' + Math.floor(Math.random() * 16777215).toString(16).padStart(6, '0');
     document.body.style.backgroundColor = randomColor;
@@ -24,6 +27,7 @@ function Home() {
           <span style={{ display: "inline-block", margin: "20px 10px" }} />
           <h1 style={{ fontFamily: "BC Sans" }}>Welcome Capstone 2026!</h1>
           <Button onPress={() => {
+            incrementButtonCounter();
             changeBackground();
           }}>
             Change Background Color
