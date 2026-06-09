@@ -4,8 +4,7 @@ import { useFeedback } from "../feedback/FeedbackProvider";
 import { useState } from "react";
 
 function Home() {
-  const { openFeedbackForm } = useFeedback();
-  const apiBaseUrl="http://localhost:3000";
+  const { apiBaseUrl, openFeedbackForm } = useFeedback();
   const [buttonCounter, setButtonCounter] = useState(0);
 
   function incrementButtonCounter(){
