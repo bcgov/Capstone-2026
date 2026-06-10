@@ -10,6 +10,7 @@ import FeedbackPrompt from "./FeedbackPrompt";
 import type { FeedbackFormData } from "./types/feedback";
 
 type FeedbackContextType = {
+    apiBaseUrl: string;
     openFeedbackForm: (formId: number) => void;
     closeFeedback: () => void;
 };
@@ -51,7 +52,7 @@ export function FeedbackProvider({ children, apiBaseUrl }: Props) {
     };
 
     return (
-        <FeedbackContext.Provider value={{ openFeedbackForm, closeFeedback }}>
+        <FeedbackContext.Provider value={{ apiBaseUrl, openFeedbackForm, closeFeedback }}>
             {children}
 
             {formData && (
