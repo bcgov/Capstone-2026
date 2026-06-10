@@ -5,7 +5,6 @@ import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 
 function Home() {
-  const { openFeedbackForm } = useFeedback();
   const navigate = useNavigate();
   const { apiBaseUrl, openFeedbackForm } = useFeedback();
   const [buttonCounter, setButtonCounter] = useState(0);
