@@ -96,7 +96,7 @@ async function main() {
                 },
                 {
                   questionType: QuestionType.SLIDER,
-                  question_text: "On a scale of 1-5, how happy are you with the color change?",
+                  question_text: "How happy are you with the color change?",
                   is_required: true,
                   display_order: 5,
                 }
