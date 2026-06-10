@@ -18,7 +18,6 @@ function QuestionList({
                 <QuestionEditor
                     key={question.id}
                     question={question}
-                    form={form}
                     setForm={setForm}
                 />
             ))}

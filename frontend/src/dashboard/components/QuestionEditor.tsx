@@ -6,13 +6,11 @@ import { requiresOptions } from "./questionUtils";
 
 interface Props {
     question: Question;
-    form: FeedbackFormData;
     setForm: React.Dispatch<React.SetStateAction<FeedbackFormData>>;
 }
 
 function QuestionEditor({
     question,
-    form,
     setForm
 }: Props) {
 
