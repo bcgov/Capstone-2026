@@ -25,7 +25,7 @@ async function main() {
               create: [
                 {
                   questionType: QuestionType.TEXTAREA, 
-                  question_text: "How color showed up when you clicked the button?",
+                  question_text: "What color showed up when you clicked the button?",
                   is_required: true,
                   display_order: 1,
                 },
