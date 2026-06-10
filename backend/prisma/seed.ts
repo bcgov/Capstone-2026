@@ -5,12 +5,12 @@ const prisma = new PrismaClient()
 async function main() {
   console.log('🌱 Starting database seeding...')
   
-  // 1. Explicitly clear children first to prevent key/state locking issues
-  await prisma.answer.deleteMany({})
-  await prisma.questionOption.deleteMany({})
-  await prisma.question.deleteMany({})
-  //await prisma.feedbackSubmission.deleteMany({})
-  await prisma.feedbackForm.deleteMany({})
+  // // 1. Explicitly clear children first to prevent key/state locking issues
+  // await prisma.answer.deleteMany({})
+  // await prisma.questionOption.deleteMany({})
+  // await prisma.question.deleteMany({})
+  // //await prisma.feedbackSubmission.deleteMany({})
+  // await prisma.feedbackForm.deleteMany({})
 
   console.log('🧹 Existing database records cleared successfully.')
     const feedbackForm = await prisma.feedbackForm.upsert({
