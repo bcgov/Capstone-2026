@@ -1,9 +1,12 @@
 import { Footer, Header, Button } from "@bcgov/design-system-react-components";
 import '@bcgov/bc-sans/css/BC_Sans.css';
 import { useFeedback } from "../feedback/FeedbackProvider";
+import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 
 function Home() {
+  const { openFeedbackForm } = useFeedback();
+  const navigate = useNavigate();
   const { apiBaseUrl, openFeedbackForm } = useFeedback();
   const [buttonCounter, setButtonCounter] = useState(0);
 
@@ -38,7 +41,14 @@ function Home() {
   return (
     <>
       <div style={{ margin: 0 }}>
-        <Header title={"Capstone 2026"}> </Header>
+        <Header title={"Capstone 2026 - Test App"}>
+          <Button
+            variant="primary"
+            onPress={() => navigate("/dashboard")}
+          >
+            Form Builder
+          </Button>
+        </Header>
         <div
           style={{
             display: "flex",
