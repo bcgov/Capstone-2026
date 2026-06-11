@@ -123,25 +123,28 @@ How to install what you need
 
 ### Installation
 
-1. Get a free API Key at [https://example.com](https://example.com)
-2. Clone the repo
+1. Clone the repo
    ```sh
    git clone https://github.com/bcgov/Capstone-2026.git
    ```
-3. Install NPM packages
+2. Create a .env file in the project root:
    ```sh
-   npm install
+   DATABASE_URL=postgresql://postgres:default@database:5432/postgres
    ```
-4. Enter your API in `config.js`
-   ```js
-   const API_KEY = 'ENTER YOUR API';
-   ```
-5. Change git remote url to avoid accidental pushes to base project
+3. Start Docker Desktop.
+4. Build and start the containers 
    ```sh
-   git remote set-url origin bcgov/Capstone-2026
-   git remote -v # confirm the changes
+   docker compose up --build
+   ```
+5. Access the application:
+   ```sh
+   Frontend: http://localhost:5173
    ```
 
+   ```sh
+   Backend API: http://localhost:3000
+   ```
+//I don't think we need an API but need to fix 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 
