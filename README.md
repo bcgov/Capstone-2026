@@ -105,8 +105,14 @@ Capstone 2026 project is a feedback modal that is resuable enough to be incorpor
 
 ### Built With
 
-* [![Next][Next.js]][Next-url]
 * [![React][React.js]][React-url]
+* [![TypeScript][TypeScript]][TypeScript-url]
+* [![Vite][Vite]][Vite-url]
+* [![NestJS][NestJS]][NestJS-url]
+* [![PostgreSQL][PostgreSQL]][PostgreSQL-url]
+* [![PostGIS][PostGIS]][PostGIS-url]
+* [![Docker][Docker]][Docker-url]
+* [![Caddy][Caddy]][Caddy-url]
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -289,3 +295,27 @@ Project Link: [https://github.com/bcgov/Capstone-2026](https://github.com/bcgov/
 [Bootstrap-url]: https://getbootstrap.com
 [JQuery.com]: https://img.shields.io/badge/jQuery-0769AD?style=for-the-badge&logo=jquery&logoColor=white
 [JQuery-url]: https://jquery.com 
+
+[React.js]: https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB
+[React-url]: https://react.dev/
+
+[TypeScript]: https://img.shields.io/badge/TypeScript-3178C6?style=for-the-badge&logo=typescript&logoColor=white
+[TypeScript-url]: https://www.typescriptlang.org/
+
+[Vite]: https://img.shields.io/badge/Vite-646CFF?style=for-the-badge&logo=vite&logoColor=white
+[Vite-url]: https://vitejs.dev/
+
+[NestJS]: https://img.shields.io/badge/NestJS-E0234E?style=for-the-badge&logo=nestjs&logoColor=white
+[NestJS-url]: https://nestjs.com/
+
+[PostgreSQL]: https://img.shields.io/badge/PostgreSQL-316192?style=for-the-badge&logo=postgresql&logoColor=white
+[PostgreSQL-url]: https://www.postgresql.org/
+
+[PostGIS]: https://img.shields.io/badge/PostGIS-008000?style=for-the-badge
+[PostGIS-url]: https://postgis.net/
+
+[Docker]: https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=dockers&logoColor=white
+[Docker-url]: https://www.docker.com/
+
+[Caddy]: https://img.shields.io/badge/Caddy-1F88C0?style=for-the-badge&logo=caddy&logoColor=white
+[Caddy-url]: https://caddyserver.com/
