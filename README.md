@@ -144,7 +144,7 @@ How to install what you need
    ```sh
    Backend API: http://localhost:3000
    ```
-//I don't think we need an API but need to fix 
+
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 
