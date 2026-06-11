@@ -241,7 +241,7 @@ Project Link: [https://github.com/bcgov/Capstone-2026](https://github.com/bcgov/
 <!-- ACKNOWLEDGMENTS -->
 ## Acknowledgments
 
-* []()
+* []() Thank you to namecheap.com for the amazing free logo <a href> https://www.namecheap.com/
 * []()
 * []()
 
