@@ -170,6 +170,14 @@ When the feedback form opens the user is met with a variety of questions that ar
 
 ![alt text](image-1.png)
 
+Once user fills in the form they are free to submit or cancel 
+
+![alt text](image-2.png)
+
+And a message should inform the user if their action was successful or not as well as give them an ID attatched to their form! 
+
+![alt text](image-3.png)
+
 **Add dashboard interface when completed
 
 _For more examples, please refer to the [Documentation](https://code.visualstudio.com/docs/languages/markdown)
