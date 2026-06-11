@@ -1,16 +1,4 @@
 # 🚀 capstone-2026
-This repo is for the 2026 camosun capstone team.
-
-The starter stack includes a frontend (React, Vite, Caddy), backend (Nest/Node) and Postgres or PostGIS database.
-**Application stack:**
-  * 🗄️ Database: Crunchy (Postgres, PostGIS), backups
-  * 🎨 Frontend: TypeScript, Caddy Server
-  * ⚙️ Backend: TypeScript, Nest.js
-
-**Features:**
-* 💪 [TypeScript](https://www.typescriptlang.org/) strong-typing for JavaScript
-* 🏗️ [NestJS](https://docs.nestjs.com) Nest/Node backend and frontend
-* 🐘 [Crunchy](https://www.crunchydata.com/products/crunchy-postgresql-for-kubernetes) Postgres/PostGIS Database
 
 <a id="readme-top"></a>
 <!--
@@ -39,10 +27,8 @@ The starter stack includes a frontend (React, Vite, Caddy), backend (Nest/Node) 
 <!-- PROJECT LOGO -->
 <br />
 <div align="center">
-  <a href="https://github.com/bcgov/Capstone-2026">
-    <img src="images/logo.png" alt="Logo" width="80" height="80">
-  </a>
 
+![alt text](image-4.png)
 <h3 align="center">Capstone-2026</h3>
 
   <p align="center">
@@ -134,7 +120,7 @@ for windows use - npx.cmd prisma migrate reset
 
 ### Prerequisites
 
-This is an example of how to list things you need to use the software and how to install them.
+How to install what you need 
 * npm
   ```sh
   npm install npm@latest -g
