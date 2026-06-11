@@ -229,6 +229,12 @@ Distributed under the project_license. See `LICENSE.txt` for more information.
 <!-- CONTACT -->
 ## Contact
 
+Maia Grisch - maiagrisch@outlook.com
+
+
+Your Name - [@twitter_handle](https://twitter.com/twitter_handle) - email@email_client.com
+
+
 Your Name - [@twitter_handle](https://twitter.com/twitter_handle) - email@email_client.com
 
 
