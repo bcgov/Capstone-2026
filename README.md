@@ -80,11 +80,6 @@
 
 Capstone 2026 project is a feedback modal that is resuable enough to be incorporated into many BC Government pages to recieve user feedback after completing a transaction. Our stretch goal included adding a dashboard feature for seeing compiled and meaningful data. 
 
- To avoid retyping too much info, do a search and replace with your text editor for the following: `bcgov`, `Capstone-2026`, `twitter_handle`, `linkedin_username`, `email_client`, `email`, `Capstone-2026`, `A feedback modal that is able to return meaningful results from aggregating data of BC Gov website users experiences.`, `project_license`
-
-** Still need to fill in a few of these with the team 
-
-
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 
