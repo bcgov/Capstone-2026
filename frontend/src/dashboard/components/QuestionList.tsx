@@ -19,6 +19,7 @@ function QuestionList({
                     key={question.id}
                     question={question}
                     setForm={setForm}
+                    form={form}
                 />
             ))}
         </div>

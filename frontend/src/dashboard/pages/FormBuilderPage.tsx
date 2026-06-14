@@ -113,7 +113,7 @@ function FormBuilderPage() {
                         </div>
                     </div>
 
-                    {/* RIGHT PANEL - LIVE PREVIEW */}
+                    {/* RIGHT PANEL - JSON PREVIEW */}
                     <div
                         style={{
                             background: "white",
