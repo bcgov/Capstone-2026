@@ -18,7 +18,7 @@ import { QuestionType } from "./types/feedback";
 
 import HappinessSlider from "./HappinessSlider";
 import SubmissionConfirmationModal from "./SubmissionConfirmation";
-
+import { useAuth } from "../auth/AuthContext";
 
 
 function FeedbackForm({
@@ -35,6 +35,8 @@ function FeedbackForm({
     const [confirmationMessage, setConfirmationMessage] = useState("");
     const [confirmationTitle, setConfirmationTitle] = useState("");
     const [isSuccess, setIsSuccess] = useState(false);
+    const { userId } = useAuth();
+
 
     useEffect(() => {
         const initialAnswers: Record<number, any> = {};

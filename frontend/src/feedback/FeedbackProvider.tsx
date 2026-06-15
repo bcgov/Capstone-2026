@@ -8,6 +8,7 @@ import {
 import FeedbackForm from "./FeedbackForm";
 import FeedbackPrompt from "./FeedbackPrompt";
 import type { FeedbackFormData } from "./types/feedback";
+import { useAuth } from "../auth/AuthContext";
 
 type FeedbackContextType = {
     apiBaseUrl: string;
@@ -32,6 +33,7 @@ export function FeedbackProvider({ children, apiBaseUrl }: Props) {
     const [formData, setFormData] = useState<FeedbackFormData | null>(null);
     const [isPromptOpen, setIsPromptOpen] = useState(false);
     const [isFormOpen, setIsFormOpen] = useState(false);
+    const { userId } = useAuth();
 
     const openFeedbackForm = async (formId: number) => {
         try {

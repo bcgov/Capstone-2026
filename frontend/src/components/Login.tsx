@@ -1,6 +1,7 @@
 import { Button, TextField, Form } from "@bcgov/design-system-react-components";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../auth/AuthContext";
 
 function Login() {
     const navigate = useNavigate();
@@ -11,10 +12,13 @@ function Login() {
     const handleLogin = (e: React.FormEvent) => {
         e.preventDefault();
 
-        // TEMP: mock login
-        if (username && password) {
-            navigate("/dashboard");
-        }
+        if (!username || !password) return;
+
+        const id = crypto.randomUUID();
+
+        Login(id);
+
+        navigate("/dashboard");
     };
 
     return (

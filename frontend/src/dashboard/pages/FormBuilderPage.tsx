@@ -6,16 +6,18 @@ import type { FeedbackFormData } from "../../feedback/types/feedback";
 import { QuestionType } from "../../feedback/types/feedback";
 import { useNavigate } from "react-router-dom";
 import { useFeedback } from "../../feedback/FeedbackProvider";
+import { useAuth } from "../auth/AuthContext";
 
 function FormBuilderPage() {
     const navigate = useNavigate();
     const { apiBaseUrl } = useFeedback();
+    const { userId } = useAuth();
 
     const [form, setForm] = useState<FeedbackFormData>({
         id: 0,
         name: "",
         description: "",
-        questions: []  
+        questions: []
     });
 
     const addQuestion = () => {
@@ -35,7 +37,7 @@ function FormBuilderPage() {
         }));
     };
 
-    const handleSave = async() => {
+    const handleSave = async () => {
         try {
             const response = await fetch(`${apiBaseUrl}/api/form`, {
                 method: "POST",
@@ -48,13 +50,13 @@ function FormBuilderPage() {
             if (response.ok) {
                 const savedForm = await response.json();
                 console.log("Form saved successfully:", savedForm);
-                setForm(savedForm); 
+                setForm(savedForm);
             } else {
                 console.error("Failed to save form:", await response.text());
             }
         } catch (error) {
             console.error("Error saving form:", error);
-        }       
+        }
     };
     return (
         <>
