@@ -6,6 +6,7 @@ import type { FeedbackFormData } from "../../feedback/types/feedback";
 import { QuestionType } from "../../feedback/types/feedback";
 import { useNavigate } from "react-router-dom";
 import { useFeedback } from "../../feedback/FeedbackProvider";
+import FormPreview from "../components/FormPreview";
 
 function FormBuilderPage() {
     const navigate = useNavigate();
@@ -138,17 +139,19 @@ function FormBuilderPage() {
                     </div>
 
                     {/* RIGHT PANEL - Form PREVIEW */}
-                    <div
-                        style={{
-                            background: "white",
-                            borderRadius: "8px",
-                            padding: "1rem",
-                            boxShadow: "0 1px 3px rgba(0,0,0,0.1)"
-                        }}
-                    >
+                    <div>
                         <h2 style={{ fontFamily: "BC Sans" }}>Preview Form</h2>
-
-
+                        <div
+                            style={{
+                                background: "white",
+                                borderRadius: "8px",
+                                padding: "1rem",
+                                boxShadow: "0 1px 3px rgba(0,0,0,0.1)"
+                            }}>
+                            <FormPreview
+                                formData={form}
+                            />
+                        </div>
                     </div>
                 </div>
                 <div>
