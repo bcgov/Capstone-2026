@@ -33,11 +33,11 @@ export function FeedbackProvider({ children, apiBaseUrl }: Props) {
     const [formData, setFormData] = useState<FeedbackFormData | null>(null);
     const [isPromptOpen, setIsPromptOpen] = useState(false);
     const [isFormOpen, setIsFormOpen] = useState(false);
-    const [submissionStatus, setSubmissionStatus] = useState<{
-        open: boolean;
-        success: boolean;
-        message: string;
-    } | null>(null);
+    const [submissionStatus, setSubmissionStatus] = useState({
+        open: false,
+        success: false,
+        message: ""
+    });
 
     const openFeedbackForm = async (formId: number) => {
         try {
@@ -81,7 +81,7 @@ export function FeedbackProvider({ children, apiBaseUrl }: Props) {
                 </>
             )}
             <SubmissionConfirmationModal
-                isOpen={submissionStatus.open}
+                isOpen={submissionStatus?.open ?? false}
                 title={submissionStatus.success ? "Success" : "Error"}
                 message={submissionStatus.message}
                 onClose={() => setSubmissionStatus(null)}
