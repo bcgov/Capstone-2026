@@ -14,6 +14,7 @@ type AuthContextType = {
 
 const AuthContext = createContext<AuthContextType | null>(null);
 
+
 export function useAuth() {
     const ctx = useContext(AuthContext);
     if (!ctx) throw new Error("useAuth must be used within AuthProvider");
@@ -21,14 +22,18 @@ export function useAuth() {
 }
 
 export function AuthProvider({ children }: { children: ReactNode }) {
-    const [userId, setUserId] = useState<string | null>(null);
+    const [userId, setUserId] = useState<string | null>(() => {
+        return localStorage.getItem("userId");
+    });
 
     const login = (id: string) => {
         setUserId(id);
+        localStorage.setItem("userId", id);
     };
 
     const logout = () => {
         setUserId(null);
+        localStorage.removeItem("userId");
     };
 
     const isAuthenticated = userId !== null;

@@ -5,10 +5,11 @@ import { useAuth } from "../auth/AuthContext";
 
 function Login() {
     const navigate = useNavigate();
-    const { login } = useAuth();
+    const login = useAuth();
 
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
+
 
     const handleLogin = (e: React.FormEvent) => {
         e.preventDefault();
