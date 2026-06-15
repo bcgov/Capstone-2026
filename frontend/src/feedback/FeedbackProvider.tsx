@@ -75,17 +75,27 @@ export function FeedbackProvider({ children, apiBaseUrl }: Props) {
                         formData={formData}
                         apiBaseUrl={apiBaseUrl}
                         onSuccess={(id) => {
-                            console.log("Submission:", id);
+                            setIsFormOpen(false);
+                            setIsPromptOpen(false);
+                            setFormData(null);
+
+                            setSubmissionStatus({
+                                open: true,
+                                success: true,
+                                message: `Submission saved! ID: ${id}`
+                            });
                         }}
                     />
                 </>
             )}
-            <SubmissionConfirmationModal
-                isOpen={submissionStatus?.open ?? false}
-                title={submissionStatus.success ? "Success" : "Error"}
-                message={submissionStatus.message}
-                onClose={() => setSubmissionStatus(null)}
-            />
+            {submissionStatus?.open && (
+                <SubmissionConfirmationModal
+                    isOpen={submissionStatus.open}
+                    title={submissionStatus.success ? "Success" : "Error"}
+                    message={submissionStatus.message}
+                    onClose={() => setSubmissionStatus(null)}
+                />
+            )}
         </FeedbackContext.Provider>
     );
 }
