@@ -15,7 +15,7 @@ function FormBuilderPage() {
         id: 0,
         name: "",
         description: "",
-        questions: []  
+        questions: []
     });
 
     const addQuestion = () => {
@@ -35,7 +35,7 @@ function FormBuilderPage() {
         }));
     };
 
-    const handleSave = async() => {
+    const handleSave = async () => {
         try {
             const response = await fetch(`${apiBaseUrl}/api/form`, {
                 method: "POST",
@@ -48,13 +48,13 @@ function FormBuilderPage() {
             if (response.ok) {
                 const savedForm = await response.json();
                 console.log("Form saved successfully:", savedForm);
-                setForm(savedForm); 
+                setForm(savedForm);
             } else {
                 console.error("Failed to save form:", await response.text());
             }
         } catch (error) {
             console.error("Error saving form:", error);
-        }       
+        }
     };
     return (
         <>
@@ -137,7 +137,7 @@ function FormBuilderPage() {
                         </div>
                     </div>
 
-                    {/* RIGHT PANEL - JSON PREVIEW */}
+                    {/* RIGHT PANEL - Form PREVIEW */}
                     <div
                         style={{
                             background: "white",
@@ -146,17 +146,9 @@ function FormBuilderPage() {
                             boxShadow: "0 1px 3px rgba(0,0,0,0.1)"
                         }}
                     >
-                        <h2 style={{ fontFamily: "BC Sans" }}>Preview JSON</h2>
+                        <h2 style={{ fontFamily: "BC Sans" }}>Preview Form</h2>
 
-                        <pre
-                            style={{
-                                background: "#f4f4f4",
-                                padding: "1rem",
-                                overflow: "auto"
-                            }}
-                        >
-                            {JSON.stringify(form, null, 2)}
-                        </pre>
+
                     </div>
                 </div>
                 <div>
