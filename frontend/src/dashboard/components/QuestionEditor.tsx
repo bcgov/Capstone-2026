@@ -1,4 +1,4 @@
-import { TextField, Checkbox, Select } from "@bcgov/design-system-react-components";
+import { TextField, Checkbox, Select, Button } from "@bcgov/design-system-react-components";
 import type { FeedbackFormData, Question } from "../../feedback/types/feedback";
 import { QuestionType } from "../../feedback/types/feedback";
 import OptionEditor from "./OptionEditor";
@@ -7,11 +7,13 @@ import { requiresOptions } from "./questionUtils";
 interface Props {
     question: Question;
     setForm: React.Dispatch<React.SetStateAction<FeedbackFormData>>;
+    form: FeedbackFormData;
 }
 
 function QuestionEditor({
     question,
-    setForm
+    setForm,
+    form
 }: Props) {
 
     const updateQuestion = (
@@ -31,13 +33,72 @@ function QuestionEditor({
         }));
     };
 
+    const moveQuestionUp = () => {
+        setForm((prev) => {
+            const currentIndex = prev.questions.findIndex(
+                (q) => q.id === question.id
+            );
+
+            if (currentIndex === 0) return prev;
+
+            const questions = [...prev.questions];
+
+            [questions[currentIndex - 1], questions[currentIndex]] = [
+                questions[currentIndex],
+                questions[currentIndex - 1]
+            ];
+
+            return {
+                ...prev,
+                questions: questions.map((q, index) => ({
+                    ...q,
+                    display_order: index + 1
+                }))
+            };
+        });
+    };
+
+    const moveQuestionDown = () => {
+        setForm((prev) => {
+            const currentIndex = prev.questions.findIndex(
+                (q) => q.id === question.id
+            );
+
+            if (currentIndex === prev.questions.length - 1) {
+                return prev;
+            }
+
+            const questions = [...prev.questions];
+
+            [questions[currentIndex], questions[currentIndex + 1]] = [
+                questions[currentIndex + 1],
+                questions[currentIndex]
+            ];
+
+            return {
+                ...prev,
+                questions: questions.map((q, index) => ({
+                    ...q,
+                    display_order: index + 1
+                }))
+            };
+        });
+    };
+
     const deleteQuestion = () => {
-        setForm((prev) => ({
-            ...prev,
-            questions: prev.questions.filter(
-                (q) => q.id !== question.id
-            )
-        }));
+        setForm((prev) => {
+            const questions = prev.questions
+                .filter((q) => q.id !== question.id)
+                .map((q, index) => ({
+                    ...q,
+                    display_order: index + 1
+                }));
+
+            return {
+                ...prev,
+                questions
+            };
+        });
     };
 
     return (
@@ -97,14 +158,33 @@ function QuestionEditor({
                 Required
             </Checkbox>
 
-            <button
-                onClick={deleteQuestion}
+            <div
                 style={{
+                    display: "flex",
+                    gap: "0.5rem",
                     marginTop: "1rem"
                 }}
             >
-                Delete Question
-            </button>
+                <Button
+                    onPress={moveQuestionUp}
+                    isDisabled={question.display_order === 1}
+                >
+                    ↑ Move Up
+                </Button>
+
+                <Button
+                    onPress={moveQuestionDown}
+                    isDisabled={question.display_order === form.questions.length}
+                >
+                    ↓ Move Down
+                </Button>
+
+                <Button
+                    onPress={deleteQuestion}
+                >
+                    Delete
+                </Button>
+            </div>
         </div>
     );
 }
