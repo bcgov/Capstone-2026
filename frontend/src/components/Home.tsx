@@ -9,7 +9,7 @@ function Home() {
   const { apiBaseUrl, openFeedbackForm } = useFeedback();
   const [buttonCounter, setButtonCounter] = useState(0);
 
-  function incrementButtonCounter(){
+  function incrementButtonCounter() {
     setButtonCounter(prev => prev + 1);
   }
 
@@ -18,7 +18,7 @@ function Home() {
     document.body.style.backgroundColor = randomColor;
   }
   const handleButtonClick = async () => {
-    const response = await fetch(`${apiBaseUrl}/api/users`,{
+    const response = await fetch(`${apiBaseUrl}/api/users`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
@@ -46,6 +46,12 @@ function Home() {
             onPress={() => navigate("/dashboard")}
           >
             Form Builder
+          </Button>
+          <Button
+            variant="primary"
+            onPress={() => navigate("/login")}
+          >
+            Login
           </Button>
         </Header>
         <div
