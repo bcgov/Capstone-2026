@@ -6,7 +6,7 @@ import type { FeedbackFormData } from "../../feedback/types/feedback";
 import { QuestionType } from "../../feedback/types/feedback";
 import { useNavigate } from "react-router-dom";
 import { useFeedback } from "../../feedback/FeedbackProvider";
-import { useAuth } from "../auth/AuthContext";
+import { useAuth } from "../../auth/AuthContext";
 
 function FormBuilderPage() {
     const navigate = useNavigate();

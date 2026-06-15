@@ -5,6 +5,7 @@ import { useAuth } from "../auth/AuthContext";
 
 function Login() {
     const navigate = useNavigate();
+    const { login } = useAuth();
 
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
@@ -16,7 +17,7 @@ function Login() {
 
         const id = crypto.randomUUID();
 
-        Login(id);
+        login(id);
 
         navigate("/dashboard");
     };
