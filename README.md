@@ -1,16 +1,4 @@
 # 🚀 capstone-2026
-This repo is for the 2026 camosun capstone team.
-
-The starter stack includes a frontend (React, Vite, Caddy), backend (Nest/Node) and Postgres or PostGIS database.
-**Application stack:**
-  * 🗄️ Database: Crunchy (Postgres, PostGIS), backups
-  * 🎨 Frontend: TypeScript, Caddy Server
-  * ⚙️ Backend: TypeScript, Nest.js
-
-**Features:**
-* 💪 [TypeScript](https://www.typescriptlang.org/) strong-typing for JavaScript
-* 🏗️ [NestJS](https://docs.nestjs.com) Nest/Node backend and frontend
-* 🐘 [Crunchy](https://www.crunchydata.com/products/crunchy-postgresql-for-kubernetes) Postgres/PostGIS Database
 
 <a id="readme-top"></a>
 <!--
@@ -39,10 +27,8 @@ The starter stack includes a frontend (React, Vite, Caddy), backend (Nest/Node) 
 <!-- PROJECT LOGO -->
 <br />
 <div align="center">
-  <a href="https://github.com/bcgov/Capstone-2026">
-    <img src="images/logo.png" alt="Logo" width="80" height="80">
-  </a>
 
+![alt text](image-4.png)
 <h3 align="center">Capstone-2026</h3>
 
   <p align="center">
@@ -94,19 +80,20 @@ The starter stack includes a frontend (React, Vite, Caddy), backend (Nest/Node) 
 
 Capstone 2026 project is a feedback modal that is resuable enough to be incorporated into many BC Government pages to recieve user feedback after completing a transaction. Our stretch goal included adding a dashboard feature for seeing compiled and meaningful data. 
 
- To avoid retyping too much info, do a search and replace with your text editor for the following: `bcgov`, `Capstone-2026`, `twitter_handle`, `linkedin_username`, `email_client`, `email`, `Capstone-2026`, `A feedback modal that is able to return meaningful results from aggregating data of BC Gov website users experiences.`, `project_license`
-
-** Still need to fill in a few of these with the team 
-
-
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 
 
 ### Built With
 
-* [![Next][Next.js]][Next-url]
 * [![React][React.js]][React-url]
+* [![TypeScript][TypeScript]][TypeScript-url]
+* [![Vite][Vite]][Vite-url]
+* [![NestJS][NestJS]][NestJS-url]
+* [![PostgreSQL][PostgreSQL]][PostgreSQL-url]
+* [![PostGIS][PostGIS]][PostGIS-url]
+* [![Docker][Docker]][Docker-url]
+* [![Caddy][Caddy]][Caddy-url]
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -128,7 +115,7 @@ for windows use - npx.cmd prisma migrate reset
 
 ### Prerequisites
 
-This is an example of how to list things you need to use the software and how to install them.
+How to install what you need 
 * npm
   ```sh
   npm install npm@latest -g
@@ -136,23 +123,26 @@ This is an example of how to list things you need to use the software and how to
 
 ### Installation
 
-1. Get a free API Key at [https://example.com](https://example.com)
-2. Clone the repo
+1. Clone the repo
    ```sh
    git clone https://github.com/bcgov/Capstone-2026.git
    ```
-3. Install NPM packages
+2. Create a .env file in the project root:
    ```sh
-   npm install
+   DATABASE_URL=postgresql://postgres:default@database:5432/postgres
    ```
-4. Enter your API in `config.js`
-   ```js
-   const API_KEY = 'ENTER YOUR API';
-   ```
-5. Change git remote url to avoid accidental pushes to base project
+3. Start Docker Desktop.
+4. Build and start the containers 
    ```sh
-   git remote set-url origin bcgov/Capstone-2026
-   git remote -v # confirm the changes
+   docker compose up --build
+   ```
+5. Access the application:
+   ```sh
+   Frontend: http://localhost:5173
+   ```
+
+   ```sh
+   Backend API: http://localhost:3000
    ```
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
@@ -169,6 +159,14 @@ This project is intended to be an interactable modal that pops up when user comp
 When the feedback form opens the user is met with a variety of questions that are pulled from the database. Our project was built to be reusable and as such admins may change questions from our dashboard interface 
 
 ![alt text](image-1.png)
+
+Once user fills in the form they are free to submit or cancel 
+
+![alt text](image-2.png)
+
+And a message should inform the user if their action was successful or not as well as give them an ID attatched to their form! 
+
+![alt text](image-3.png)
 
 **Add dashboard interface when completed
 
@@ -229,8 +227,11 @@ Distributed under the project_license. See `LICENSE.txt` for more information.
 <!-- CONTACT -->
 ## Contact
 
-Your Name - [@twitter_handle](https://twitter.com/twitter_handle) - email@email_client.com
+Ebba de Groot - degrootebba@gmail.com
 
+Tey Cheng - pagnavathtey@gmail.com - (LinkedIn) https://www.linkedin.com/in/pagnavathtey-cheng-2858452b0
+
+Maia Grisch - maiagrisch@outlook.com
 
 Project Link: [https://github.com/bcgov/Capstone-2026](https://github.com/bcgov/Capstone-2026)
 
@@ -241,7 +242,7 @@ Project Link: [https://github.com/bcgov/Capstone-2026](https://github.com/bcgov/
 <!-- ACKNOWLEDGMENTS -->
 ## Acknowledgments
 
-* []()
+* []() Thank you to namecheap.com for the amazing free logo <a href> https://www.namecheap.com/
 * []()
 * []()
 
@@ -281,3 +282,27 @@ Project Link: [https://github.com/bcgov/Capstone-2026](https://github.com/bcgov/
 [Bootstrap-url]: https://getbootstrap.com
 [JQuery.com]: https://img.shields.io/badge/jQuery-0769AD?style=for-the-badge&logo=jquery&logoColor=white
 [JQuery-url]: https://jquery.com 
+
+[React.js]: https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB
+[React-url]: https://react.dev/
+
+[TypeScript]: https://img.shields.io/badge/TypeScript-3178C6?style=for-the-badge&logo=typescript&logoColor=white
+[TypeScript-url]: https://www.typescriptlang.org/
+
+[Vite]: https://img.shields.io/badge/Vite-646CFF?style=for-the-badge&logo=vite&logoColor=white
+[Vite-url]: https://vitejs.dev/
+
+[NestJS]: https://img.shields.io/badge/NestJS-E0234E?style=for-the-badge&logo=nestjs&logoColor=white
+[NestJS-url]: https://nestjs.com/
+
+[PostgreSQL]: https://img.shields.io/badge/PostgreSQL-316192?style=for-the-badge&logo=postgresql&logoColor=white
+[PostgreSQL-url]: https://www.postgresql.org/
+
+[PostGIS]: https://img.shields.io/badge/PostGIS-008000?style=for-the-badge
+[PostGIS-url]: https://postgis.net/
+
+[Docker]: https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=dockers&logoColor=white
+[Docker-url]: https://www.docker.com/
+
+[Caddy]: https://img.shields.io/badge/Caddy-1F88C0?style=for-the-badge&logo=caddy&logoColor=white
+[Caddy-url]: https://caddyserver.com/
