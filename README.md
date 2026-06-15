@@ -227,14 +227,11 @@ Distributed under the project_license. See `LICENSE.txt` for more information.
 <!-- CONTACT -->
 ## Contact
 
+Ebba de Groot - degrootebba@gmail.com
+
+Tey Cheng - pagnavathtey@gmail.com - (LinkedIn) https://www.linkedin.com/in/pagnavathtey-cheng-2858452b0
+
 Maia Grisch - maiagrisch@outlook.com
-
-
-Your Name - [@twitter_handle](https://twitter.com/twitter_handle) - email@email_client.com
-
-
-Your Name - [@twitter_handle](https://twitter.com/twitter_handle) - email@email_client.com
-
 
 Project Link: [https://github.com/bcgov/Capstone-2026](https://github.com/bcgov/Capstone-2026)
 
