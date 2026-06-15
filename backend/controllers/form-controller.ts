@@ -81,6 +81,75 @@ const createForm = async (req: Request, res: Response) => {
     });  
   }
 };
+
+const updateQuestion = async (req: Request, res: Response) => {
+  const { formId, questionId } = req.params;
+  const { field, value } = req.body;
+
+  try {
+    const updatedQuestion = await prisma.question.update({
+      where: { formId: Number(formId), id: Number(questionId) },
+      data: { [field]: value },
+    });
+    res.status(200).json(updatedQuestion);
+  } catch (error: any) {
+    console.error(error);
+    res.status(500).json({ error: 'Failed to update question', details: error.message });
+  }
+}
+
+const updateQuestionOrder = async (req: Request, res: Response) => {
+  const { formId, questionId } = req.params;
+  const { newOrder } = req.body;
+
+  try {
+    const questions = await prisma.question.findMany({
+      where: { formId: Number(formId) },
+      orderBy: { display_order: 'asc' },
+    });
+
+    const currentQuestion = questions.find(q => q.id === Number(questionId));
+    if (!currentQuestion) {
+      return res.status(404).json({ error: 'Question not found' });
+    }
+
+    const updatedQuestions = questions.map(q => {
+      if (q.id === Number(questionId)) {
+        return { ...q, display_order: newOrder };
+      }
+      if (q.display_order >= newOrder && q.id !== Number(questionId)) {
+        return { ...q, display_order: q.display_order + 1 };
+      }
+      return q;
+    });
+
+    await Promise.all(updatedQuestions.map(q =>
+      prisma.question.update({
+        where: { id: q.id },
+        data: { display_order: q.display_order },
+      })
+    ));
+
+    res.status(200).json({ message: 'Question order updated successfully' });
+  } catch (error: any) {
+    console.error(error);
+    res.status(500).json({ error: 'Failed to update question order', details: error.message });
+  }
+}
+
+const deleteQuestion = async (req: Request, res: Response) => {
+  const questionId = Number(req.params.questionId);
+  try {
+    await prisma.question.delete({
+      where: { id: questionId },
+    });
+    res.status(204).send();
+  } catch (error: any) {
+    console.error(error);
+    res.status(500).json({ error: 'Failed to delete question', details: error.message });
+  }
+};
+
 const deleteForm = async (req: Request, res: Response) => {
   const formId = Number(req.params.id);  
   try {
@@ -111,4 +180,4 @@ const test = async (req: Request, res: Response)=> {
   }
 }
 
-export {createForm, getFormById, getForms, deleteForm, test};
+export {createForm, getFormById, getForms, updateQuestion, updateQuestionOrder, deleteQuestion, deleteForm, test};
