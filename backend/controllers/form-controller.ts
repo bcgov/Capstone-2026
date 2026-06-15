@@ -56,94 +56,19 @@ const createForm = async (req: Request, res: Response) => {
           where: { id: req.body.id},
           update: {},
           create: {
-            name: "Color change form",
-            description: "A feedback form about the background color change button",
-            is_active: true,
-            version: 1,
+            name: req.body.name ?? "Untitled form",
+            description: req.body.description ?? "Unknown description",
+            is_active: req.body.is_active ?? false,
+            version: req.body.version ?? 1,
             questions: {
-              create: [
-                {
-                  questionType: QuestionType.TEXTAREA, 
-                  question_text: "How color showed up when you clicked the button?",
-                  is_required: true,
-                  display_order: 1,
-                },
-                {
-                  questionType: QuestionType.RADIO, 
-                  question_text: "Does the color affect the visibility of the other content of the page?",
-                  options:{
-                    create:[
-                    {
-                      displayOrder: 1,
-                      optionText: "Yes",
-                      optionValue: "yes"
-                    },
-                    {
-                      displayOrder: 2,
-                      optionText: "No",
-                      optionValue: "no"
-                    }
-                    ]
-                  },
-                  is_required: true,
-                  display_order: 2, 
-                },
-                {
-                  questionType: QuestionType.MULTIPLE_CHOICE,
-                  question_text: "If you answered 'Yes', which component does it affect most?",
-                  options:{
-                    create:[
-                    {
-                      displayOrder: 1,
-                      optionText: "Text visibility",
-                      optionValue: "text_visibility"
-                    },
-                    {
-                      displayOrder: 2,
-                      optionText: "Image visibility",
-                      optionValue: "image_visibility"
-                    }
-                     ]
-                   },
-                  is_required: true,
-                  display_order: 3,
-                },
-                {
-                  questionType: QuestionType.DROPDOWN,
-                  question_text: "City",
-                  options:{
-                    create:[
-                    {
-                      displayOrder: 1,
-                      optionText: "Vancouver",
-                      optionValue: "vancouver"
-                    },
-                    {
-                      displayOrder: 2,
-                      optionText: "Victoria",
-                      optionValue: "victoria"
-                    },
-                    {
-                      displayOrder: 3,
-                      optionText: "Kelowna",
-                      optionValue: "kelowna"
-                    }
-                     ]
-                   },
-                  is_required: true,
-                  display_order: 4,
-                },
-                {
-                  questionType: QuestionType.SLIDER,
-                  question_text: "On a scale of 1-5, how happy are you with the color change?",
-                  defaultAnswer: 3,
-                  is_required: true,
-                  display_order: 5,
-                }
-              ]
-            }
-          },
-      });
+              create: req.body.questions.map((question: any) => ({
+                questionType: question.questionType,
+                question_text: question.question_text,
+                is_required: question.is_required,
+                display_order: question.display_order,
+              }))
+            },
+          }});
     res.status(201).json(newForm); 
   } catch (error: any) {
     // 1. Logs the true message directly inside your active Docker 'api' console

@@ -5,12 +5,12 @@ const prisma = new PrismaClient()
 async function main() {
   console.log('🌱 Starting database seeding...')
   
-  // 1. Explicitly clear children first to prevent key/state locking issues
-  await prisma.answer.deleteMany({})
-  await prisma.questionOption.deleteMany({})
-  await prisma.question.deleteMany({})
-  //await prisma.feedbackSubmission.deleteMany({})
-  await prisma.feedbackForm.deleteMany({})
+  // // 1. Explicitly clear children first to prevent key/state locking issues
+  // await prisma.answer.deleteMany({})
+  // await prisma.questionOption.deleteMany({})
+  // await prisma.question.deleteMany({})
+  // //await prisma.feedbackSubmission.deleteMany({})
+  // await prisma.feedbackForm.deleteMany({})
 
   console.log('🧹 Existing database records cleared successfully.')
     const feedbackForm = await prisma.feedbackForm.upsert({
@@ -25,7 +25,7 @@ async function main() {
               create: [
                 {
                   questionType: QuestionType.TEXTAREA, 
-                  question_text: "How color showed up when you clicked the button?",
+                  question_text: "What color showed up when you clicked the button?",
                   is_required: true,
                   display_order: 1,
                 },
@@ -96,7 +96,7 @@ async function main() {
                 },
                 {
                   questionType: QuestionType.SLIDER,
-                  question_text: "On a scale of 1-5, how happy are you with the color change?",
+                  question_text: "How happy are you with the color change?",
                   is_required: true,
                   display_order: 5,
                 }
