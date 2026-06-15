@@ -16,7 +16,7 @@ function QuestionEditor({
     form
 }: Props) {
 
-    const updateQuestion = (
+    const updateQuestion = async(
         field: keyof Question,
         value: any
     ) => {
@@ -31,9 +31,18 @@ function QuestionEditor({
                     : q
             )
         }));
+        await fetch(`/api/form/${form.id}/${question.id}`, {
+            method: "PATCH",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                [field]: value,
+            })
+        });
     };
 
-    const moveQuestionUp = () => {
+    const moveQuestionUp = async() => {
         setForm((prev) => {
             const currentIndex = prev.questions.findIndex(
                 (q) => q.id === question.id
@@ -55,10 +64,20 @@ function QuestionEditor({
                     display_order: index + 1
                 }))
             };
+        });  
+
+        await fetch(`/api/form/${form.id}/${question.id}/order`, {
+            method: "PATCH",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                newOrder: question.display_order - 1,
+            })  
         });
     };
 
-    const moveQuestionDown = () => {
+    const moveQuestionDown = async() => {
         setForm((prev) => {
             const currentIndex = prev.questions.findIndex(
                 (q) => q.id === question.id
@@ -83,9 +102,19 @@ function QuestionEditor({
                 }))
             };
         });
+
+        await fetch(`/api/form/${form.id}/${question.id}/order`, {
+            method: "PATCH",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                newOrder: question.display_order + 1,
+            })  
+        });
     };
 
-    const deleteQuestion = () => {
+    const deleteQuestion = async() => {
         setForm((prev) => {
             const questions = prev.questions
                 .filter((q) => q.id !== question.id)
@@ -98,6 +127,10 @@ function QuestionEditor({
                 ...prev,
                 questions
             };
+        });
+
+        await fetch(`/api/form/${form.id}/${question.id}`, {
+            method: "DELETE",
         });
     };
 
