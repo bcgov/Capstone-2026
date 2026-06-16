@@ -49,7 +49,12 @@ function FormBuilderPage() {
             if (response.ok) {
                 const savedForm = await response.json();
                 console.log("Form saved successfully:", savedForm);
-                setForm(savedForm);
+                setForm({
+                    id: 0,
+                    name: "",
+                    description: "",
+                    questions: []
+                });
             } else {
                 console.error("Failed to save form:", await response.text());
             }
