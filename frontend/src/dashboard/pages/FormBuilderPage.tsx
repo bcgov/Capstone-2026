@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { Footer, Header, Button } from "@bcgov/design-system-react-components";
 import FormDetailsEditor from "../components/FormDetailsEditor";
 import QuestionList from "../components/QuestionList";
@@ -6,10 +6,14 @@ import type { FeedbackFormData } from "../../feedback/types/feedback";
 import { QuestionType } from "../../feedback/types/feedback";
 import { useNavigate } from "react-router-dom";
 import { useFeedback } from "../../feedback/FeedbackProvider";
+import SubmissionConfirmationModal from "../../feedback/SubmissionConfirmation";
 
 function FormBuilderPage() {
     const navigate = useNavigate();
     const { apiBaseUrl } = useFeedback();
+    const [showConfirmation, setShowConfirmation] = useState(false);
+    const [confirmationTitle, setConfirmationTitle] = useState("");
+    const [confirmationMessage, setConfirmationMessage] = useState("");
 
     const [form, setForm] = useState<FeedbackFormData>({
         id: 0,
@@ -47,10 +51,18 @@ function FormBuilderPage() {
 
             if (response.ok) {
                 const savedForm = await response.json();
-                console.log("Form saved successfully:", savedForm);
+
                 setForm(savedForm);
+                setConfirmationTitle("Form Saved");
+                setConfirmationMessage(
+                    `Your form "${savedForm.name}" was saved successfully.`
+                );
+                setShowConfirmation(true);
+
             } else {
-                console.error("Failed to save form:", await response.text());
+                setConfirmationTitle("Save Failed");
+                setConfirmationMessage(await response.text());
+                setShowConfirmation(true);
             }
         } catch (error) {
             console.error("Error saving form:", error);
@@ -164,6 +176,12 @@ function FormBuilderPage() {
                 </div>
 
             </div>
+            <SubmissionConfirmationModal
+                isOpen={showConfirmation}
+                title={confirmationTitle}
+                message={confirmationMessage}
+                onClose={() => setShowConfirmation(false)}
+            />
         </>
     );
 }

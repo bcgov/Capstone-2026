@@ -14,7 +14,7 @@ function QuestionList({
         <div>
             <h2 style={{ fontFamily: "BC Sans" }}>Questions</h2>
 
-            {form.questions.map((question) => (
+            {(form.questions ?? []).map((question) => (
                 <QuestionEditor
                     key={question.id}
                     question={question}
