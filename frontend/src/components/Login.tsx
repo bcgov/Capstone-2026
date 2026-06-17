@@ -46,8 +46,8 @@ function Login() {
                     value={password}
                     onChange={setPassword}
                 />
-
-                <Button type="submit" variant="primary">
+                <br></br>
+                <Button type="submit" variant="primary" style={{ margin: "30px" }}>
                     Sign in
                 </Button>
             </Form>
