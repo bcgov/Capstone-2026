@@ -16,7 +16,7 @@ function QuestionEditor({
     form
 }: Props) {
 
-    const updateQuestion = async(
+    const updateQuestion = async (
         field: keyof Question,
         value: any
     ) => {
@@ -42,7 +42,7 @@ function QuestionEditor({
         });
     };
 
-    const moveQuestionUp = async() => {
+    const moveQuestionUp = async () => {
         setForm((prev) => {
             const currentIndex = prev.questions.findIndex(
                 (q) => q.id === question.id
@@ -64,7 +64,7 @@ function QuestionEditor({
                     display_order: index + 1
                 }))
             };
-        });  
+        });
 
         await fetch(`/api/form/${form.id}/${question.id}/order`, {
             method: "PATCH",
@@ -73,11 +73,11 @@ function QuestionEditor({
             },
             body: JSON.stringify({
                 newOrder: question.display_order - 1,
-            })  
+            })
         });
     };
 
-    const moveQuestionDown = async() => {
+    const moveQuestionDown = async () => {
         setForm((prev) => {
             const currentIndex = prev.questions.findIndex(
                 (q) => q.id === question.id
@@ -110,11 +110,11 @@ function QuestionEditor({
             },
             body: JSON.stringify({
                 newOrder: question.display_order + 1,
-            })  
+            })
         });
     };
 
-    const deleteQuestion = async() => {
+    const deleteQuestion = async () => {
         setForm((prev) => {
             const questions = prev.questions
                 .filter((q) => q.id !== question.id)

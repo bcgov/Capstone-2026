@@ -4,7 +4,7 @@ import { PrismaClient, QuestionType } from '@prisma/client';
 const express = require('express');
 const prisma = new PrismaClient();
 
-const getFormById = async(req: Request, res: Response) => {
+const getFormById = async (req: Request, res: Response) => {
   const formId = Number(req.params.id);
   try {
     const form = await prisma.feedbackForm.findUnique({
@@ -49,36 +49,40 @@ const getForms = async (req: Request, res: Response) => {
 /**
  * @summary This is the POST call to create the form. 
  * Updated to handle explicit stringification errors and prevent crashing.
- */ 
+ */
 const createForm = async (req: Request, res: Response) => {
   try {
     const newForm = await prisma.feedbackForm.upsert({
-          where: { id: req.body.id},
-          update: {},
-          create: {
-            name: req.body.name ?? "Untitled form",
-            description: req.body.description ?? "Unknown description",
-            is_active: req.body.is_active ?? false,
-            version: req.body.version ?? 1,
-            questions: {
-              create: req.body.questions.map((question: any) => ({
-                questionType: question.questionType,
-                question_text: question.question_text,
-                is_required: question.is_required,
-                display_order: question.display_order,
-              }))
-            },
-          }});
-    res.status(201).json(newForm); 
+      where: { id: req.body.id },
+      update: {},
+      create: {
+        name: req.body.name ?? "Untitled form",
+        description: req.body.description ?? "Unknown description",
+        is_active: req.body.is_active ?? false,
+        version: req.body.version ?? 1,
+        questions: {
+          create: req.body.questions.map((question: any) => ({
+            questionType: question.questionType,
+            question_text: question.question_text,
+            is_required: question.is_required,
+            display_order: question.display_order,
+          }))
+        }
+      },
+      include: {
+        questions: true
+      }
+    });
+    res.status(201).json(newForm);
   } catch (error: any) {
     // 1. Logs the true message directly inside your active Docker 'api' console
-    console.error("❌ CREATE FORM DB CRASH:", error); 
-    
+    console.error("❌ CREATE FORM DB CRASH:", error);
+
     // 2. Returns the true readable error text back to your curl terminal response
-    res.status(500).json({ 
-      error: "Failed to create form", 
-      message: error.message || error 
-    });  
+    res.status(500).json({
+      error: "Failed to create form",
+      message: error.message || error
+    });
   }
 };
 
@@ -151,7 +155,7 @@ const deleteQuestion = async (req: Request, res: Response) => {
 };
 
 const deleteForm = async (req: Request, res: Response) => {
-  const formId = Number(req.params.id);  
+  const formId = Number(req.params.id);
   try {
     await prisma.feedbackForm.delete({
       where: { id: formId },
@@ -163,7 +167,7 @@ const deleteForm = async (req: Request, res: Response) => {
   }
 };
 
-const test = async (req: Request, res: Response)=> {
+const test = async (req: Request, res: Response) => {
   try {
     const testAdd = await prisma.feedbackForm.create({ data: { name: "Test" } });
     console.log(testAdd);
@@ -180,4 +184,4 @@ const test = async (req: Request, res: Response)=> {
   }
 }
 
-export {createForm, getFormById, getForms, updateQuestion, updateQuestionOrder, deleteQuestion, deleteForm, test};
+export { createForm, getFormById, getForms, updateQuestion, updateQuestionOrder, deleteQuestion, deleteForm, test };
