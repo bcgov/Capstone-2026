@@ -49,7 +49,8 @@ function SubmissionConfirmationModal({
                         style={{
                             fontFamily: "BC Sans",
                             fontSize: "0.95rem",
-                            margin: 0
+                            margin: 0,
+                            whiteSpace: 'pre-line'
                         }}
                     >
                         {message}

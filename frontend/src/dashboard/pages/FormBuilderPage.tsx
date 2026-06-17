@@ -55,7 +55,8 @@ function FormBuilderPage() {
 
                 setConfirmationTitle("Form Saved");
                 setConfirmationMessage(
-                    `Your form "${savedForm.name}" (ID: ${savedForm.id}) was saved successfully.`
+                    `Your form "${savedForm.name}" was saved successfully.
+                    \n (ID: ${savedForm.id})`
                 );
                 setShowConfirmation(true);
 
