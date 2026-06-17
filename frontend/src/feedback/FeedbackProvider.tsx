@@ -8,7 +8,6 @@ import {
 import FeedbackForm from "./FeedbackForm";
 import FeedbackPrompt from "./FeedbackPrompt";
 import type { FeedbackFormData } from "./types/feedback";
-import SubmissionConfirmationModal from "./SubmissionConfirmation";
 
 type FeedbackContextType = {
     apiBaseUrl: string;
@@ -33,11 +32,6 @@ export function FeedbackProvider({ children, apiBaseUrl }: Props) {
     const [formData, setFormData] = useState<FeedbackFormData | null>(null);
     const [isPromptOpen, setIsPromptOpen] = useState(false);
     const [isFormOpen, setIsFormOpen] = useState(false);
-    const [submissionStatus, setSubmissionStatus] = useState({
-        open: false,
-        success: false,
-        message: ""
-    });
 
     const openFeedbackForm = async (formId: number) => {
         try {
@@ -75,26 +69,10 @@ export function FeedbackProvider({ children, apiBaseUrl }: Props) {
                         formData={formData}
                         apiBaseUrl={apiBaseUrl}
                         onSuccess={(id) => {
-                            setIsFormOpen(false);
-                            setIsPromptOpen(false);
-                            setFormData(null);
-
-                            setSubmissionStatus({
-                                open: true,
-                                success: true,
-                                message: `Submission saved! ID: ${id}`
-                            });
+                            console.log("Submission:", id);
                         }}
                     />
                 </>
-            )}
-            {submissionStatus?.open && (
-                <SubmissionConfirmationModal
-                    isOpen={submissionStatus.open}
-                    title={submissionStatus.success ? "Success" : "Error"}
-                    message={submissionStatus.message}
-                    onClose={() => setSubmissionStatus(null)}
-                />
             )}
         </FeedbackContext.Provider>
     );
