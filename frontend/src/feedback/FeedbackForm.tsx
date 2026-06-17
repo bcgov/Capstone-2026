@@ -3,20 +3,12 @@ import {
     Button,
     Dialog,
     Modal,
-    Form,
-    TextField,
-    RadioGroup,
-    Radio,
-    Select,
-    CheckboxGroup,
-    Checkbox
+    Form
 } from "@bcgov/design-system-react-components";
-
+import FormRenderer from "./FormRenderer";
 import { useEffect, useState } from "react";
-import type { FormattedAnswer, FeedbackFormProps, Question } from "./types/feedback";
+import type { FormattedAnswer, FeedbackFormProps } from "./types/feedback";
 import { QuestionType } from "./types/feedback";
-
-import HappinessSlider from "./HappinessSlider";
 import SubmissionConfirmationModal from "./SubmissionConfirmation";
 import { useAuth } from "../auth/AuthContext";
 
@@ -162,112 +154,11 @@ function FeedbackForm({
                             fontFamily: "BC Sans"
                         }}
                     >
-                        {formData.questions.map((question: Question) => {
-                            switch (question.questionType) {
-                                case QuestionType.TEXTAREA:
-                                    return (
-                                        <TextField
-                                            key={question.id}
-                                            label={question.question_text}
-                                            isRequired={question.is_required}
-                                            onChange={(value) =>
-                                                setAnswers((prev) => ({
-                                                    ...prev,
-                                                    [question.id]: value
-                                                }))
-                                            }
-                                        />
-                                    );
-
-                                case QuestionType.RADIO:
-                                    return (
-                                        <RadioGroup
-                                            key={question.id}
-                                            label={question.question_text}
-                                            orientation="horizontal"
-                                            onChange={(value) =>
-                                                setAnswers((prev) => ({
-                                                    ...prev,
-                                                    [question.id]: value
-                                                }))
-                                            }
-                                        >
-                                            {question.options?.map((option) => (
-                                                <Radio
-                                                    key={option.id}
-                                                    value={option.optionValue}
-                                                >
-                                                    {option.optionText}
-                                                </Radio>
-                                            ))}
-                                        </RadioGroup>
-                                    );
-
-                                case QuestionType.DROPDOWN:
-                                    return (
-                                        <Select
-                                            key={question.id}
-                                            label={question.question_text}
-                                            items={
-                                                question.options?.map((option) => ({
-                                                    id: option.optionValue,
-                                                    label: option.optionText
-                                                })) || []
-                                            }
-                                            onChange={(value) =>
-                                                setAnswers((prev) => ({
-                                                    ...prev,
-                                                    [question.id]: value
-                                                }))
-                                            }
-                                        />
-                                    );
-
-                                case QuestionType.SLIDER:
-                                    return (
-                                        <HappinessSlider
-                                            key={question.id}
-                                            question={question.question_text}
-                                            value={
-                                                answers[question.id] ??
-                                                question.defaultAnswer ??
-                                                3
-                                            }
-                                            onChange={(value) =>
-                                                setAnswers((prev) => ({
-                                                    ...prev,
-                                                    [question.id]: value
-                                                }))
-                                            }
-                                        />
-                                    );
-                                case QuestionType.MULTIPLE_CHOICE:
-                                    return (
-                                        <CheckboxGroup
-                                            key={question.id}
-                                            label={question.question_text}
-                                            orientation="horizontal"
-                                            onChange={(checkedValue) =>
-                                                setAnswers((prev) => ({
-                                                    ...prev,
-                                                    [question.id]: checkedValue
-                                                }))
-                                            }
-                                        >
-                                            {question.options?.map((option) => (
-                                                <Checkbox
-                                                    key={option.id}
-                                                    value={option.optionValue}
-                                                >
-                                                    {option.optionText}
-                                                </Checkbox>
-                                            ))}
-                                        </CheckboxGroup>
-                                    );
-                                default:
-                                    return null;
-                            }
-                        })}
+                        <FormRenderer
+                            formData={formData}
+                            answers={answers}
+                            setAnswers={setAnswers}
+                        />
 
                         <ButtonGroup>
                             <Button type="submit" variant="primary">

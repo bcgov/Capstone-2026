@@ -7,11 +7,16 @@ import { QuestionType } from "../../feedback/types/feedback";
 import { useNavigate } from "react-router-dom";
 import { useFeedback } from "../../feedback/FeedbackProvider";
 import { useAuth } from "../../auth/AuthContext";
+import SubmissionConfirmationModal from "../../feedback/SubmissionConfirmation";
+import FormPreview from "../components/FormPreview";
 
 function FormBuilderPage() {
     const navigate = useNavigate();
     const { apiBaseUrl } = useFeedback();
     const { userId, logout, isAuthenticated } = useAuth();
+    const [showConfirmation, setShowConfirmation] = useState(false);
+    const [confirmationTitle, setConfirmationTitle] = useState("");
+    const [confirmationMessage, setConfirmationMessage] = useState("");
 
     const [form, setForm] = useState<FeedbackFormData>({
         id: 0,
@@ -49,10 +54,25 @@ function FormBuilderPage() {
 
             if (response.ok) {
                 const savedForm = await response.json();
+
+                setConfirmationTitle("Form Saved");
+                setConfirmationMessage(
+                    `Your form "${savedForm.name}" was saved successfully.
+                    \n (ID: ${savedForm.id})`
+                );
+                setShowConfirmation(true);
+
                 console.log("Form saved successfully:", savedForm);
-                setForm(savedForm);
+                setForm({
+                    id: 0,
+                    name: "",
+                    description: "",
+                    questions: []
+                });
             } else {
-                console.error("Failed to save form:", await response.text());
+                setConfirmationTitle("Save Failed");
+                setConfirmationMessage(await response.text());
+                setShowConfirmation(true);
             }
         } catch (error) {
             console.error("Error saving form:", error);
@@ -154,26 +174,20 @@ function FormBuilderPage() {
                         </div>
                     </div>
 
-                    {/* RIGHT PANEL - JSON PREVIEW */}
-                    <div
-                        style={{
-                            background: "white",
-                            borderRadius: "8px",
-                            padding: "1rem",
-                            boxShadow: "0 1px 3px rgba(0,0,0,0.1)"
-                        }}
-                    >
-                        <h2 style={{ fontFamily: "BC Sans" }}>Preview JSON</h2>
-
-                        <pre
+                    {/* RIGHT PANEL - Form PREVIEW */}
+                    <div>
+                        <h2 style={{ fontFamily: "BC Sans" }}>Preview Form</h2>
+                        <div
                             style={{
-                                background: "#f4f4f4",
+                                background: "white",
+                                borderRadius: "8px",
                                 padding: "1rem",
-                                overflow: "auto"
-                            }}
-                        >
-                            {JSON.stringify(form, null, 2)}
-                        </pre>
+                                boxShadow: "0 1px 3px rgba(0,0,0,0.1)"
+                            }}>
+                            <FormPreview
+                                formData={form}
+                            />
+                        </div>
                     </div>
                 </div>
                 <div>
@@ -181,6 +195,12 @@ function FormBuilderPage() {
                 </div>
 
             </div>
+            <SubmissionConfirmationModal
+                isOpen={showConfirmation}
+                title={confirmationTitle}
+                message={confirmationMessage}
+                onClose={() => setShowConfirmation(false)}
+            />
         </>
     );
 }
