@@ -6,6 +6,7 @@ import type { FeedbackFormData } from "../../feedback/types/feedback";
 import { QuestionType } from "../../feedback/types/feedback";
 import { useNavigate } from "react-router-dom";
 import { useFeedback } from "../../feedback/FeedbackProvider";
+import FormPreview from "../components/FormPreview";
 
 function FormBuilderPage() {
     const navigate = useNavigate();
@@ -15,7 +16,7 @@ function FormBuilderPage() {
         id: 0,
         name: "",
         description: "",
-        questions: []  
+        questions: []
     });
 
     const addQuestion = () => {
@@ -35,7 +36,7 @@ function FormBuilderPage() {
         }));
     };
 
-    const handleSave = async() => {
+    const handleSave = async () => {
         try {
             const response = await fetch(`${apiBaseUrl}/api/form`, {
                 method: "POST",
@@ -48,13 +49,18 @@ function FormBuilderPage() {
             if (response.ok) {
                 const savedForm = await response.json();
                 console.log("Form saved successfully:", savedForm);
-                setForm(savedForm); 
+                setForm({
+                    id: 0,
+                    name: "",
+                    description: "",
+                    questions: []
+                });
             } else {
                 console.error("Failed to save form:", await response.text());
             }
         } catch (error) {
             console.error("Error saving form:", error);
-        }       
+        }
     };
     return (
         <>
@@ -137,26 +143,20 @@ function FormBuilderPage() {
                         </div>
                     </div>
 
-                    {/* RIGHT PANEL - JSON PREVIEW */}
-                    <div
-                        style={{
-                            background: "white",
-                            borderRadius: "8px",
-                            padding: "1rem",
-                            boxShadow: "0 1px 3px rgba(0,0,0,0.1)"
-                        }}
-                    >
-                        <h2 style={{ fontFamily: "BC Sans" }}>Preview JSON</h2>
-
-                        <pre
+                    {/* RIGHT PANEL - Form PREVIEW */}
+                    <div>
+                        <h2 style={{ fontFamily: "BC Sans" }}>Preview Form</h2>
+                        <div
                             style={{
-                                background: "#f4f4f4",
+                                background: "white",
+                                borderRadius: "8px",
                                 padding: "1rem",
-                                overflow: "auto"
-                            }}
-                        >
-                            {JSON.stringify(form, null, 2)}
-                        </pre>
+                                boxShadow: "0 1px 3px rgba(0,0,0,0.1)"
+                            }}>
+                            <FormPreview
+                                formData={form}
+                            />
+                        </div>
                     </div>
                 </div>
                 <div>
