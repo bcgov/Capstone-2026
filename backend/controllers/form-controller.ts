@@ -67,10 +67,10 @@ const createForm = async (req: Request, res: Response) => {
             is_required: question.is_required,
             display_order: question.display_order,
           }))
-        },
-        include: {
-          questions: true
         }
+      },
+      include: {
+        questions: true
       }
     });
     res.status(201).json(newForm);
