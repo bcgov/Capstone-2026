@@ -11,7 +11,7 @@ import { useAuth } from "../../auth/AuthContext";
 function FormBuilderPage() {
     const navigate = useNavigate();
     const { apiBaseUrl } = useFeedback();
-    const { userId } = useAuth();
+    const { userId, logout, isAuthenticated } = useAuth();
 
     const [form, setForm] = useState<FeedbackFormData>({
         id: 0,
@@ -68,6 +68,21 @@ function FormBuilderPage() {
                     >
                         Test App
                     </Button>
+                    {isAuthenticated ? (
+                        <Button
+                            variant="secondary"
+                            onPress={logout}
+                        >
+                            Logout
+                        </Button>
+                    ) : (
+                        <Button
+                            variant="primary"
+                            onPress={() => navigate("/login")}
+                        >
+                            Login
+                        </Button>
+                    )}
                 </Header>
                 <div
                     style={{

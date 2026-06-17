@@ -24,33 +24,65 @@ function Login() {
     };
 
     return (
-        <div style={{
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            height: "100vh",
-            fontFamily: "BC Sans"
-        }}>
-            <Form onSubmit={handleLogin} style={{ width: "320px" }}>
-                <h2>Login</h2>
+        <div
+            style={{
+                minHeight: "100vh",
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                backgroundColor: "#f6f6f6",
+                fontFamily: "BC Sans",
+                padding: "1rem"
+            }}
+        >
+            <div
+                style={{
+                    backgroundColor: "white",
+                    padding: "2rem",
+                    borderRadius: "8px",
+                    boxShadow: "0 2px 8px rgba(0,0,0,0.1)",
+                    width: "100%",
+                    maxWidth: "420px"
+                }}
+            >
+                <h1
+                    style={{
+                        marginTop: 0,
+                        marginBottom: "0.5rem",
+                        fontSize: "2rem"
+                    }}
+                >
+                    Sign In
+                </h1>
+                <Form
+                    onSubmit={handleLogin}
+                    style={{
+                        display: "flex",
+                        flexDirection: "column",
+                        gap: "1rem"
+                    }}
+                >
+                    <TextField
+                        label="Username"
+                        value={username}
+                        onChange={setUsername}
+                    />
 
-                <TextField
-                    label="Username"
-                    value={username}
-                    onChange={setUsername}
-                />
+                    <TextField
+                        label="Password"
+                        type="password"
+                        value={password}
+                        onChange={setPassword}
+                    />
 
-                <TextField
-                    label="Password"
-                    type="password"
-                    value={password}
-                    onChange={setPassword}
-                />
-                <br></br>
-                <Button type="submit" variant="primary" style={{ margin: "30px" }}>
-                    Sign in
-                </Button>
-            </Form>
+                    <Button
+                        type="submit"
+                        variant="primary"
+                    >
+                        Sign In
+                    </Button>
+                </Form>
+            </div>
         </div>
     );
 }
