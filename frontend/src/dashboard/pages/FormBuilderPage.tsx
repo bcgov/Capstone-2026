@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { Footer, Header, Button } from "@bcgov/design-system-react-components";
 import FormDetailsEditor from "../components/FormDetailsEditor";
 import QuestionList from "../components/QuestionList";
@@ -7,6 +7,7 @@ import { QuestionType } from "../../feedback/types/feedback";
 import { useNavigate } from "react-router-dom";
 import { useFeedback } from "../../feedback/FeedbackProvider";
 import SubmissionConfirmationModal from "../../feedback/SubmissionConfirmation";
+import FormPreview from "../components/FormPreview";
 
 function FormBuilderPage() {
     const navigate = useNavigate();
@@ -52,13 +53,19 @@ function FormBuilderPage() {
             if (response.ok) {
                 const savedForm = await response.json();
 
-                setForm(savedForm);
                 setConfirmationTitle("Form Saved");
                 setConfirmationMessage(
-                    `Your form "${savedForm.name}" was saved successfully.`
+                    `Your form "${savedForm.name}" (ID: ${savedForm.id}) was saved successfully.`
                 );
                 setShowConfirmation(true);
 
+                console.log("Form saved successfully:", savedForm);
+                setForm({
+                    id: 0,
+                    name: "",
+                    description: "",
+                    questions: []
+                });
             } else {
                 setConfirmationTitle("Save Failed");
                 setConfirmationMessage(await response.text());
@@ -149,26 +156,20 @@ function FormBuilderPage() {
                         </div>
                     </div>
 
-                    {/* RIGHT PANEL - JSON PREVIEW */}
-                    <div
-                        style={{
-                            background: "white",
-                            borderRadius: "8px",
-                            padding: "1rem",
-                            boxShadow: "0 1px 3px rgba(0,0,0,0.1)"
-                        }}
-                    >
-                        <h2 style={{ fontFamily: "BC Sans" }}>Preview JSON</h2>
-
-                        <pre
+                    {/* RIGHT PANEL - Form PREVIEW */}
+                    <div>
+                        <h2 style={{ fontFamily: "BC Sans" }}>Preview Form</h2>
+                        <div
                             style={{
-                                background: "#f4f4f4",
+                                background: "white",
+                                borderRadius: "8px",
                                 padding: "1rem",
-                                overflow: "auto"
-                            }}
-                        >
-                            {JSON.stringify(form, null, 2)}
-                        </pre>
+                                boxShadow: "0 1px 3px rgba(0,0,0,0.1)"
+                            }}>
+                            <FormPreview
+                                formData={form}
+                            />
+                        </div>
                     </div>
                 </div>
                 <div>
