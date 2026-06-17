@@ -25,19 +25,12 @@ function FormsPage() {
 
     const handleView = async (id: number) => {
         try {
-            const response = await fetch(
-                `${apiBaseUrl}/api/form/${id}`
-            );
-
+            const response = await fetch(`${apiBaseUrl}/api/form/${id}`);
             const data = await response.json();
-
             setSelectedForm(data);
             setIsPreviewOpen(true);
         } catch (error) {
-            console.error(
-                "Failed to load form",
-                error
-            );
+            console.error("Failed to load form", error);
         }
     };
 
@@ -55,9 +48,7 @@ function FormsPage() {
     }, []);
 
     const deleteForm = async (id: number) => {
-        if (!window.confirm("Delete this form?")) {
-            return;
-        }
+        if (!window.confirm("Delete this form?")) { return; }
 
         try {
             const response = await fetch(`${apiBaseUrl}/api/form/${id}`,
@@ -131,11 +122,7 @@ function FormsPage() {
                                         marginBottom: "0.5rem"
                                     }}
                                 >
-                                    <h3
-                                        style={{
-                                            margin: 0
-                                        }}
-                                    >
+                                    <h3 style={{ margin: 0 }}>
                                         {form.name}
                                     </h3>
 
@@ -201,9 +188,7 @@ function FormsPage() {
                             }}
                         >
                             {selectedForm && (
-                                <FormPreview
-                                    formData={selectedForm}
-                                />
+                                <FormPreview formData={selectedForm} />
                             )}
                         </div>
                     </Dialog>

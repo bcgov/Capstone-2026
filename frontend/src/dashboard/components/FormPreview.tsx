@@ -15,9 +15,7 @@ function FormPreview({ formData }: { formData: FeedbackFormData; }) {
                 gap: "1rem"
             }}
         >
-            <span
-                style={{ font: "700 1.25rem/2.125rem 'BC Sans'" }}
-            >
+            <span style={{ font: "700 1.25rem/2.125rem 'BC Sans'" }}>
                 Tell us about your experience!
             </span>
 
