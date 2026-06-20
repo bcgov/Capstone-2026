@@ -6,12 +6,14 @@ import type { FeedbackFormData } from "../../feedback/types/feedback";
 import { QuestionType } from "../../feedback/types/feedback";
 import { useNavigate } from "react-router-dom";
 import { useFeedback } from "../../feedback/FeedbackProvider";
+import { useAuth } from "../../auth/AuthContext";
 import SubmissionConfirmationModal from "../../feedback/SubmissionConfirmation";
 import FormPreview from "../components/FormPreview";
 
 function FormBuilderPage() {
     const navigate = useNavigate();
     const { apiBaseUrl } = useFeedback();
+    const { userId, logout, isAuthenticated } = useAuth();
     const [showConfirmation, setShowConfirmation] = useState(false);
     const [confirmationTitle, setConfirmationTitle] = useState("");
     const [confirmationMessage, setConfirmationMessage] = useState("");
@@ -86,12 +88,21 @@ function FormBuilderPage() {
                     >
                         Test App
                     </Button>
-                    <Button
-                        variant="primary"
-                        onPress={() => navigate("/dashboard/forms")}
-                    >
-                        View Forms
-                    </Button>
+                    {isAuthenticated ? (
+                        <Button
+                            variant="secondary"
+                            onPress={logout}
+                        >
+                            Logout
+                        </Button>
+                    ) : (
+                        <Button
+                            variant="primary"
+                            onPress={() => navigate("/login")}
+                        >
+                            Login
+                        </Button>
+                    )}
                 </Header>
                 <div
                     style={{

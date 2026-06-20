@@ -1,6 +1,5 @@
 import { Button, Modal, Dialog } from "@bcgov/design-system-react-components";
 import '@bcgov/bc-sans/css/BC_Sans.css';
-
 interface Props {
     isOpen: boolean;
     setIsOpen: (open: boolean) => void;

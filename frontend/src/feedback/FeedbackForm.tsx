@@ -4,6 +4,8 @@ import { useEffect, useState } from "react";
 import type { FormattedAnswer, FeedbackFormProps } from "./types/feedback";
 import { QuestionType } from "./types/feedback";
 import SubmissionConfirmationModal from "./SubmissionConfirmation";
+import { useAuth } from "../auth/AuthContext";
+
 
 function FeedbackForm({
     isFormOpen,
@@ -19,6 +21,8 @@ function FeedbackForm({
     const [confirmationMessage, setConfirmationMessage] = useState("");
     const [confirmationTitle, setConfirmationTitle] = useState("");
     const [isSuccess, setIsSuccess] = useState(false);
+    const { userId } = useAuth();
+
 
     useEffect(() => {
         const initialAnswers: Record<number, any> = {};
