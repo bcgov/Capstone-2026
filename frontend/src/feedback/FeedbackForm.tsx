@@ -1,10 +1,4 @@
-import {
-    ButtonGroup,
-    Button,
-    Dialog,
-    Modal,
-    Form
-} from "@bcgov/design-system-react-components";
+import { ButtonGroup, Button, Dialog, Modal, Form } from "@bcgov/design-system-react-components";
 import FormRenderer from "./FormRenderer";
 import { useEffect, useState } from "react";
 import type { FormattedAnswer, FeedbackFormProps } from "./types/feedback";
@@ -138,9 +132,7 @@ function FeedbackForm({
                     overflowY: "auto",
                     overflowX: "hidden"
                 }}>
-                    <span
-                        style={{ font: "700 1.25rem/2.125rem 'BC Sans'" }}
-                    >
+                    <span style={{ font: "700 1.25rem/2.125rem 'BC Sans'" }}>
                         Tell us about your experience!
                     </span>
 

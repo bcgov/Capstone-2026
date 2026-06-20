@@ -8,18 +8,16 @@ function FormPreview({ formData }: { formData: FeedbackFormData; }) {
     return (
         <div
             style={{
+                maxWidth: "500px",
+                margin: "0 auto",
                 display: "flex",
                 flexDirection: "column",
                 gap: "1rem"
             }}
         >
-            <h3 style={{ fontFamily: "BC Sans" }}>
-                {formData.name || "Untitled Form"}
-            </h3>
-
-            <p style={{ fontFamily: "BC Sans" }}>
-                {formData.description}
-            </p>
+            <span style={{ font: "700 1.25rem/2.125rem 'BC Sans'" }}>
+                Tell us about your experience!
+            </span>
 
             <FormRenderer
                 formData={formData}

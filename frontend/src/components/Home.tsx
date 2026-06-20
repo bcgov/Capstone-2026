@@ -46,9 +46,9 @@ function Home() {
         <Header title={"Capstone 2026 - Test App"}>
           <Button
             variant="primary"
-            onPress={() => navigate("/dashboard")}
+            onPress={() => navigate("/dashboard/formBuilder")}
           >
-            Form Builder
+            Dashboard
           </Button>
           {isAuthenticated ? (
               <Button

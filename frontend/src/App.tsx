@@ -3,6 +3,7 @@ import Home from "./components/Home.tsx";
 import Login from "./components/Login.tsx"
 import PrivateRoute from "./components/PrivateRoute.tsx";
 import FormBuilderPage from "./dashboard/pages/FormBuilderPage";
+import FormsPage from "./dashboard/pages/FormsPage";
 import "./App.css";
 import { AuthProvider } from "./auth/AuthContext.tsx";
 
