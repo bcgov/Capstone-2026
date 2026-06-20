@@ -86,6 +86,12 @@ function FormBuilderPage() {
                     >
                         Test App
                     </Button>
+                    <Button
+                        variant="primary"
+                        onPress={() => navigate("/dashboard/forms")}
+                    >
+                        View Forms
+                    </Button>
                 </Header>
                 <div
                     style={{
@@ -98,7 +104,6 @@ function FormBuilderPage() {
                         fontFamily: "BC Sans"
                     }}
                 >
-                    {/* LEFT PANEL - BUILDER */}
                     <div
                         style={{
                             display: "flex",
@@ -108,7 +113,6 @@ function FormBuilderPage() {
                         }}
                     >
 
-                        {/* FORM SETTINGS */}
                         <div
                             style={{
                                 background: "white",
@@ -120,7 +124,6 @@ function FormBuilderPage() {
                             <FormDetailsEditor form={form} setForm={setForm} />
                         </div>
 
-                        {/* QUESTIONS */}
                         <div
                             style={{
                                 background: "white",
@@ -157,7 +160,6 @@ function FormBuilderPage() {
                         </div>
                     </div>
 
-                    {/* RIGHT PANEL - Form PREVIEW */}
                     <div>
                         <h2 style={{ fontFamily: "BC Sans" }}>Preview Form</h2>
                         <div
