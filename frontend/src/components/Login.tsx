@@ -11,17 +11,22 @@ function Login() {
     const [password, setPassword] = useState("");
 
 
-    const handleLogin = (e: React.FormEvent) => {
-        e.preventDefault();
+const handleLogin = async (e: React.FormEvent) => {
+    e.preventDefault();
 
-        if (!username || !password) return;
+    const res = await fetch("http://localhost:3000/api/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+            username,
+            password
+        })
+    });
 
-        const id = crypto.randomUUID();
-
-        login(id);
-
-        navigate("/dashboard");
-    };
+    const data = await res.json();
+    login(data.id);
+    navigate("/dashboard");
+};
 
     return (
         <div
