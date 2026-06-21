@@ -16,7 +16,7 @@ function FormPreview({ formData }: { formData: FeedbackFormData; }) {
             }}
         >
             <span style={{ font: "700 1.25rem/2.125rem 'BC Sans'" }}>
-                Tell us about your experience!
+                {formData.name || "Tell us about your experience!"}
             </span>
 
             <FormRenderer
