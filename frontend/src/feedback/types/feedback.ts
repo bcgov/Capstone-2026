@@ -1,12 +1,12 @@
 export enum QuestionType {
-    TEXTAREA = "TEXTAREA",
-    RADIO = "RADIO",
-    DROPDOWN = "DROPDOWN",
-    BOOLEAN = "BOOLEAN",
-    MULTIPLE_CHOICE = "MULTIPLE_CHOICE",
-    CHECKBOX = "CHECKBOX",
-    NPS = "NPS",
-    SLIDER = "SLIDER",
+    TEXTAREA = "Textarea",
+    RADIO = "Radio button",
+    DROPDOWN = "Dropdown menu",
+    BOOLEAN = "Boolean",
+    MULTIPLE_CHOICE = "Multiple choice",
+    CHECKBOX = "Checkbox",
+    NPS = "Net Promoter Score",
+    SLIDER = "Slider",
 };
 
 export type FormattedAnswer = {
