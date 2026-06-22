@@ -24,13 +24,27 @@ model User {
   createdAt    DateTime              @default(now())
 }
 
+
+model Developer {
+  id              Int               @id @default(autoincrement())
+  email           String?           @unique
+  name            String?
+  passwordHash    String
+  cov_reports     CoverageReport[]
+
+  createdAt    DateTime              @default(now())
+  FeedbackForm    FeedbackForm[]
+}
+
 model CoverageReport {
   id                  Int      @id @default(autoincrement())
   createdAt           DateTime @default(now())
   User                User?    @relation(fields: [userId], references: [id])
+  Developer           Developer?  @relation(fields: [devId], references: [id])
   coverage_percentage Int?
   coverage_picture    String? 
   userId              Int?
+  devId               Int?
 }
 
 model FeedbackForm {
@@ -39,11 +53,12 @@ model FeedbackForm {
   description         String?
   is_active           Boolean  @default(true)
   version             Int      @default(1)
-
   questions           Question[]
   submissions         FeedbackSubmission[]
 
   createdAt           DateTime @default(now())
+  owner               Developer?   @relation(fields: [devId], references: [id])
+  devId               Int?
 }
 
 //Enum for question type to prevent bad data 

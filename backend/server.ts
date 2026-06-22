@@ -4,6 +4,7 @@ import healthRouter from "./routes/health-router";
 import submissionRouter from './routes/submission-router';
 import userRouter from './routes/user-router';
 import { createForm } from './controllers/form-controller';
+import devRouter from './routes/dev-router';
 
 const port = 3000;
 
@@ -11,6 +12,7 @@ app.use('/api', healthRouter);
 app.use('/api', dataRouter);
 app.use('/api', submissionRouter);
 app.use('/api', userRouter);
+app.use('/api', devRouter);
 
 app.get('/hello', (req, res) => {
   res.send('hello world');
