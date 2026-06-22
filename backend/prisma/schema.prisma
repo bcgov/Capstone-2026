@@ -24,6 +24,18 @@ model User {
   createdAt    DateTime              @default(now())
 }
 
+
+model Developer {
+  id              Int               @id @default(autoincrement())
+  email           String?           @unique
+  name            String?
+  passwordHash    String
+  cov_reports     CoverageReport[]
+
+  createdAt    DateTime              @default(now())
+  FeedbackForm    FeedbackForm[]
+}
+
 model CoverageReport {
   id                  Int      @id @default(autoincrement())
   createdAt           DateTime @default(now())
@@ -45,6 +57,8 @@ model FeedbackForm {
   submissions         FeedbackSubmission[]
 
   createdAt           DateTime @default(now())
+  owner               Developer?   @relation(fields: [devId], references: [id])
+  devId               Int?
 }
 
 //Enum for question type to prevent bad data 
@@ -137,14 +151,4 @@ model QuestionOption {
 model UserData {
   id              Int       @id @default(autoincrement())
   buttonClickCount  Int
-}
-
-model Developer {
-  id              Int               @id @default(autoincrement())
-  email           String?           @unique
-  name            String?
-  passwordHash    String
-  cov_reports     CoverageReport[]
-
-  createdAt    DateTime              @default(now())
 }

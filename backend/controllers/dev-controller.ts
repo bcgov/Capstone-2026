@@ -4,7 +4,7 @@ import { PrismaClient, Developer } from '@prisma/client';
 const express = require('express');
 const prisma = new PrismaClient();
 
-const getDevData = async (req: Request, res: Response) => {
+const getAllDev= async (req: Request, res: Response) => {
   try {
     const data = await prisma.developer.findMany();
     res.status(200).json(data);
@@ -29,6 +29,24 @@ const createDev = async (req: Request, res: Response) => {
     res.json({ id: developer.id });
 };
 
+const getDevById = async (req: Request, res: Response) => {
+    const { id } = req.params;
+
+    try {
+        const developer = await prisma.developer.findUnique({
+            where: { id: Number(id) }
+        });
+
+        if (developer) {
+            res.status(200).json(developer);
+        } else {
+            res.status(404).json({ error: 'Developer not found' });
+        }
+    } catch (error: any) {
+        res.status(500).json({ error: 'Failed to fetch developer', details: error.message });
+    }
+};
+
 const deleteDev = async (req: Request, res: Response) => {
     const devId = Number(req.params.id);
 
@@ -39,4 +57,4 @@ const deleteDev = async (req: Request, res: Response) => {
     res.json({ message: "Developer account deleted" });
 };
 
-export { getDevData, createDev, deleteDev };
+export { getAllDev, getDevById,createDev, deleteDev };
