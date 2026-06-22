@@ -66,6 +66,13 @@ const createForm = async (req: Request, res: Response) => {
             question_text: question.question_text,
             is_required: question.is_required,
             display_order: question.display_order,
+            options: question.options? {
+              create: question.options.map((option: any) => ({
+                optionText: option.optionText,
+                optionValue: option.optionValue,
+                displayOrder: option.displayOrder
+              }))
+            } : undefined
           }))
         }
       },
@@ -75,10 +82,8 @@ const createForm = async (req: Request, res: Response) => {
     });
     res.status(201).json(newForm);
   } catch (error: any) {
-    // 1. Logs the true message directly inside your active Docker 'api' console
-    console.error("❌ CREATE FORM DB CRASH:", error);
+    console.error(" CREATE FORM DB CRASH:", error);
 
-    // 2. Returns the true readable error text back to your curl terminal response
     res.status(500).json({
       error: "Failed to create form",
       message: error.message || error

@@ -29,6 +29,8 @@ function App() {
               </PrivateRoute>
             }
           />
+          <Route path="/dashboard/formBuilder" element={<FormBuilderPage />} />
+          <Route path="/dashboard/forms" element={<FormsPage />} />
         </Routes>
       </Router>
     </AuthProvider>
