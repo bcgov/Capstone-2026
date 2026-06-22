@@ -50,21 +50,6 @@ function Home() {
           >
             Dashboard
           </Button>
-          {isAuthenticated ? (
-              <Button
-                  variant="secondary"
-                  onPress={logout}
-              >
-                  Logout
-              </Button>
-          ) : (
-              <Button
-                  variant="primary"
-                  onPress={() => navigate("/login")}
-              >
-                  Login
-              </Button>
-          )}
         </Header>
         <div
           style={{
