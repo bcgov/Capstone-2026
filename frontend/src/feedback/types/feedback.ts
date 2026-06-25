@@ -2,10 +2,8 @@ export enum QuestionType {
     TEXTAREA = "Textarea",
     RADIO = "Radio button",
     DROPDOWN = "Dropdown menu",
-    BOOLEAN = "Boolean",
     MULTIPLE_CHOICE = "Multiple choice",
     CHECKBOX = "Checkbox",
-    NPS = "Net Promoter Score",
     SLIDER = "Slider",
 };
 
