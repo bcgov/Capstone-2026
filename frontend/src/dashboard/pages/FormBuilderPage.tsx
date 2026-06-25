@@ -88,6 +88,12 @@ function FormBuilderPage() {
                     >
                         Test App
                     </Button>
+                    <Button
+                        variant="primary"
+                        onPress={() => navigate("/dashboard/forms")}
+                    >
+                        View Forms
+                    </Button>
                     {isAuthenticated ? (
                         <Button
                             variant="secondary"
