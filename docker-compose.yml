@@ -90,7 +90,7 @@ services:
     environment:
       VITE_BACKEND_URL: http://localhost:3000
     healthcheck:
-      test: curl --fail http://localhost:5173 || exit 1
+      test: ["CMD", "sh", "-c", "curl --fail http://localhost:5173 || exit 1"]
     ports: ["5173:5173"]
     # entrypoint: ls /app
     volumes:
