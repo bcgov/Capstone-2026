@@ -18,8 +18,6 @@ function FormRenderer({
 }: Props) {
     return (
         <>
-            <p>{formData.description}</p>
-
             {formData.questions.map((question: Question) => {
                 switch (question.questionType) {
                     case QuestionType.TEXTAREA:
@@ -42,6 +40,7 @@ function FormRenderer({
                             <RadioGroup
                                 key={question.id}
                                 label={question.question_text}
+                                isRequired={question.is_required}
                                 orientation="horizontal"
                                 onChange={(value) =>
                                     setAnswers((prev) => ({
@@ -66,6 +65,7 @@ function FormRenderer({
                             <Select
                                 key={question.id}
                                 label={question.question_text}
+                                isRequired={question.is_required}
                                 items={
                                     question.options?.map((option) => ({
                                         id: option.optionValue,
@@ -99,11 +99,12 @@ function FormRenderer({
                                 }
                             />
                         );
-                    case QuestionType.MULTIPLE_CHOICE:
+                    case QuestionType.CHECKBOX:
                         return (
                             <CheckboxGroup
                                 key={question.id}
                                 label={question.question_text}
+                                isRequired={question.is_required}
                                 orientation="horizontal"
                                 onChange={(checkedValue) =>
                                     setAnswers((prev) => ({
