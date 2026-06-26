@@ -1,6 +1,6 @@
 import { TextField, Checkbox, Select, Button } from "@bcgov/design-system-react-components";
 import type { FeedbackFormData, Question } from "../../feedback/types/feedback";
-import { QuestionType } from "../../feedback/types/feedback";
+import { QuestionType, QUESTION_TYPE_LABELS } from "../../feedback/types/feedback";
 import OptionEditor from "./OptionEditor";
 import { requiresOptions } from "./questionUtils";
 
@@ -158,16 +158,14 @@ function QuestionEditor({
             <Select
                 label="Question Type"
                 selectedKey={question.questionType}
-                items={Object.values(QuestionType).map(
-                    (type) => ({
-                        id: type,
-                        label: type
-                    })
-                )}
+                items={Object.values(QuestionType).map((type) => ({
+                    id: type,
+                    label: QUESTION_TYPE_LABELS[type],
+                }))}
                 onChange={(value) =>
                     updateQuestion(
                         "questionType",
-                        value
+                        value as QuestionType
                     )
                 }
             />
