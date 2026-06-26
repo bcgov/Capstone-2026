@@ -50,7 +50,7 @@ async function main() {
                   display_order: 2, 
                 },
                 {
-                  questionType: QuestionType.MULTIPLE_CHOICE,
+                  questionType: QuestionType.CHECKBOX,
                   question_text: "If you answered 'Yes', which component does it affect most?",
                   options:{
                     create:[
