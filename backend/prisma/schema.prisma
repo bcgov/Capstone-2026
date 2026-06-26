@@ -25,7 +25,7 @@ model User {
 }
 
 
-model Developer {
+model Owner {
   id              Int               @id @default(autoincrement())
   email           String?           @unique
   name            String?
@@ -40,11 +40,11 @@ model CoverageReport {
   id                  Int      @id @default(autoincrement())
   createdAt           DateTime @default(now())
   User                User?    @relation(fields: [userId], references: [id])
-  Developer           Developer?  @relation(fields: [devId], references: [id])
+  Owner           Owner?  @relation(fields: [ownerId], references: [id])
   coverage_percentage Int?
   coverage_picture    String? 
   userId              Int?
-  devId               Int?
+  ownerId               Int?
 }
 
 model FeedbackForm {
@@ -57,8 +57,8 @@ model FeedbackForm {
   submissions         FeedbackSubmission[]
 
   createdAt           DateTime @default(now())
-  owner               Developer?   @relation(fields: [devId], references: [id])
-  devId               Int?
+  owner               Owner?   @relation(fields: [ownerId], references: [id])
+  ownerId               Int?
 }
 
 //Enum for question type to prevent bad data 
