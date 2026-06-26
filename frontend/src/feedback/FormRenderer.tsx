@@ -18,8 +18,6 @@ function FormRenderer({
 }: Props) {
     return (
         <>
-            <p>{formData.description}</p>
-
             {formData.questions.map((question: Question) => {
                 switch (question.questionType) {
                     case QuestionType.TEXTAREA:
