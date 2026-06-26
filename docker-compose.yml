@@ -29,6 +29,16 @@ services:
     volumes:
       - postgres_data:/var/lib/postgresql/data
 
+  #metabase
+  metabase:
+    image: metabase/metabase
+    container_name: metabase
+    ports:
+      - "3001:3000"
+    depends_on:
+      - database
+    volumes:
+      - metabase_data:/metabase.db
   # PGAdmin
   pgadmin:
     container_name: pgadmin
@@ -118,3 +128,4 @@ services:
 
 volumes:
   postgres_data:
+  metabase-data:
