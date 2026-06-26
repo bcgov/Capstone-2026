@@ -1,13 +1,11 @@
 export enum QuestionType {
-    TEXTAREA,
-    RADIO,
-    DROPDOWN,
-    BOOLEAN,
-    MULTIPLE_CHOICE,
-    CHECKBOX,
-    NPS,
-    SLIDER,
-};
+    TEXTAREA = "TEXTAREA",
+    RADIO = "RADIO",
+    DROPDOWN = "DROPDOWN",
+    MULTIPLE_CHOICE = "MULTIPLE_CHOICE",
+    CHECKBOX = "CHECKBOX",
+    SLIDER = "SLIDER",
+}
 
 export type FormattedAnswer = {
     questionId: number;
@@ -22,10 +20,8 @@ export type DefaultAnswerMap = {
     [QuestionType.TEXTAREA]: string;
     [QuestionType.RADIO]: string;
     [QuestionType.DROPDOWN]: string;
-    [QuestionType.BOOLEAN]: boolean;
     [QuestionType.MULTIPLE_CHOICE]: string[];
     [QuestionType.CHECKBOX]: string[];
-    [QuestionType.NPS]: number;
 };
 
 export type DefaultAnswer<T extends QuestionType> = DefaultAnswerMap[T];
