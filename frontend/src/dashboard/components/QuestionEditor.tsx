@@ -177,17 +177,23 @@ function QuestionEditor({
                 />
             )}
 
-            <Checkbox
-                isSelected={question.is_required}
-                onChange={(value) =>
-                    updateQuestion(
-                        "is_required",
-                        value
-                    )
-                }
-            >
-                Required
-            </Checkbox>
+            {[
+                QuestionType.TEXTAREA,
+                QuestionType.DROPDOWN,
+                QuestionType.RADIO,
+            ].includes(question.questionType) && (
+                    <Checkbox
+                        isSelected={question.is_required}
+                        onChange={(value) =>
+                            updateQuestion(
+                                "is_required",
+                                value
+                            )
+                        }
+                    >
+                        Required
+                    </Checkbox>
+                )}
 
             <div
                 style={{
