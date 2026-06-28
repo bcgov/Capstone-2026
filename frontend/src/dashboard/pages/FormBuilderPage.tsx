@@ -10,20 +10,51 @@ import { useAuth } from "../../auth/AuthContext";
 import SubmissionConfirmationModal from "../../feedback/SubmissionConfirmation";
 import FormPreview from "../components/FormPreview";
 
+const EMPTY_FORM: FeedbackFormData = {
+    id: 0,
+    name: "",
+    description: "",
+    questions: [],
+};
+
+const styles = {
+    layout: {
+        display: "grid",
+        gridTemplateColumns: "1.2fr 1fr",
+        gap: "1.5rem",
+        padding: "1.5rem",
+        boxSizing: "border-box" as const,
+        background: "#f9f9f9",
+        fontFamily: "BC Sans",
+    },
+    editorColumn: {
+        display: "flex",
+        flexDirection: "column" as const,
+        gap: "1rem",
+        paddingRight: "1rem",
+    },
+    card: {
+        background: "white",
+        padding: "1rem",
+        borderRadius: "8px",
+        boxShadow: "0 1px 3px rgba(0,0,0,0.1)",
+    },
+    actions: {
+        display: "flex",
+        gap: "0.75rem",
+        alignItems: "center",
+        justifyContent: "flex-start",
+    },
+};
+
 function FormBuilderPage() {
     const navigate = useNavigate();
     const { apiBaseUrl } = useFeedback();
-    const { userId, logout, isAuthenticated } = useAuth();
+    const { logout, isAuthenticated } = useAuth();
     const [showConfirmation, setShowConfirmation] = useState(false);
     const [confirmationTitle, setConfirmationTitle] = useState("");
     const [confirmationMessage, setConfirmationMessage] = useState("");
-
-    const [form, setForm] = useState<FeedbackFormData>({
-        id: 0,
-        name: "",
-        description: "",
-        questions: []
-    });
+    const [form, setForm] = useState<FeedbackFormData>(EMPTY_FORM);
 
     const addQuestion = () => {
         setForm((prev) => ({
@@ -36,9 +67,9 @@ function FormBuilderPage() {
                     questionType: QuestionType.TEXTAREA,
                     is_required: false,
                     display_order: prev.questions.length + 1,
-                    options: []
-                }
-            ]
+                    options: [],
+                },
+            ],
         }));
     };
 
@@ -46,157 +77,77 @@ function FormBuilderPage() {
         try {
             const response = await fetch(`${apiBaseUrl}/api/form`, {
                 method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify(form)
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(form),
             });
 
             if (response.ok) {
                 const savedForm = await response.json();
-
                 setConfirmationTitle("Form Saved");
                 setConfirmationMessage(
-                    `Your form "${savedForm.name}" was saved successfully.
-                    \n (ID: ${savedForm.id})`
+                    `Your form "${savedForm.name}" was saved successfully.\n(ID: ${savedForm.id})`
                 );
-                setShowConfirmation(true);
-
-                console.log("Form saved successfully:", savedForm);
-                setForm({
-                    id: 0,
-                    name: "",
-                    description: "",
-                    questions: []
-                });
+                setForm(EMPTY_FORM);
             } else {
                 setConfirmationTitle("Save Failed");
                 setConfirmationMessage(await response.text());
-                setShowConfirmation(true);
             }
+            setShowConfirmation(true);
         } catch (error) {
             console.error("Error saving form:", error);
         }
     };
+
     return (
         <>
             <div style={{ margin: 0 }}>
-                <Header title={"Capstone 2026 - Form Builder"}>
-                    <Button
-                        variant="primary"
-                        onPress={() => navigate("/")}
-                    >
+                <Header title="Capstone 2026 - Form Builder">
+                    <Button variant="primary" onPress={() => navigate("/")}>
                         Test App
                     </Button>
-                    <Button
-                        variant="primary"
-                        onPress={() => navigate("/dashboard/forms")}
-                    >
+                    <Button variant="primary" onPress={() => navigate("/dashboard/forms")}>
                         View Forms
                     </Button>
                     {isAuthenticated ? (
-                        <Button
-                            variant="secondary"
-                            onPress={logout}
-                        >
+                        <Button variant="secondary" onPress={logout}>
                             Logout
                         </Button>
                     ) : (
-                        <Button
-                            variant="primary"
-                            onPress={() => navigate("/login")}
-                        >
+                        <Button variant="primary" onPress={() => navigate("/login")}>
                             Login
                         </Button>
                     )}
                 </Header>
-                <div
-                    style={{
-                        display: "grid",
-                        gridTemplateColumns: "1.2fr 1fr",
-                        gap: "1.5rem",
-                        padding: "1.5rem",
-                        boxSizing: "border-box",
-                        background: "#f9f9f9",
-                        fontFamily: "BC Sans"
-                    }}
-                >
-                    <div
-                        style={{
-                            display: "flex",
-                            flexDirection: "column",
-                            gap: "1rem",
-                            paddingRight: "1rem"
-                        }}
-                    >
 
-                        <div
-                            style={{
-                                background: "white",
-                                padding: "1rem",
-                                borderRadius: "8px",
-                                boxShadow: "0 1px 3px rgba(0,0,0,0.1)"
-                            }}
-                        >
+                <div style={styles.layout}>
+                    <div style={styles.editorColumn}>
+                        <div style={styles.card}>
                             <FormDetailsEditor form={form} setForm={setForm} />
                         </div>
-
-                        <div
-                            style={{
-                                background: "white",
-                                padding: "1rem",
-                                borderRadius: "8px",
-                                boxShadow: "0 1px 3px rgba(0,0,0,0.1)"
-                            }}
-                        >
+                        <div style={styles.card}>
                             <QuestionList form={form} setForm={setForm} />
                         </div>
-
-                        <div
-                            style={{
-                                display: "flex",
-                                gap: "0.75rem",
-                                alignItems: "center",
-                                justifyContent: "flex-start"
-                            }}
-                        >
-                            <Button
-                                onPress={addQuestion}
-                                style={{ width: "auto" }}
-                            >
+                        <div style={styles.actions}>
+                            <Button onPress={addQuestion} style={{ width: "auto" }}>
                                 + Add Question
                             </Button>
-
-                            <Button
-                                variant="secondary"
-                                onPress={handleSave}
-                                style={{ width: "auto" }}
-                            >
+                            <Button variant="secondary" onPress={handleSave} style={{ width: "auto" }}>
                                 Save Form
                             </Button>
                         </div>
                     </div>
 
                     <div>
-                        <h2 style={{ fontFamily: "BC Sans" }}>Preview Form</h2>
-                        <div
-                            style={{
-                                background: "white",
-                                borderRadius: "8px",
-                                padding: "1rem",
-                                boxShadow: "0 1px 3px rgba(0,0,0,0.1)"
-                            }}>
-                            <FormPreview
-                                formData={form}
-                            />
+                        <h2>Preview Form</h2>
+                        <div style={styles.card}>
+                            <FormPreview formData={form} />
                         </div>
                     </div>
                 </div>
-                <div>
-                    <Footer />
-                </div>
 
+                <Footer />
             </div>
+
             <SubmissionConfirmationModal
                 isOpen={showConfirmation}
                 title={confirmationTitle}

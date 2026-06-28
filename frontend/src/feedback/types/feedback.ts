@@ -19,7 +19,7 @@ export type FormattedAnswer = {
     answerText: string | null;
     answerBoolean: boolean | null;
     answerNumber: number | null;
-    answerJson: any;
+    answerJson: unknown;
 };
 
 export type DefaultAnswerMap = {
@@ -60,7 +60,6 @@ export interface FeedbackFormProps {
     isFormOpen: boolean;
     setIsFormOpen: (open: boolean) => void;
     formData: FeedbackFormData;
-
     apiBaseUrl: string;
     onSuccess?: (submissionId: number) => void;
 }

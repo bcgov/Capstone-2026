@@ -6,54 +6,40 @@ import type { FeedbackFormData, Question } from "./types/feedback";
 interface Props {
     formData: FeedbackFormData;
     answers: Record<number, any>;
-    setAnswers: React.Dispatch<
-        React.SetStateAction<Record<number, any>>
-    >;
+    setAnswers: React.Dispatch<React.SetStateAction<Record<number, any>>>;
 }
 
-function FormRenderer({
-    formData,
-    answers,
-    setAnswers
-}: Props) {
+function FormRenderer({ formData, answers, setAnswers }: Props) {
+    const setAnswer = (id: number, value: any) =>
+        setAnswers((prev) => ({ ...prev, [id]: value }));
+
     return (
         <>
             {formData.questions.map((question: Question) => {
+                const { id, question_text, is_required, options } = question;
+
                 switch (question.questionType) {
                     case QuestionType.TEXTAREA:
                         return (
                             <TextField
-                                key={question.id}
-                                label={question.question_text}
-                                isRequired={question.is_required}
-                                onChange={(value) =>
-                                    setAnswers((prev) => ({
-                                        ...prev,
-                                        [question.id]: value
-                                    }))
-                                }
+                                key={id}
+                                label={question_text}
+                                isRequired={is_required}
+                                onChange={(value) => setAnswer(id, value)}
                             />
                         );
 
                     case QuestionType.RADIO:
                         return (
                             <RadioGroup
-                                key={question.id}
-                                label={question.question_text}
-                                isRequired={question.is_required}
+                                key={id}
+                                label={question_text}
+                                isRequired={is_required}
                                 orientation="horizontal"
-                                onChange={(value) =>
-                                    setAnswers((prev) => ({
-                                        ...prev,
-                                        [question.id]: value
-                                    }))
-                                }
+                                onChange={(value) => setAnswer(id, value)}
                             >
-                                {question.options?.map((option) => (
-                                    <Radio
-                                        key={option.id}
-                                        value={option.optionValue}
-                                    >
+                                {options?.map((option) => (
+                                    <Radio key={option.id} value={option.optionValue}>
                                         {option.optionText}
                                     </Radio>
                                 ))}
@@ -63,66 +49,41 @@ function FormRenderer({
                     case QuestionType.DROPDOWN:
                         return (
                             <Select
-                                key={question.id}
-                                label={question.question_text}
-                                isRequired={question.is_required}
-                                items={
-                                    question.options?.map((option) => ({
-                                        id: option.optionValue,
-                                        label: option.optionText
-                                    })) || []
-                                }
-                                onChange={(value) =>
-                                    setAnswers((prev) => ({
-                                        ...prev,
-                                        [question.id]: value
-                                    }))
-                                }
+                                key={id}
+                                label={question_text}
+                                isRequired={is_required}
+                                items={options?.map((o) => ({ id: o.optionValue, label: o.optionText })) || []}
+                                onChange={(value) => setAnswer(id, value)}
                             />
                         );
 
                     case QuestionType.SLIDER:
                         return (
                             <HappinessSlider
-                                key={question.id}
-                                question={question.question_text}
-                                value={
-                                    answers[question.id] ??
-                                    question.defaultAnswer ??
-                                    3
-                                }
-                                onChange={(value) =>
-                                    setAnswers((prev) => ({
-                                        ...prev,
-                                        [question.id]: value
-                                    }))
-                                }
+                                key={id}
+                                question={question_text}
+                                value={answers[id] ?? question.defaultAnswer ?? 3}
+                                onChange={(value) => setAnswer(id, value)}
                             />
                         );
+
                     case QuestionType.CHECKBOX:
                         return (
                             <CheckboxGroup
-                                key={question.id}
-                                label={question.question_text}
-                                isRequired={question.is_required}
+                                key={id}
+                                label={question_text}
+                                isRequired={is_required}
                                 orientation="horizontal"
-                                onChange={(checkedValue) =>
-                                    setAnswers((prev) => ({
-                                        ...prev,
-                                        [question.id]: checkedValue
-                                    }))
-                                }
+                                onChange={(value) => setAnswer(id, value)}
                             >
-                                {question.options?.map((option) => (
-                                    <Checkbox
-                                        key={option.id}
-                                        value={option.optionValue}
-                                    >
+                                {options?.map((option) => (
+                                    <Checkbox key={option.id} value={option.optionValue}>
                                         {option.optionText}
                                     </Checkbox>
                                 ))}
                             </CheckboxGroup>
                         );
+
                     default:
                         return null;
                 }
