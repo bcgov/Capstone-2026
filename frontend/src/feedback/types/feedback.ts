@@ -6,7 +6,7 @@ export enum QuestionType {
     SLIDER = "SLIDER",
 }
 
-export const QUESTION_TYPE_LABELS: Record<QuestionType, string> = {
+export const QuestionTypeLabels: Record<QuestionType, string> = {
     [QuestionType.TEXTAREA]: "Textarea",
     [QuestionType.RADIO]: "Radio Button",
     [QuestionType.DROPDOWN]: "Dropdown Menu",
