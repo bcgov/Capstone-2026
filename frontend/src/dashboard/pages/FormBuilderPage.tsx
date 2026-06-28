@@ -21,10 +21,10 @@ const styles = {
     layout: {
         display: "grid",
         gridTemplateColumns: "1.2fr 1fr",
+        alignItems: "start",
         gap: "1.5rem",
         padding: "1.5rem",
         boxSizing: "border-box" as const,
-        background: "#f9f9f9",
         fontFamily: "BC Sans",
     },
     editorColumn: {
@@ -37,7 +37,13 @@ const styles = {
         background: "white",
         padding: "1rem",
         borderRadius: "8px",
+        border: "1px solid #ddd",
         boxShadow: "0 1px 3px rgba(0,0,0,0.1)",
+    },
+    previewColumn: {
+        position: "sticky" as const,
+        top: "1.5rem",
+        alignSelf: "start",
     },
     actions: {
         display: "flex",
@@ -137,7 +143,7 @@ function FormBuilderPage() {
                         </div>
                     </div>
 
-                    <div>
+                    <div style={styles.previewColumn}>
                         <h2>Preview Form</h2>
                         <div style={styles.card}>
                             <FormPreview formData={form} />
