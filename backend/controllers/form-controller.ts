@@ -56,6 +56,11 @@ const createForm = async (req: Request, res: Response) => {
       where: { id: req.body.id },
       update: {},
       create: {
+        owner: {
+          connect: {
+            id: Number(req.body.ownerId)
+          }
+        },
         name: req.body.name ?? "Untitled form",
         description: req.body.description ?? "Unknown description",
         is_active: req.body.is_active ?? false,
