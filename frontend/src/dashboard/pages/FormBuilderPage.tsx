@@ -17,6 +17,7 @@ const EMPTY_FORM: FeedbackFormData = {
     questions: [],
 };
 
+
 const styles = {
     layout: {
         display: "grid",
@@ -61,6 +62,11 @@ function FormBuilderPage() {
     const [confirmationTitle, setConfirmationTitle] = useState("");
     const [confirmationMessage, setConfirmationMessage] = useState("");
     const [form, setForm] = useState<FeedbackFormData>(EMPTY_FORM);
+
+    const handleLogout = () => {
+        logout();
+        navigate("/");
+    }
 
     const addQuestion = () => {
         setForm((prev) => ({
@@ -115,7 +121,7 @@ function FormBuilderPage() {
                         View Forms
                     </Button>
                     {isAuthenticated ? (
-                        <Button variant="secondary" onPress={logout}>
+                        <Button variant="secondary" onPress={handleLogout}>
                             Logout
                         </Button>
                     ) : (

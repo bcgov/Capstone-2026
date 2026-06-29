@@ -3,14 +3,14 @@ import '@bcgov/bc-sans/css/BC_Sans.css';
 import { useFeedback } from "../feedback/FeedbackProvider";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
-//import { useAuth } from "../auth/AuthContext";
+import { useAuth } from "../auth/AuthContext";
 
 
 function Home() {
   const navigate = useNavigate();
   const { apiBaseUrl, openFeedbackForm } = useFeedback();
   const [buttonCounter, setButtonCounter] = useState(0);
-  //const { userId, logout, isAuthenticated } = useAuth();
+  const { isAuthenticated } = useAuth();
 
   function incrementButtonCounter() {
     setButtonCounter(prev => prev + 1);
@@ -44,12 +44,23 @@ function Home() {
     <>
       <div style={{ margin: 0 }}>
         <Header title={"Capstone 2026 - Test App"}>
-          <Button
-            variant="primary"
-            onPress={() => navigate("/dashboard/formBuilder")}
-          >
-            Dashboard
-          </Button>
+          {isAuthenticated ? (
+            <>
+              <Button
+                variant="primary"
+                onPress={() => navigate("/dashboard/formBuilder")}
+              >
+                Dashboard
+              </Button>
+            </>
+          ) : (
+            <Button
+              variant="primary"
+              onPress={() => navigate("/login")}
+            >
+              Dashboard
+            </Button>
+          )}
         </Header>
         <div
           style={{
