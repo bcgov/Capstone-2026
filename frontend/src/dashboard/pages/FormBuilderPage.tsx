@@ -80,6 +80,13 @@ function FormBuilderPage() {
     };
 
     const handleSave = async () => {
+        if (!form.name.trim() || !form.description.trim()) {
+            setConfirmationTitle("Missing Fields");
+            setConfirmationMessage("Please provide both a form name and description before saving.");
+            setShowConfirmation(true);
+            return;
+        }
+
         try {
             const response = await fetch(`${apiBaseUrl}/api/form`, {
                 method: "POST",
