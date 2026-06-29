@@ -3,14 +3,14 @@ import '@bcgov/bc-sans/css/BC_Sans.css';
 import { useFeedback } from "../feedback/FeedbackProvider";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
-import { useAuth } from "../auth/AuthContext";
+//import { useAuth } from "../auth/AuthContext";
 
 
 function Home() {
   const navigate = useNavigate();
   const { apiBaseUrl, openFeedbackForm } = useFeedback();
   const [buttonCounter, setButtonCounter] = useState(0);
-  const { userId, logout, isAuthenticated } = useAuth();
+  //const { userId, logout, isAuthenticated } = useAuth();
 
   function incrementButtonCounter() {
     setButtonCounter(prev => prev + 1);

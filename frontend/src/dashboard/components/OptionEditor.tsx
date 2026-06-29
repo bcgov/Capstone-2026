@@ -6,6 +6,18 @@ interface Props {
     setForm: React.Dispatch<React.SetStateAction<any>>;
 }
 
+const styles = {
+    container: {
+        marginTop: "1rem",
+        fontFamily: "BC Sans",
+    },
+    optionRow: {
+        display: "flex",
+        gap: "0.5rem",
+        marginBottom: "0.5rem",
+    },
+};
+
 function OptionEditor({ question, setForm }: Props) {
     const options = question.options || [];
 
@@ -20,10 +32,10 @@ function OptionEditor({ question, setForm }: Props) {
                             o.id === id
                                 ? { ...o, optionText: value, optionValue: value }
                                 : o
-                        )
+                        ),
                     }
                     : q
-            )
+            ),
         }));
     };
 
@@ -40,12 +52,12 @@ function OptionEditor({ question, setForm }: Props) {
                                 id: Date.now(),
                                 optionText: "",
                                 optionValue: "",
-                                displayOrder: (q.options?.length || 0) + 1
-                            }
-                        ]
+                                displayOrder: (q.options?.length || 0) + 1,
+                            },
+                        ],
                     }
                     : q
-            )
+            ),
         }));
     };
 
@@ -54,30 +66,23 @@ function OptionEditor({ question, setForm }: Props) {
             ...prev,
             questions: prev.questions.map((q: Question) =>
                 q.id === question.id
-                    ? {
-                        ...q,
-                        options: q.options?.filter((o) => o.id !== id)
-                    }
+                    ? { ...q, options: q.options?.filter((o) => o.id !== id) }
                     : q
-            )
+            ),
         }));
     };
 
     return (
-        <div style={{ marginTop: "1rem", fontFamily: "BC Sans" }}>
-            <h4 style={{ fontFamily: "BC Sans" }}>Options</h4>
+        <div style={styles.container}>
+            <h4>Options</h4>
 
             {options.map((option) => (
-                <div
-                    key={option.id}
-                    style={{ display: "flex", gap: "0.5rem", marginBottom: "0.5rem" }}
-                >
+                <div key={option.id} style={styles.optionRow}>
                     <TextField
-                        value={option.optionText}
                         label="Option"
+                        value={option.optionText}
                         onChange={(value) => updateOption(option.id, value)}
                     />
-
                     <Button variant="secondary" onPress={() => deleteOption(option.id)}>
                         Delete
                     </Button>

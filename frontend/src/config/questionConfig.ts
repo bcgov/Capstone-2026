@@ -12,16 +12,8 @@ export const questionConfig = {
         inputType: "select",
     },
 
-    BOOLEAN: {
-        inputType: "boolean",
-    },
-
     CHECKBOX: {
         inputType: "checkbox",
-    },
-
-    NPS: {
-        inputType: "nps",
     },
 
     SLIDER: {

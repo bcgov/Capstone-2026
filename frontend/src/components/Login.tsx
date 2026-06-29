@@ -1,32 +1,33 @@
 import { Button, TextField, Form } from "@bcgov/design-system-react-components";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useFeedback } from "../feedback/FeedbackProvider";
 import { useAuth } from "../auth/AuthContext";
 
 function Login() {
     const navigate = useNavigate();
     const { login } = useAuth();
-
+    const { apiBaseUrl } = useFeedback();
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
 
 
-const handleLogin = async (e: React.FormEvent) => {
-    e.preventDefault();
+    const handleLogin = async (e: React.FormEvent) => {
+        e.preventDefault();
 
-    const res = await fetch("http://localhost:3000/api/login", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-            username,
-            password
-        })
-    });
+        const res = await fetch(`${apiBaseUrl}/api/login`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                username,
+                password
+            })
+        });
 
-    const data = await res.json();
-    login(data.id);
-    navigate("/dashboard");
-};
+        const data = await res.json();
+        login(data.id);
+        navigate("/dashboard");
+    };
 
     return (
         <div
