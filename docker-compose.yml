@@ -38,7 +38,7 @@ services:
     depends_on:
       - database
     volumes:
-      - metabase_data:/metabase.db
+      - metabase_data:/metabase-data
   # PGAdmin
   pgadmin:
     container_name: pgadmin
