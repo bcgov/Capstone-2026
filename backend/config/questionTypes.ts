@@ -19,25 +19,9 @@ export const QUESTION_CONFIG = {
         answerField: 'answerText'
     },
 
-    [QuestionType.BOOLEAN]: {
-        supportsOptions: false,
-        answerField: 'answerBoolean'
-    },
-
-    [QuestionType.MULTIPLE_CHOICE]: {
-        supportsOptions: true,
-        answerField: 'answerJson'
-    },
-
     [QuestionType.CHECKBOX]: {
         supportsOptions: true,
         answerField: 'answerJson'
-    },
-
-    [QuestionType.NPS]: {
-        supportsOptions: false,
-        min: 1,
-        max: 10,
     },
 
     [QuestionType.SLIDER]: {

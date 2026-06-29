@@ -6,13 +6,16 @@ interface Props {
     setForm: React.Dispatch<React.SetStateAction<FeedbackFormData>>;
 }
 
-function QuestionList({
-    form,
-    setForm
-}: Props) {
+const styles = {
+    heading: {
+        fontFamily: "BC Sans",
+    },
+};
+
+function QuestionList({ form, setForm }: Props) {
     return (
         <div>
-            <h2 style={{ fontFamily: "BC Sans" }}>Questions</h2>
+            <h2 style={styles.heading}>Questions</h2>
 
             {(form.questions ?? []).map((question) => (
                 <QuestionEditor

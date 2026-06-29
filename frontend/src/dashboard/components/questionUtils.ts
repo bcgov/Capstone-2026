@@ -4,7 +4,14 @@ export function requiresOptions(type: QuestionType) {
   return [
     QuestionType.RADIO,
     QuestionType.DROPDOWN,
-    QuestionType.MULTIPLE_CHOICE,
     QuestionType.CHECKBOX
+  ].includes(type);
+}
+
+export function supportsRequired(type: QuestionType) {
+  return [
+    QuestionType.TEXTAREA,
+    QuestionType.DROPDOWN,
+    QuestionType.RADIO,
   ].includes(type);
 }

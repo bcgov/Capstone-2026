@@ -1,14 +1,7 @@
-import {
-    createContext,
-    useContext,
-    useState,
-    type ReactNode
-} from "react";
-
+import { createContext, useContext, useState, type ReactNode } from "react";
 import FeedbackForm from "./FeedbackForm";
 import FeedbackPrompt from "./FeedbackPrompt";
 import type { FeedbackFormData } from "./types/feedback";
-import { useAuth } from "../auth/AuthContext";
 
 type FeedbackContextType = {
     apiBaseUrl: string;
@@ -33,13 +26,11 @@ export function FeedbackProvider({ children, apiBaseUrl }: Props) {
     const [formData, setFormData] = useState<FeedbackFormData | null>(null);
     const [isPromptOpen, setIsPromptOpen] = useState(false);
     const [isFormOpen, setIsFormOpen] = useState(false);
-    const { userId } = useAuth();
 
     const openFeedbackForm = async (formId: number) => {
         try {
             const res = await fetch(`${apiBaseUrl}/api/form/${formId}`);
             const data = await res.json();
-
             setFormData(data);
             setIsPromptOpen(true);
         } catch (err) {
@@ -70,9 +61,7 @@ export function FeedbackProvider({ children, apiBaseUrl }: Props) {
                         setIsFormOpen={setIsFormOpen}
                         formData={formData}
                         apiBaseUrl={apiBaseUrl}
-                        onSuccess={(id) => {
-                            console.log("Submission:", id);
-                        }}
+                        onSuccess={(id) => console.log("Submission:", id)}
                     />
                 </>
             )}

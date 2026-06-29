@@ -6,30 +6,28 @@ interface Props {
     setForm: React.Dispatch<React.SetStateAction<FeedbackFormData>>;
 }
 
-function FormDetailsEditor({
-    form,
-    setForm
-}: Props) {
-    return (
-        <div
-            style={{
-                display: "flex",
-                flexDirection: "column",
-                gap: "1rem",
-                fontFamily: "BC Sans"
-            }}
-        >
+const styles = {
+    container: {
+        display: "flex",
+        flexDirection: "column" as const,
+        gap: "1rem",
+        fontFamily: "BC Sans",
+    },
+    heading: {
+        margin: "10px 0px",
+    },
+};
 
-            <h2 style={{ fontFamily: "BC Sans", margin: "10px 0px" }}>Form Details</h2>
+function FormDetailsEditor({ form, setForm }: Props) {
+    return (
+        <div style={styles.container}>
+            <h2 style={styles.heading}>Form Details</h2>
 
             <TextField
                 label="Form Name"
                 value={form.name}
                 onChange={(value) =>
-                    setForm((prev) => ({
-                        ...prev,
-                        name: value
-                    }))
+                    setForm((prev) => ({ ...prev, name: value }))
                 }
             />
 
@@ -37,10 +35,7 @@ function FormDetailsEditor({
                 label="Description"
                 value={form.description}
                 onChange={(value) =>
-                    setForm((prev) => ({
-                        ...prev,
-                        description: value
-                    }))
+                    setForm((prev) => ({ ...prev, description: value }))
                 }
             />
         </div>

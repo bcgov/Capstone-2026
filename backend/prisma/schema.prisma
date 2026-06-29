@@ -66,10 +66,7 @@ enum QuestionType {
   TEXTAREA
   RADIO
   DROPDOWN
-  BOOLEAN
-  MULTIPLE_CHOICE
   CHECKBOX
-  NPS
   SLIDER
 }
 
