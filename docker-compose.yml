@@ -23,9 +23,9 @@ services:
     container_name: database
     environment:
       <<: *postgres-vars
-    ports: [5432:5432]
+    ports: [ 5432:5432 ]
     healthcheck:
-      test: ["CMD", "pg_isready", "-U", "postgres"]
+      test: [ "CMD", "pg_isready", "-U", "postgres" ]
     volumes:
       - postgres_data:/var/lib/postgresql/data
 
@@ -36,8 +36,8 @@ services:
       PGADMIN_DEFAULT_EMAIL: admin@qs.com
       PGADMIN_DEFAULT_PASSWORD: admin
     image: dpage/pgadmin4
-    ports: [5050:80]
-    profiles: ["pgadmin"]
+    ports: [ 5050:80 ]
+    profiles: [ "pgadmin" ]
 
   # Backend
   backend:
@@ -54,20 +54,20 @@ services:
         - action: sync
           path: ./backend
           target: /app
-          ignore: [node_modules]
+          ignore: [ node_modules ]
     environment:
       LOG_LEVEL: info
       PORT: 3000
       <<: *postgres-vars
       DATABASE_URL: ${DATABASE_URL}
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:3000/api/health"]
+      test: [ "CMD", "curl", "-f", "http://localhost:3000/api/health" ]
       interval: 30s
       timeout: 10s
       retries: 3
       start_period: 40s
-    ports: ["3000:3000"]
-    volumes: ["./backend:/app", "/app/node_modules/", "/app/dist/"]
+    ports: [ "3000:3000" ]
+    volumes: [ "./backend:/app", "/app/node_modules/", "/app/dist/" ]
     # For debugging
     stdin_open: true
     tty: true
@@ -86,12 +86,12 @@ services:
         - action: sync
           path: ./frontend
           target: /app
-          ignore: [node_modules]
+          ignore: [ node_modules ]
     environment:
       VITE_BACKEND_URL: http://localhost:3000
     healthcheck:
-      test: ["CMD", "sh", "-c", "curl --fail http://localhost:5173 || exit 1"]
-    ports: ["5173:5173"]
+      test: [ "CMD", "sh", "-c", "curl --fail http://localhost:5173 || exit 1" ]
+    ports: [ "5173:5173" ]
     # entrypoint: ls /app
     volumes:
       - ./frontend:/app
@@ -99,7 +99,7 @@ services:
 
   caddy:
     container_name: caddy
-    profiles: ["caddy"]
+    profiles: [ "caddy" ]
     build:
       context: ./frontend
       dockerfile: Dockerfile
@@ -108,13 +108,22 @@ services:
       PORT: 5173
       VITE_BACKEND_URL: http://localhost:3000
       LOG_LEVEL: info
-    ports: ["5173:5173"]
-    volumes: ["./frontend/Caddyfile:/etc/caddy/Caddyfile"]
+    ports: [ "5173:5173" ]
+    volumes: [ "./frontend/Caddyfile:/etc/caddy/Caddyfile" ]
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:5173"]
+      test: [ "CMD", "curl", "-f", "http://localhost:5173" ]
     depends_on:
       backend:
         condition: service_healthy
 
+  metabase:
+    image: metabase/metabase:latest
+    container_name: metabase
+    ports:
+      - "3001:3000"
+    depends_on:
+      - database
+
 volumes:
   postgres_data:
+
