@@ -128,4 +128,4 @@ services:
 
 volumes:
   postgres_data:
-  metabase-data:
+  metabase_data:
