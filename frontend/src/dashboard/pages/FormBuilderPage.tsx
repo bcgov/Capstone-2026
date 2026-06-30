@@ -79,6 +79,7 @@ function FormBuilderPage() {
         }));
     };
 
+    const {userId} = useAuth();
     const handleSave = async () => {
         if (!form.name.trim() || !form.description.trim()) {
             setConfirmationTitle("Missing Fields");
@@ -91,7 +92,7 @@ function FormBuilderPage() {
             const response = await fetch(`${apiBaseUrl}/api/form`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(form),
+                body: JSON.stringify({...form, ownerId: Number(userId)}),
             });
 
             if (response.ok) {
