@@ -1,5 +1,5 @@
 import { Response, Request } from 'express';
-import { PrismaClient, QuestionType } from '@prisma/client';
+import { PrismaClient } from '@prisma/client';
 
 const express = require('express');
 const prisma = new PrismaClient();
@@ -71,7 +71,7 @@ const createForm = async (req: Request, res: Response) => {
             question_text: question.question_text,
             is_required: question.is_required,
             display_order: question.display_order,
-            options: question.options? {
+            options: question.options ? {
               create: question.options.map((option: any) => ({
                 optionText: option.optionText,
                 optionValue: option.optionValue,
@@ -177,24 +177,6 @@ const deleteForm = async (req: Request, res: Response) => {
   }
 };
 
-const getOwnerById = async (req: Request, res: Response) => {
-    const { id } = req.params;
-
-    try {
-        const owner = await prisma.owner.findUnique({
-            where: { id: Number(id) }
-        });
-
-        if (owner) {
-            res.status(200).json(owner);
-        } else {
-            res.status(404).json({ error: 'Owner not found' });
-        }
-    } catch (error: any) {
-        res.status(500).json({ error: 'Failed to fetch owner', details: error.message });
-    }
-};
-
 const test = async (req: Request, res: Response) => {
   try {
     const testAdd = await prisma.feedbackForm.create({ data: { name: "Test" } });
@@ -213,18 +195,18 @@ const test = async (req: Request, res: Response) => {
 }
 
 const getFormsByOwnerId = async (req: Request, res: Response) => {
-    try{
-        const ownerWithForms = await prisma.owner.findUnique({
-            where: { id: 1 },
-            include: {
-                FeedbackForm: true
-            }
-        });
-        res.status(200).json(ownerWithForms);
-    }
-    catch (error: any) {
-        res.status(500).json({ error: 'Failed to fetch forms for owner', details: error.message });
-    }
+  try {
+    const ownerWithForms = await prisma.owner.findUnique({
+      where: { id: 1 },
+      include: {
+        FeedbackForm: true
+      }
+    });
+    res.status(200).json(ownerWithForms);
+  }
+  catch (error: any) {
+    res.status(500).json({ error: 'Failed to fetch forms for owner', details: error.message });
+  }
 }
 
 export { createForm, getFormById, getForms, updateQuestion, updateQuestionOrder, deleteQuestion, deleteForm, getFormsByOwnerId, test };
