@@ -12,20 +12,6 @@ const getAllOwners= async (req: Request, res: Response) => {
     res.status(500).json({ error: 'Failed to fetch owner data', details: error.message });
   }
 };
-const getFormsByOwnerId = async (req: Request, res: Response) => {
-    try{
-        const ownerWithForms = await prisma.owner.findUnique({
-            where: { id: 1 },
-            include: {
-                FeedbackForm: true
-            }
-        });
-        res.status(200).json(ownerWithForms);
-    }
-    catch (error: any) {
-        res.status(500).json({ error: 'Failed to fetch forms for owner', details: error.message });
-    }
-}
 
 const createOwner = async (req: Request, res: Response) => {
     const { username } = req.body;
