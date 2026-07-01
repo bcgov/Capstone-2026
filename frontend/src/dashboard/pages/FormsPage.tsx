@@ -5,6 +5,7 @@ import { useFeedback } from "../../feedback/FeedbackProvider";
 import { useNavigate } from "react-router-dom";
 import FormPreview from "../components/FormPreview";
 import type { FeedbackFormData } from "../../feedback/types/feedback";
+import { useAuth } from "../../auth/AuthContext";
 
 interface FormSummary {
     id: number;
@@ -63,15 +64,19 @@ const styles = {
 function FormsPage() {
     const navigate = useNavigate();
     const { apiBaseUrl } = useFeedback();
+    const { userId } = useAuth();
     const [forms, setForms] = useState<FormSummary[]>([]);
     const [loading, setLoading] = useState(true);
     const [selectedForm, setSelectedForm] = useState<FeedbackFormData | null>(null);
     const [isPreviewOpen, setIsPreviewOpen] = useState(false);
 
     useEffect(() => {
-        fetch(`${apiBaseUrl}/api/form`)
+        if (!userId) return;
+
+        fetch(`${apiBaseUrl}/api/form/owner/${userId}`)
             .then((res) => res.json())
             .then((data) => {
+                console.log(data);
                 setForms(data);
                 setLoading(false);
             })
@@ -79,7 +84,7 @@ function FormsPage() {
                 console.error("Failed to load forms", err);
                 setLoading(false);
             });
-    }, []);
+    }, [userId]);
 
     const handleView = async (id: number) => {
         try {
