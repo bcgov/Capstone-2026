@@ -1,5 +1,5 @@
 import { Response, Request } from 'express';
-import { PrismaClient, QuestionType } from '@prisma/client';
+import { PrismaClient } from '@prisma/client';
 
 const express = require('express');
 const prisma = new PrismaClient();
@@ -24,7 +24,7 @@ const getAllUserData = async (req: Request, res: Response) => {
   try {
     const users = await prisma.user.findMany();
     res.status(200).json(users);
-  }     catch (error: any) {
+  } catch (error: any) {
     res.status(500).json({ error: 'Failed to fetch users', details: error.message });
   }
 };

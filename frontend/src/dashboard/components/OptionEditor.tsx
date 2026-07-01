@@ -8,7 +8,6 @@ interface Props {
 
 const styles = {
     container: {
-        marginTop: "1rem",
         fontFamily: "BC Sans",
     },
     optionRow: {

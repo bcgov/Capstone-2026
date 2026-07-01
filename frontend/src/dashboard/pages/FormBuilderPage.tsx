@@ -22,20 +22,20 @@ const styles = {
         display: "grid",
         gridTemplateColumns: "1.2fr 1fr",
         alignItems: "start",
-        gap: "1.5rem",
-        padding: "1.5rem",
+        gap: "2rem",
+        padding: "2rem",
         boxSizing: "border-box" as const,
         fontFamily: "BC Sans",
     },
     editorColumn: {
         display: "flex",
         flexDirection: "column" as const,
-        gap: "1rem",
+        gap: "1.5rem",
         paddingRight: "1rem",
     },
     card: {
         background: "white",
-        padding: "1rem",
+        padding: "1.5rem",
         borderRadius: "8px",
         border: "1px solid #ddd",
         boxShadow: "0 1px 3px rgba(0,0,0,0.1)",
@@ -79,12 +79,20 @@ function FormBuilderPage() {
         }));
     };
 
+    const {userId} = useAuth();
     const handleSave = async () => {
+        if (!form.name.trim() || !form.description.trim()) {
+            setConfirmationTitle("Missing Fields");
+            setConfirmationMessage("Please provide both a form name and description before saving.");
+            setShowConfirmation(true);
+            return;
+        }
+
         try {
             const response = await fetch(`${apiBaseUrl}/api/form`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(form),
+                body: JSON.stringify({...form, ownerId: Number(userId)}),
             });
 
             if (response.ok) {

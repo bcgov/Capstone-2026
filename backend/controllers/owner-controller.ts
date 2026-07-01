@@ -1,16 +1,16 @@
 import { Response, Request } from 'express';
-import { PrismaClient, Owner } from '@prisma/client';
+import { PrismaClient } from '@prisma/client';
 
 const express = require('express');
 const prisma = new PrismaClient();
 
-const getAllOwners= async (req: Request, res: Response) => {
-  try {
-    const data = await prisma.owner.findMany();
-    res.status(200).json(data);
-  } catch (error: any) {
-    res.status(500).json({ error: 'Failed to fetch owner data', details: error.message });
-  }
+const getAllOwners = async (req: Request, res: Response) => {
+    try {
+        const data = await prisma.owner.findMany();
+        res.status(200).json(data);
+    } catch (error: any) {
+        res.status(500).json({ error: 'Failed to fetch owner data', details: error.message });
+    }
 };
 
 const createOwner = async (req: Request, res: Response) => {
