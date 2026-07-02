@@ -56,7 +56,7 @@ const styles = {
 function FormBuilderPage() {
     const navigate = useNavigate();
     const { apiBaseUrl } = useFeedback();
-    const { logout, isAuthenticated } = useAuth();
+    const { logout, isAuthenticated, userId } = useAuth();
     const [showConfirmation, setShowConfirmation] = useState(false);
     const [confirmationTitle, setConfirmationTitle] = useState("");
     const [confirmationMessage, setConfirmationMessage] = useState("");
@@ -79,8 +79,14 @@ function FormBuilderPage() {
         }));
     };
 
-    const {userId} = useAuth();
     const handleSave = async () => {
+        if (!userId) {
+            setConfirmationTitle("Not Logged In");
+            setConfirmationMessage("You must be logged in to save a form.");
+            setShowConfirmation(true);
+            return;
+        }
+
         if (!form.name.trim() || !form.description.trim()) {
             setConfirmationTitle("Missing Fields");
             setConfirmationMessage("Please provide both a form name and description before saving.");
@@ -92,7 +98,7 @@ function FormBuilderPage() {
             const response = await fetch(`${apiBaseUrl}/api/form`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({...form, ownerId: Number(userId)}),
+                body: JSON.stringify({ ...form, ownerId: Number(userId) }),
             });
 
             if (response.ok) {
