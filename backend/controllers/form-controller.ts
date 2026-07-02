@@ -195,14 +195,12 @@ const test = async (req: Request, res: Response) => {
 }
 
 const getFormsByOwnerId = async (req: Request, res: Response) => {
+  const ownerId = Number(req.params.ownerId);
   try {
-    const ownerWithForms = await prisma.owner.findUnique({
-      where: { id: 1 },
-      include: {
-        FeedbackForm: true
-      }
+    const forms = await prisma.feedbackForm.findMany({
+      where: { ownerId },
     });
-    res.status(200).json(ownerWithForms);
+    res.status(200).json(forms);
   }
   catch (error: any) {
     res.status(500).json({ error: 'Failed to fetch forms for owner', details: error.message });

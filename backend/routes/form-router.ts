@@ -5,14 +5,14 @@ import { createForm, deleteForm, getFormById, getForms, updateQuestion, deleteQu
 const dataRouter = express.Router();
 
 dataRouter.route('/form').get(getForms);
-dataRouter.route('/form/:id').get(getFormById);
 dataRouter.route('/form').post(createForm);
+dataRouter.route('/form/owner/:ownerId').get(getFormsByOwnerId);
+dataRouter.route('/form/:id').get(getFormById);
 dataRouter.route('/form/:id').delete(deleteForm);
 
 dataRouter.route('/form/:formId/:questionId').patch(updateQuestion);
 dataRouter.route('/form/:formId/:questionId/order').patch(updateQuestion);
 dataRouter.route('/form/:formId/:questionId').delete(deleteQuestion);
-dataRouter.route('/form/owner/:ownerId').get(getFormsByOwnerId);
 
 dataRouter.route('/test').get(test);
 
