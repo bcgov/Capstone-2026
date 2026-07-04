@@ -5,6 +5,7 @@ import submissionRouter from './routes/submission-router';
 import userRouter from './routes/user-router';
 import { createForm } from './controllers/form-controller';
 import ownerRouter from './routes/owner-router';
+import * as jwt from 'jsonwebtoken';
 
 const port = 3000;
 
@@ -21,6 +22,21 @@ app.get('/hello', (req, res) => {
 app.post('/api/form', (req, res) => {
   createForm(req, res);
 });
+
+
+
+// you will need to install via 'npm install jsonwebtoken' or in your package.json
+
+app.get('/api/metabase', (req, res) => {
+  const METABASE_SECRET_KEY = process.env.METABASE_SECURE_KEY;
+  const payload = {
+    resource: { dashboard: 2 },
+    params: {},
+    exp: Math.round(Date.now() / 1000) + (10 * 60) // 10 minute expiration
+  };
+  const token = jwt.sign(payload, METABASE_SECRET_KEY as string);
+  res.json({token: token});
+}); 
 
 app.listen(port, () => {
   console.info(`[server]: Server started on port ${port}`);
