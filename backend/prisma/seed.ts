@@ -21,7 +21,7 @@ async function makeAdminUser() {
 
 async function makeColorChangeForm() {
   const feedbackForm = await prisma.feedbackForm.upsert({
-    where: { name: "Color change form" },
+    where: { id: 1 },
     update: {},
     create: {
       name: "Color change form",
@@ -120,7 +120,7 @@ async function makeColorChangeForm() {
 
 async function makeNpmForm() {
   const feedbackForm = await prisma.feedbackForm.upsert({
-    where: { name: "NMP Form" },
+    where: { id: 2 },
     update: {},
     create: {
       name: "NMP Form",
@@ -259,6 +259,16 @@ async function makeRandomSubmissions(form: any, count: number, users: any[]) {
 async function main() {
   console.log('🌱 Starting database seeding...')
 
+  // Clear out any existing forms safely to prevent conflicts
+  await prisma.answer.deleteMany({});
+  await prisma.feedbackSubmission.deleteMany({});
+  await prisma.question.deleteMany({});
+  await prisma.feedbackForm.deleteMany({});
+
+  // Reset the auto-increment counter for the ID column back to 1
+  await prisma.$executeRawUnsafe(
+    `ALTER SEQUENCE "FeedbackForm_id_seq" RESTART WITH 1;`
+  );
   await makeAdminUser()
 
   const colorChangeForm = await makeColorChangeForm()
