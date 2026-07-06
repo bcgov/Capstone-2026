@@ -17,7 +17,7 @@ const createOwner = async (req: Request, res: Response) => {
     const { username } = req.body;
 
     const owner = await prisma.owner.upsert({
-        where: { email: username },
+        where: { name: username },
         update: {},
         create: {
             email: username,

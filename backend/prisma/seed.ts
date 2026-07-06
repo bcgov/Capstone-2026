@@ -1,5 +1,7 @@
 import { PrismaClient, QuestionType } from '@prisma/client'
 import bcrypt from 'bcryptjs'
+import { faker } from '@faker-js/faker'
+import { create } from 'domain'
 
 const prisma = new PrismaClient()
 
@@ -17,15 +19,9 @@ async function makeAdminUser() {
   console.log(`✅ Admin user created: ${adminUser.name} (${adminUser.email})`)
 }
 
-async function main() {
-  console.log('🌱 Starting database seeding...')
-
-  console.log('🧹 Existing database records cleared successfully.')
-
-  await makeAdminUser()
-
+async function makeColorChangeForm() {
   const feedbackForm = await prisma.feedbackForm.upsert({
-    where: { id: 1 },
+    where: { name: "Color change form" },
     update: {},
     create: {
       name: "Color change form",
@@ -119,6 +115,79 @@ async function main() {
     },
   });
 
+  return feedbackForm
+}
+async function makeRandomUsers(count: number) {
+  const users = []
+  for (let i = 0; i < count; i++) {
+    const hashedPassword = await bcrypt.hash(faker.internet.password(), 10)
+    const user = await prisma.owner.create({
+      data: {
+        email: faker.internet.email(),
+        name: faker.person.fullName(),
+        passwordHash: hashedPassword,
+      }
+    })
+    users.push(user)
+  }
+  console.log(`✅ ${count} random users created.`)
+  return users
+}
+
+async function makeRandomSubmissions(count: number, users: any[]) {
+  const feedbackForm = await prisma.feedbackForm.findFirst({
+    where: { name: "Color change form" },
+    include: { questions: true }
+  })
+
+  if (!feedbackForm) {
+    throw new Error('Feedback form not found. Please seed the feedback form first.')
+  }
+
+  for (let i = 0; i < count; i++) {
+    await prisma.feedbackSubmission.create({
+      data: {
+        formId: feedbackForm.id,
+        submitted_at: faker.date.recent(),
+        user : users[Math.floor(Math.random() * users.length)],
+        answers: {
+          create: feedbackForm.questions.map(question => {
+            let answerValue = ""
+
+            if(question.questionType === QuestionType.TEXTAREA) {
+              answerValue = faker.color.human()
+            } else if(question.questionType === QuestionType.RADIO) {
+              answerValue = faker.helpers.arrayElement(["yes", "no"])
+            } else if(question.questionType === QuestionType.CHECKBOX) {
+              answerValue = faker.helpers.arrayElement(["text_visibility", "image_visibility"])
+            } else if(question.questionType === QuestionType.DROPDOWN) {
+              answerValue = faker.helpers.arrayElement(["vancouver", "victoria", "kelowna"])
+            } else if(question.questionType === QuestionType.SLIDER) {
+              answerValue = faker.number.int({ min: 1, max: 10 }).toString()
+            }
+
+            return {
+              questionId: question.id,
+              answerValue: answerValue
+            }
+          }),
+        }
+      }
+    })
+  }
+  console.log(`✅ ${count} random submissions created.`)
+}
+
+async function main() {
+  console.log('🌱 Starting database seeding...')
+
+  await makeAdminUser()
+
+  const feedbackForm = await makeColorChangeForm()
+
+  const users = await makeRandomUsers(10)
+  await makeRandomSubmissions(10, users)
+  
   console.log(`✅ Seeded: "${feedbackForm.name}" created successfully!`)
 }
 

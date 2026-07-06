@@ -49,7 +49,7 @@ model CoverageReport {
 
 model FeedbackForm {
   id                  Int      @id @default(autoincrement())
-  name                String?
+  name                String?   @unique
   description         String?
   is_active           Boolean  @default(true)
   version             Int      @default(1)
