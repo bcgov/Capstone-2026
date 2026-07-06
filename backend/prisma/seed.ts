@@ -21,7 +21,7 @@ async function makeAdminUser() {
 
 async function makeColorChangeForm() {
   const feedbackForm = await prisma.feedbackForm.upsert({
-    where: { name: "Color change form" },
+    where: { id: 6 },
     update: {},
     create: {
       name: "Color change form",
@@ -120,7 +120,7 @@ async function makeColorChangeForm() {
 
 async function makeNpmForm() {
   const feedbackForm = await prisma.feedbackForm.upsert({
-    where: { name: "NMP Form" },
+    where: { id: 7 },
     update: {},
     create: {
       name: "NMP Form",
