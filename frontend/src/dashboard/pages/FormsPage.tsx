@@ -126,7 +126,7 @@ function FormsPage() {
     };
 
     const deleteForm = async (id: number) => {
-        if (!window.confirm("Delete this form?")) return;
+        if (!window.confirm("Deleting this form will irreversibly delete all submissions and collected user data with it. Are you sure you want to conitue?")) return;
 
         try {
             const response = await fetch(`${apiBaseUrl}/api/form/${id}`, { method: "DELETE" });
