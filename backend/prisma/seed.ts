@@ -264,9 +264,17 @@ async function main() {
   const colorChangeForm = await makeColorChangeForm()
   const npmForm = await makeNpmForm()
   
-  const users = await makeRandomUsers(10)
-  await makeRandomSubmissions(colorChangeForm, 10, users)
-  await makeRandomSubmissions(npmForm, 10, users)
+  const submissionCount = await prisma.feedbackSubmission.count();
+
+  if (submissionCount > 50) {
+    console.log(`⚠️  Skipping submission seeding. There are already ${submissionCount} submissions in the database.`)
+    return
+  } 
+  else{
+    const users = await makeRandomUsers(10)
+    await makeRandomSubmissions(colorChangeForm, 10, users)
+    await makeRandomSubmissions(npmForm, 10, users)
+  }
 
   console.log(`✅ Seeded: "${colorChangeForm.name}" created successfully!`)
   console.log(`✅ Seeded: "${npmForm.name}" created successfully!`)
