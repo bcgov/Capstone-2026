@@ -120,12 +120,10 @@ async function makeColorChangeForm() {
 async function makeRandomUsers(count: number) {
   const users = []
   for (let i = 0; i < count; i++) {
-    const hashedPassword = await bcrypt.hash(faker.internet.password(), 10)
-    const user = await prisma.owner.create({
+    const user = await prisma.user.create({
       data: {
         email: faker.internet.email(),
         name: faker.person.fullName(),
-        passwordHash: hashedPassword,
       }
     })
     users.push(user)
@@ -137,7 +135,7 @@ async function makeRandomUsers(count: number) {
 async function makeRandomSubmissions(count: number, users: any[]) {
   const feedbackForm = await prisma.feedbackForm.findFirst({
     where: { name: "Color change form" },
-    include: { questions: true }
+    include: { questions: {include: { options: true } } }
   })
 
   if (!feedbackForm) {
@@ -149,27 +147,37 @@ async function makeRandomSubmissions(count: number, users: any[]) {
       data: {
         formId: feedbackForm.id,
         submitted_at: faker.date.recent(),
-        user : users[Math.floor(Math.random() * users.length)],
+        userId: users[Math.floor(Math.random() * users.length)].id,
         answers: {
           create: feedbackForm.questions.map(question => {
-            let answerValue = ""
+            const answerValue : any = {
+              questionId: question.id,
+            }
 
             if(question.questionType === QuestionType.TEXTAREA) {
-              answerValue = faker.color.human()
-            } else if(question.questionType === QuestionType.RADIO) {
-              answerValue = faker.helpers.arrayElement(["yes", "no"])
-            } else if(question.questionType === QuestionType.CHECKBOX) {
-              answerValue = faker.helpers.arrayElement(["text_visibility", "image_visibility"])
-            } else if(question.questionType === QuestionType.DROPDOWN) {
-              answerValue = faker.helpers.arrayElement(["vancouver", "victoria", "kelowna"])
-            } else if(question.questionType === QuestionType.SLIDER) {
-              answerValue = faker.number.int({ min: 1, max: 10 }).toString()
+              answerValue.answerText = faker.color.human()
+            } 
+            else if(question.questionType === QuestionType.RADIO) {
+              const options = faker.helpers.arrayElement(question.options)
+              answerValue.answerText = options.optionText
+              answerValue.answerBoolean = options.optionText === "Yes"
+            } 
+            else if(question.questionType === QuestionType.CHECKBOX) {
+              const selectedOptions = faker.helpers.arrayElements(question.options, {
+                min: 1,
+                max: question.options.length
+              })
+              answerValue.answerText = selectedOptions.map(option => option.optionText).join(", ")
+            } 
+            else if(question.questionType === QuestionType.DROPDOWN) {
+              const options = faker.helpers.arrayElement(question.options)
+              answerValue.answerText = options.optionText
+            } 
+            else if(question.questionType === QuestionType.SLIDER) {
+              answerValue.answerNumber = faker.number.int({ min: 1, max: 10 })
             }
 
-            return {
-              questionId: question.id,
-              answerValue: answerValue
-            }
+            return answerValue
           }),
         }
       }
@@ -187,7 +195,7 @@ async function main() {
 
   const users = await makeRandomUsers(10)
   await makeRandomSubmissions(10, users)
-  
+
   console.log(`✅ Seeded: "${feedbackForm.name}" created successfully!`)
 }
 
