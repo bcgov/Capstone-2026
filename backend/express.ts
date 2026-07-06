@@ -25,7 +25,7 @@ const corsOptions = {
 
     callback(error, isAllowed);
   }, // Allow requests from these origins
-  methods: ['GET', 'POST', 'PUT', 'DELETE'], // Allowed methods
+  methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'], // Allowed methods
   allowedHeaders: ['Content-Type', 'Authorization'], // Allowed headers
   credentials: true // Allow cookies and authorization headers
 };
