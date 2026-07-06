@@ -117,6 +117,76 @@ async function makeColorChangeForm() {
 
   return feedbackForm
 }
+
+async function makeNpmForm() {
+  const feedbackForm = await prisma.feedbackForm.upsert({
+    where: { name: "NMP Form" },
+    update: {},
+    create: {
+      name: "NMP Form",
+      description: "A form to test user's satisfaction with adding dairy cattle workflow",
+      owner: {
+        connect: { email: 'admin@cst.com' }
+      },
+      is_active: true,
+      version: 1,
+      questions: {
+        create: [
+          {
+            questionType: QuestionType.TEXTAREA,
+            question_text: "If there is a breed(s) of cattle that is not available please add it here:",
+            is_required: false,
+            display_order: 1,
+          },
+          {
+            questionType: QuestionType.SLIDER,
+            question_text: "Satisfaction with workflow of adding dairy cattle?",
+            is_required: true,
+            display_order: 2,
+          },
+          {
+            questionType: QuestionType.CHECKBOX,
+            question_text: "Which of the auto filled fields did you need to alter the values?",
+            options: {
+              create: [
+                {
+                  displayOrder: 1,
+                  optionText: "None",
+                  optionValue: "none"
+                },
+                {
+                  displayOrder: 2,
+                  optionText: "Breed",
+                  optionValue: "breed"
+                },
+                {
+                  displayOrder: 3,
+                  optionText: "Milk Production",
+                  optionValue: "milk_production"  
+                },
+                {
+                  displayOrder: 4,
+                  optionText: "Milking Centre Wash Water",
+                  optionValue: "milking_centre_wash_water"
+                },
+                {
+                  displayOrder: 5,
+                  optionText: "Units",
+                  optionValue: "units"
+                }
+              ]
+            },
+            is_required: false,
+            display_order: 3,
+          },
+        ]
+      }
+    },
+  });
+
+  return feedbackForm
+}
+
 async function makeRandomUsers(count: number) {
   const users = []
   for (let i = 0; i < count; i++) {
@@ -132,9 +202,9 @@ async function makeRandomUsers(count: number) {
   return users
 }
 
-async function makeRandomSubmissions(count: number, users: any[]) {
+async function makeRandomSubmissions(form: any, count: number, users: any[]) {
   const feedbackForm = await prisma.feedbackForm.findFirst({
-    where: { name: "Color change form" },
+    where: { name: form.name },
     include: { questions: {include: { options: true } } }
   })
 
@@ -191,12 +261,15 @@ async function main() {
 
   await makeAdminUser()
 
-  const feedbackForm = await makeColorChangeForm()
-
+  const colorChangeForm = await makeColorChangeForm()
+  const npmForm = await makeNpmForm()
+  
   const users = await makeRandomUsers(10)
-  await makeRandomSubmissions(10, users)
+  await makeRandomSubmissions(colorChangeForm, 10, users)
+  await makeRandomSubmissions(npmForm, 10, users)
 
-  console.log(`✅ Seeded: "${feedbackForm.name}" created successfully!`)
+  console.log(`✅ Seeded: "${colorChangeForm.name}" created successfully!`)
+  console.log(`✅ Seeded: "${npmForm.name}" created successfully!`)
 }
 
 main()
