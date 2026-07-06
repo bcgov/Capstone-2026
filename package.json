@@ -4,8 +4,7 @@
     "@bcgov/design-system-react-components": "^0.7.0",
     "@prisma/client": "^6.19.3",
     "jsonwebtoken": "^9.0.3",
-    "react": "^19.2.7",
-    "wsl": "^1.0.0"
+    "react": "^19.2.7"
   },
   "devDependencies": {
     "@types/jsonwebtoken": "^9.0.10",
