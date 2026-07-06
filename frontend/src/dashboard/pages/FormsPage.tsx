@@ -32,6 +32,13 @@ const styles = {
         padding: "1rem",
         backgroundColor: "#fff",
     },
+    formCardInactive: {
+        border: "1px solid #ddd",
+        borderRadius: "8px",
+        padding: "1rem",
+        backgroundColor: "#f5f5f5",
+        opacity: 0.6,
+    },
     formCardHeader: {
         display: "flex",
         justifyContent: "space-between",
@@ -41,8 +48,20 @@ const styles = {
     formCardHeading: {
         margin: 0,
     },
+    badges: {
+        display: "flex",
+        gap: "0.5rem",
+        alignItems: "center",
+    },
     idBadge: {
         backgroundColor: "#f3f3f3",
+        padding: "0.25rem 0.5rem",
+        borderRadius: "4px",
+        fontSize: "0.875rem",
+    },
+    inactiveBadge: {
+        backgroundColor: "#e0e0e0",
+        color: "#888",
         padding: "0.25rem 0.5rem",
         borderRadius: "4px",
         fontSize: "0.875rem",
@@ -76,8 +95,7 @@ function FormsPage() {
         fetch(`${apiBaseUrl}/api/form/owner/${userId}`)
             .then((res) => res.json())
             .then((data) => {
-                console.log(data);
-                setForms(data);
+                setForms(Array.isArray(data) ? data : []);
                 setLoading(false);
             })
             .catch((err) => {
@@ -97,6 +115,16 @@ function FormsPage() {
         }
     };
 
+    const handleEdit = async (id: number) => {
+        try {
+            const response = await fetch(`${apiBaseUrl}/api/form/${id}`);
+            const data = await response.json();
+            navigate("/dashboard/formBuilder", { state: { editForm: data } });
+        } catch (error) {
+            console.error("Failed to load form for editing", error);
+        }
+    };
+
     const deleteForm = async (id: number) => {
         if (!window.confirm("Delete this form?")) return;
 
@@ -109,6 +137,10 @@ function FormsPage() {
             console.error(error);
         }
     };
+
+    const activeForms = forms.filter((f) => f.is_active);
+    const inactiveForms = forms.filter((f) => !f.is_active);
+    const sortedForms = [...activeForms, ...inactiveForms];
 
     return (
         <div style={{ margin: 0 }}>
@@ -129,11 +161,19 @@ function FormsPage() {
                 {!loading && forms.length === 0 && <p>No forms found.</p>}
 
                 <div style={styles.grid}>
-                    {forms.map((form) => (
-                        <div key={form.id} style={styles.formCard}>
+                    {sortedForms.map((form) => (
+                        <div
+                            key={form.id}
+                            style={form.is_active ? styles.formCard : styles.formCardInactive}
+                        >
                             <div style={styles.formCardHeader}>
                                 <h3 style={styles.formCardHeading}>{form.name}</h3>
-                                <span style={styles.idBadge}>ID: {form.id}</span>
+                                <div style={styles.badges}>
+                                    {!form.is_active && (
+                                        <span style={styles.inactiveBadge}>Inactive</span>
+                                    )}
+                                    <span style={styles.idBadge}>ID: {form.id}</span>
+                                </div>
                             </div>
 
                             <p>{form.description}</p>
@@ -142,6 +182,11 @@ function FormsPage() {
                                 <Button variant="secondary" onPress={() => handleView(form.id)}>
                                     View
                                 </Button>
+                                {form.is_active && (
+                                    <Button variant="secondary" onPress={() => handleEdit(form.id)}>
+                                        Edit
+                                    </Button>
+                                )}
                                 <Button variant="secondary" onPress={() => deleteForm(form.id)}>
                                     Delete
                                 </Button>

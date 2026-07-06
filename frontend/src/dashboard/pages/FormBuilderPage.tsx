@@ -4,7 +4,7 @@ import FormDetailsEditor from "../components/FormDetailsEditor";
 import QuestionList from "../components/QuestionList";
 import type { FeedbackFormData } from "../../feedback/types/feedback";
 import { QuestionType } from "../../feedback/types/feedback";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { useFeedback } from "../../feedback/FeedbackProvider";
 import { useAuth } from "../../auth/AuthContext";
 import SubmissionConfirmationModal from "../../feedback/SubmissionConfirmation";
@@ -55,12 +55,20 @@ const styles = {
 
 function FormBuilderPage() {
     const navigate = useNavigate();
+    const location = useLocation();
     const { apiBaseUrl } = useFeedback();
     const { logout, isAuthenticated, userId } = useAuth();
     const [showConfirmation, setShowConfirmation] = useState(false);
     const [confirmationTitle, setConfirmationTitle] = useState("");
     const [confirmationMessage, setConfirmationMessage] = useState("");
-    const [form, setForm] = useState<FeedbackFormData>(EMPTY_FORM);
+
+    const editForm = location.state?.editForm as FeedbackFormData | undefined;
+    const [form, setForm] = useState<FeedbackFormData>(
+        editForm
+            ? { ...editForm, id: 0 }
+            : EMPTY_FORM
+    );
+    const oldFormId = editForm?.id ?? null;
 
     const addQuestion = () => {
         setForm((prev) => ({
@@ -98,16 +106,24 @@ function FormBuilderPage() {
             const response = await fetch(`${apiBaseUrl}/api/form`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ ...form, ownerId: Number(userId) }),
+                body: JSON.stringify({ ...form, id: 0, ownerId: Number(userId) }),
             });
 
             if (response.ok) {
                 const savedForm = await response.json();
+
+                if (oldFormId) {
+                    await fetch(`${apiBaseUrl}/api/form/${oldFormId}/deactivate`, {
+                        method: "PATCH",
+                    });
+                }
+
                 setConfirmationTitle("Form Saved");
                 setConfirmationMessage(
                     `Your form "${savedForm.name}" was saved successfully.\n(ID: ${savedForm.id})`
                 );
                 setForm(EMPTY_FORM);
+                window.scrollTo({ top: 0, behavior: "smooth" });
             } else {
                 setConfirmationTitle("Save Failed");
                 setConfirmationMessage(await response.text());
@@ -121,7 +137,7 @@ function FormBuilderPage() {
     return (
         <>
             <div style={{ margin: 0 }}>
-                <Header title="Capstone 2026 - Form Builder">
+                <Header title={oldFormId ? "Capstone 2026 - Edit Form" : "Capstone 2026 - Form Builder"}>
                     <Button variant="primary" onPress={() => navigate("/")}>
                         Test App
                     </Button>
@@ -152,7 +168,7 @@ function FormBuilderPage() {
                                 + Add Question
                             </Button>
                             <Button variant="secondary" onPress={handleSave} style={{ width: "auto" }}>
-                                Save Form
+                                {oldFormId ? "Save New Version" : "Save Form"}
                             </Button>
                         </div>
                     </div>
@@ -172,7 +188,10 @@ function FormBuilderPage() {
                 isOpen={showConfirmation}
                 title={confirmationTitle}
                 message={confirmationMessage}
-                onClose={() => setShowConfirmation(false)}
+                onClose={() => {
+                    setShowConfirmation(false);
+                    if (confirmationTitle === "Form Saved") navigate("/dashboard/forms");
+                }}
             />
         </>
     );
