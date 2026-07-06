@@ -2,8 +2,11 @@ import {
     createContext,
     useContext,
     useState,
-    ReactNode
+    useEffect,
+    type ReactNode
 } from "react";
+
+const API_BASE_URL = "http://localhost:3000";
 
 type AuthContextType = {
     userId: string | null;
@@ -13,7 +16,6 @@ type AuthContextType = {
 };
 
 const AuthContext = createContext<AuthContextType | null>(null);
-
 
 export function useAuth() {
     const ctx = useContext(AuthContext);
@@ -36,15 +38,20 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         localStorage.removeItem("userId");
     };
 
+    useEffect(() => {
+        if (!userId) return;
+
+        fetch(`${API_BASE_URL}/api/login/${userId}`)
+            .then((res) => {
+                if (!res.ok) logout();
+            })
+            .catch(() => logout());
+    }, []);
+
     const isAuthenticated = userId !== null;
 
     return (
-        <AuthContext.Provider value={{
-            userId,
-            isAuthenticated,
-            login,
-            logout
-        }}>
+        <AuthContext.Provider value={{ userId, isAuthenticated, login, logout }}>
             {children}
         </AuthContext.Provider>
     );

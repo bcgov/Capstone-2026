@@ -63,7 +63,7 @@ const createForm = async (req: Request, res: Response) => {
         },
         name: req.body.name ?? "Untitled form",
         description: req.body.description ?? "Unknown description",
-        is_active: req.body.is_active ?? false,
+        is_active: true,
         version: req.body.version ?? 1,
         questions: {
           create: req.body.questions.map((question: any) => ({
@@ -195,18 +195,29 @@ const test = async (req: Request, res: Response) => {
 }
 
 const getFormsByOwnerId = async (req: Request, res: Response) => {
+  const ownerId = Number(req.params.ownerId);
   try {
-    const ownerWithForms = await prisma.owner.findUnique({
-      where: { id: 1 },
-      include: {
-        FeedbackForm: true
-      }
+    const forms = await prisma.feedbackForm.findMany({
+      where: { ownerId },
     });
-    res.status(200).json(ownerWithForms);
+    res.status(200).json(forms);
   }
   catch (error: any) {
     res.status(500).json({ error: 'Failed to fetch forms for owner', details: error.message });
   }
 }
 
-export { createForm, getFormById, getForms, updateQuestion, updateQuestionOrder, deleteQuestion, deleteForm, getFormsByOwnerId, test };
+const deactivateForm = async (req: Request, res: Response) => {
+  const formId = Number(req.params.id);
+  try {
+    await prisma.feedbackForm.update({
+      where: { id: formId },
+      data: { is_active: false },
+    });
+    res.status(200).json({ message: "Form deactivated" });
+  } catch (error: any) {
+    res.status(500).json({ error: "Failed to deactivate form", details: error.message });
+  }
+};
+
+export { createForm, getFormById, getForms, updateQuestion, updateQuestionOrder, deleteQuestion, deleteForm, deactivateForm, getFormsByOwnerId, test };

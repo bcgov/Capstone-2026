@@ -7,11 +7,11 @@ export enum QuestionType {
 }
 
 export const QuestionTypeLabels: Record<QuestionType, string> = {
-    [QuestionType.TEXTAREA]: "Textarea",
+    [QuestionType.TEXTAREA]: "Text Box",
     [QuestionType.RADIO]: "Radio Button",
     [QuestionType.DROPDOWN]: "Dropdown Menu",
     [QuestionType.CHECKBOX]: "Checkbox",
-    [QuestionType.SLIDER]: "Slider",
+    [QuestionType.SLIDER]: "Satisfaction Slider",
 };
 
 export type FormattedAnswer = {

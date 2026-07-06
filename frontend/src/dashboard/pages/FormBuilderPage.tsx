@@ -4,7 +4,7 @@ import FormDetailsEditor from "../components/FormDetailsEditor";
 import QuestionList from "../components/QuestionList";
 import type { FeedbackFormData } from "../../feedback/types/feedback";
 import { QuestionType } from "../../feedback/types/feedback";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { useFeedback } from "../../feedback/FeedbackProvider";
 import { useAuth } from "../../auth/AuthContext";
 import SubmissionConfirmationModal from "../../feedback/SubmissionConfirmation";
@@ -23,20 +23,20 @@ const styles = {
         display: "grid",
         gridTemplateColumns: "1.2fr 1fr",
         alignItems: "start",
-        gap: "1.5rem",
-        padding: "1.5rem",
+        gap: "2rem",
+        padding: "2rem",
         boxSizing: "border-box" as const,
         fontFamily: "BC Sans",
     },
     editorColumn: {
         display: "flex",
         flexDirection: "column" as const,
-        gap: "1rem",
+        gap: "1.5rem",
         paddingRight: "1rem",
     },
     card: {
         background: "white",
-        padding: "1rem",
+        padding: "1.5rem",
         borderRadius: "8px",
         border: "1px solid #ddd",
         boxShadow: "0 1px 3px rgba(0,0,0,0.1)",
@@ -56,12 +56,20 @@ const styles = {
 
 function FormBuilderPage() {
     const navigate = useNavigate();
+    const location = useLocation();
     const { apiBaseUrl } = useFeedback();
-    const { logout, isAuthenticated } = useAuth();
+    const { logout, isAuthenticated, userId } = useAuth();
     const [showConfirmation, setShowConfirmation] = useState(false);
     const [confirmationTitle, setConfirmationTitle] = useState("");
     const [confirmationMessage, setConfirmationMessage] = useState("");
-    const [form, setForm] = useState<FeedbackFormData>(EMPTY_FORM);
+
+    const editForm = location.state?.editForm as FeedbackFormData | undefined;
+    const [form, setForm] = useState<FeedbackFormData>(
+        editForm
+            ? { ...editForm, id: 0 }
+            : EMPTY_FORM
+    );
+    const oldFormId = editForm?.id ?? null;
 
     const handleLogout = () => {
         logout();
@@ -85,23 +93,43 @@ function FormBuilderPage() {
         }));
     };
 
-    const {userId} = useAuth();
     const handleSave = async () => {
+        if (!userId) {
+            setConfirmationTitle("Not Logged In");
+            setConfirmationMessage("You must be logged in to save a form.");
+            setShowConfirmation(true);
+            return;
+        }
+
+        if (!form.name.trim() || !form.description.trim()) {
+            setConfirmationTitle("Missing Fields");
+            setConfirmationMessage("Please provide both a form name and description before saving.");
+            setShowConfirmation(true);
+            return;
+        }
 
         try {
             const response = await fetch(`${apiBaseUrl}/api/form`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({...form, ownerId: Number(userId)}),
+                body: JSON.stringify({ ...form, id: 0, ownerId: Number(userId) }),
             });
 
             if (response.ok) {
                 const savedForm = await response.json();
+
+                if (oldFormId) {
+                    await fetch(`${apiBaseUrl}/api/form/${oldFormId}/deactivate`, {
+                        method: "PATCH",
+                    });
+                }
+
                 setConfirmationTitle("Form Saved");
                 setConfirmationMessage(
                     `Your form "${savedForm.name}" was saved successfully.\n(ID: ${savedForm.id})`
                 );
                 setForm(EMPTY_FORM);
+                window.scrollTo({ top: 0, behavior: "smooth" });
             } else {
                 setConfirmationTitle("Save Failed");
                 setConfirmationMessage(await response.text());
@@ -115,7 +143,7 @@ function FormBuilderPage() {
     return (
         <>
             <div style={{ margin: 0 }}>
-                <Header title="Capstone 2026 - Form Builder">
+                <Header title={oldFormId ? "Capstone 2026 - Edit Form" : "Capstone 2026 - Form Builder"}>
                     <Button variant="primary" onPress={() => navigate("/")}>
                         Test App
                     </Button>
@@ -146,7 +174,7 @@ function FormBuilderPage() {
                                 + Add Question
                             </Button>
                             <Button variant="secondary" onPress={handleSave} style={{ width: "auto" }}>
-                                Save Form
+                                {oldFormId ? "Save New Version" : "Save Form"}
                             </Button>
                         </div>
                     </div>
@@ -166,7 +194,10 @@ function FormBuilderPage() {
                 isOpen={showConfirmation}
                 title={confirmationTitle}
                 message={confirmationMessage}
-                onClose={() => setShowConfirmation(false)}
+                onClose={() => {
+                    setShowConfirmation(false);
+                    if (confirmationTitle === "Form Saved") navigate("/dashboard/forms");
+                }}
             />
         </>
     );

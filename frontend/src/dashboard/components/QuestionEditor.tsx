@@ -13,15 +13,18 @@ interface Props {
 const styles = {
     container: {
         border: "1px solid #ddd",
-        padding: "1rem",
-        marginBottom: "1rem",
+        padding: "1.5rem",
+        marginBottom: "1.5rem",
         borderRadius: "4px",
         fontFamily: "BC Sans",
+        display: "flex",
+        flexDirection: "column" as const,
+        gap: "1rem",
     },
     actions: {
         display: "flex",
         gap: "0.5rem",
-        marginTop: "1rem",
+        marginTop: "0.5rem",
     },
 };
 
