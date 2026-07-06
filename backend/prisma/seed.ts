@@ -1,24 +1,38 @@
 import { PrismaClient, QuestionType } from '@prisma/client'
+import bcrypt from 'bcryptjs'
 
 const prisma = new PrismaClient()
+
+async function makeAdminUser() {
+  const hashedPassword = await bcrypt.hash('capslock', 10)
+  const adminUser = await prisma.owner.upsert({
+    where: { email: 'admin@cst.com' },
+    update: {},
+    create: {
+      email: 'admin@cst.com',
+      name: 'Admin User',
+      passwordHash: hashedPassword,
+    }
+  })
+  console.log(`✅ Admin user created: ${adminUser.name} (${adminUser.email})`)
+}
 
 async function main() {
   console.log('🌱 Starting database seeding...')
 
-  // // 1. Explicitly clear children first to prevent key/state locking issues
-  // await prisma.answer.deleteMany({})
-  // await prisma.questionOption.deleteMany({})
-  // await prisma.question.deleteMany({})
-  // //await prisma.feedbackSubmission.deleteMany({})
-  // await prisma.feedbackForm.deleteMany({})
-
   console.log('🧹 Existing database records cleared successfully.')
+
+  await makeAdminUser()
+
   const feedbackForm = await prisma.feedbackForm.upsert({
     where: { id: 1 },
     update: {},
     create: {
       name: "Color change form",
       description: "A feedback form about the background color change button",
+      owner: {
+        connect: { email: 'admin@cst.com' }
+      },
       is_active: true,
       version: 1,
       questions: {
