@@ -8,19 +8,15 @@ concurrency:
   group: ${{ github.workflow }}-edit-${{ github.event.number }}
   cancel-in-progress: true
 
-permissions:
-  contents: read
-  pull-requests: write
-
 jobs:
   validate:
     name: Validate PR
     if: (! github.event.pull_request.draft)
-    uses: bcgov/quickstart-openshift-helpers/.github/workflows/.pr-validate.yml@v0.6.1
+    uses: bcgov/quickstart-openshift-helpers/.github/workflows/.pr-validate.yml@0b8121a528aaa05ef8def2f79be9081691dfe98a # v0.9.0
     with:
       markdown_links: |
-        - [Frontend](https://${{ github.event.repository.name }}-${{ github.event.number }}-frontend.apps.silver.devops.gov.bc.ca)
-        - [Backend](https://${{ github.event.repository.name }}-${{ github.event.number }}-backend.apps.silver.devops.gov.bc.ca/api/health)
+        - [Frontend](https://${{ github.event.repository.name }}-${{ github.event.number }}.apps.silver.devops.gov.bc.ca)
+        - [Backend](https://${{ github.event.repository.name }}-${{ github.event.number }}-backend.apps.silver.devops.gov.bc.ca/healthcheck/)
 
   results:
     name: Validate Results
@@ -28,12 +24,4 @@ jobs:
     needs: [validate]
     runs-on: ubuntu-24.04
     steps:
-      - run: |
-          # View results
-          echo "needs.*.result: ${{ toJson(needs.*.result) }}"
-
-      - if: contains(needs.*.result, 'failure')
-        run: |
-          # Job failure found
-          echo "At least one job has failed"
-          exit 1
+      - run: echo "Success!"

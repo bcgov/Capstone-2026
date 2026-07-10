@@ -83,11 +83,16 @@ const styles = {
 function FormsPage() {
     const navigate = useNavigate();
     const { apiBaseUrl } = useFeedback();
-    const { userId } = useAuth();
+    const { logout, isAuthenticated, userId } = useAuth();
     const [forms, setForms] = useState<FormSummary[]>([]);
     const [loading, setLoading] = useState(true);
     const [selectedForm, setSelectedForm] = useState<FeedbackFormData | null>(null);
     const [isPreviewOpen, setIsPreviewOpen] = useState(false);
+
+    const handleLogout = () => {
+        logout();
+        navigate("/");
+    }
 
     useEffect(() => {
         if (!userId) return;
@@ -154,6 +159,15 @@ function FormsPage() {
                 <Button variant="primary" onPress={() => navigate("/dashboard/formBuilder")}>
                     Form Builder
                 </Button>
+                {isAuthenticated ? (
+                    <Button variant="secondary" onPress={handleLogout}>
+                        Logout
+                    </Button>
+                ) : (
+                    <Button variant="primary" onPress={() => navigate("/login")}>
+                        Login
+                    </Button>
+                )}
             </Header>
 
             <div style={styles.page}>

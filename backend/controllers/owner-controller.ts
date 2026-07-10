@@ -14,15 +14,14 @@ const getAllOwners = async (req: Request, res: Response) => {
 };
 
 const createOwner = async (req: Request, res: Response) => {
-    const { username } = req.body;
+    const { email, password } = req.body;
 
     const owner = await prisma.owner.upsert({
-        where: { name: username },
+        where: { email: email },
         update: {},
         create: {
-            email: username,
-            name: username,
-            passwordHash: "hashed_placeholder"
+            email: email,
+            passwordHash: password
         }
     });
 

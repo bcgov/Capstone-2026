@@ -17,6 +17,7 @@ const EMPTY_FORM: FeedbackFormData = {
     questions: [],
 };
 
+
 const styles = {
     layout: {
         display: "grid",
@@ -69,6 +70,11 @@ function FormBuilderPage() {
             : EMPTY_FORM
     );
     const oldFormId = editForm?.id ?? null;
+
+    const handleLogout = () => {
+        logout();
+        navigate("/");
+    }
 
     const addQuestion = () => {
         setForm((prev) => ({
@@ -145,7 +151,7 @@ function FormBuilderPage() {
                         View Forms
                     </Button>
                     {isAuthenticated ? (
-                        <Button variant="secondary" onPress={logout}>
+                        <Button variant="secondary" onPress={handleLogout}>
                             Logout
                         </Button>
                     ) : (

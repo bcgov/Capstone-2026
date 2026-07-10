@@ -35,7 +35,7 @@ function FormRenderer({ formData, answers, setAnswers }: Props) {
                                 key={id}
                                 label={question_text}
                                 isRequired={is_required}
-                                orientation="horizontal"
+                                orientation="vertical"
                                 onChange={(value) => setAnswer(id, value)}
                             >
                                 {options?.map((option) => (
@@ -73,7 +73,7 @@ function FormRenderer({ formData, answers, setAnswers }: Props) {
                                 key={id}
                                 label={question_text}
                                 isRequired={is_required}
-                                orientation="horizontal"
+                                orientation="vertical"
                                 onChange={(value) => setAnswer(id, value)}
                             >
                                 {options?.map((option) => (
