@@ -13,7 +13,7 @@ metabaseRouter.get('/dashboard/metabase', (req, res) => {
 
     const token = jwt.sign(payload, process.env.METABASE_SECURE_KEY!);
 
-    const embedUrl = `https://metabase-route-b4cd74-dev.apps.silver.devops.gov.bc.ca/embed/dashboard/${token}#theme=light&bordered=false&titled=true`;
+    const embedUrl = `${process.env.METABASE_SITE_URL}/embed/dashboard/${token}#theme=light&bordered=false&titled=true`;
 
     res.json({ url: embedUrl });
 });
