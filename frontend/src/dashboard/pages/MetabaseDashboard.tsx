@@ -39,7 +39,7 @@ export default function MetabaseDashboard({ apiBaseUrl }: MetabaseDashboardProps
                     Form Builder
                 </Button>
             </Header>
-            <div style={{ width: "100%", height: "100vh" }}>
+            <div style={{ width: "100%", height: "calc(100vh - 80px)" }}>
                 <metabase-dashboard 
                     token={token} 
                     with-title="true" 
