@@ -15,7 +15,10 @@ const getAllOwners = async (req: Request, res: Response) => {
 
 const createOwner = async (req: Request, res: Response) => {
     const { email, password } = req.body;
-
+    
+    if (!email || !password) {
+        return res.status(400).json({ error: "Email and password are required fields." });
+    }
     const owner = await prisma.owner.upsert({
         where: { email: email },
         update: {},
