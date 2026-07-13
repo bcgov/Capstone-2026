@@ -1,21 +1,27 @@
 import express from 'express';
 import jwt from 'jsonwebtoken';
 
-const metabaseRouter= express.Router();
+const metabaseRouter = express.Router();
 
-metabaseRouter.get('/dashboard/metabase', (req, res) => {
+// Match your frontend's endpoint: /api/metabase
+metabaseRouter.get('/metabase', (req, res) => {
     const payload = {
         resource: { dashboard: 1 }, // Your dashboard ID
         params: {},
         iat: Math.floor(Date.now() / 1000),
-        exp: Math.floor(Date.now() / 1000) + (60 * 10) // Token expires in 10 minutes
+        exp: Math.floor(Date.now() / 1000) + (60 * 10) // 10 minutes
     };
 
-    const token = jwt.sign(payload, process.env.METABASE_SECURE_KEY!);
+    const secretKey = process.env.METABASE_SECURE_KEY;
+    if (!secretKey) {
+        return res.status(500).json({ error: "METABASE_SECURE_KEY is not defined on the server." });
+    }
 
-    const embedUrl = `${process.env.METABASE_SITE_URL}/embed/dashboard/${token}#theme=light&bordered=false&titled=true`;
+    // Sign the token
+    const token = jwt.sign(payload, secretKey);
 
-    res.json({ url: embedUrl });
+    // Return exactly what your frontend is looking for: data.token
+    res.json({ token: token });
 });
 
 export default metabaseRouter;

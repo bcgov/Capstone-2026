@@ -1,54 +1,71 @@
-import { defineConfig } from 'vite'
+import { defineConfig, loadEnv } from 'vite'
 import { fileURLToPath, URL } from 'node:url'
 import react from '@vitejs/plugin-react'
 
-// https://vite.dev/config/
-export default defineConfig({
-  define: {
-    'process.env': {},
-  },
-  plugins: [
-    {
-      name: 'build-html',
-      apply: 'build',
-      transformIndexHtml: (html) => {
-        return {
-          html,
-          tags: [
-            {
-              tag: 'script',
-              attrs: {
-                src: '/env.js',
+export default defineConfig(({ mode }) => {
+  const env = loadEnv(mode, process.cwd(), '')
+
+  return {
+    define: {
+      'process.env': {},
+    },
+    plugins: [
+      {
+        name: 'build-html',
+        transformIndexHtml: (html) => {
+          return {
+            html,
+            tags: [
+              {
+                tag: 'script',
+                children: `
+                  window.metabaseConfig = {
+                    theme: { preset: 'light' },
+                    isGuest: true,
+                    instanceUrl: 'https://metabase-route-b4cd74-dev.apps.silver.devops.gov.bc.ca'
+                  };
+                `,
+                injectTo: 'head-prepend',
               },
-              injectTo: 'head',
-            },
-          ],
-        }
+              {
+                tag: 'script',
+                attrs: {
+                  src: 'https://metabase-route-b4cd74-dev.apps.silver.devops.gov.bc.ca/app/embed.js',
+                  defer: true,
+                },
+                injectTo: 'head',
+              },
+              {
+                tag: 'script',
+                attrs: {
+                  src: '/env.js',
+                },
+                injectTo: 'head',
+              },
+            ],
+          }
+        },
       },
-    },
-    react()
-  ],
+      react()
+    ],
     server: {
-    // port: parseInt(process.env.VITE_PORT) || 3001,
-    fs: {
-      // Allow serving files from one level up to the project root
-      allow: ['..'],
-    },
-    proxy: {
-      // Proxy API requests to the backend
-      '/api': {
-        target: process.env.VITE_API_URL,
-        changeOrigin: true,
+      fs: {
+        allow: ['..'],
+      },
+      proxy: {
+        '/api': {
+          target: env.VITE_API_URL || 'http://localhost:5000',
+          changeOrigin: true,
+        },
+      },
+      watch: {
+        ignored: ['**/coverage/**', '**/playwright-report/**'],
       },
     },
-    watch: {
-      ignored: ['**/coverage/**', '**/playwright-report/**'],
-    },
-  },
-  resolve: {
-    alias: {
-      '@': fileURLToPath(new URL('./src', import.meta.url)),
-      // '~': fileURLToPath(new URL('./node_modules', import.meta.url)),
-    },
+    resolve: {
+      alias: {
+        '@': fileURLToPath(new URL('./src', import.meta.url)),
+      },
+    }
   }
 })
