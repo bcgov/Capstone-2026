@@ -7,7 +7,7 @@ import { AuthProvider } from "./auth/AuthContext.tsx";
 
 createRoot(document.getElementById("root")!).render(
   <AuthProvider>
-    <FeedbackProvider apiBaseUrl="http://localhost:3000">
+    <FeedbackProvider apiBaseUrl="http://localhost:3001">
       <App />
     </FeedbackProvider>
   </AuthProvider>

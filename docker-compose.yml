@@ -23,7 +23,7 @@ services:
     container_name: database
     environment:
       <<: *postgres-vars
-    ports: [5432:5432]
+    ports: [5433:5432]
     healthcheck:
       test: ["CMD", "pg_isready", "-U", "postgres"]
       interval: 5s
@@ -69,7 +69,7 @@ services:
       timeout: 10s
       retries: 3
       start_period: 40s
-    ports: ["3000:3000"]
+    ports: ["3001:3000"]
     volumes: ["./backend:/app", "/app/node_modules/", "/app/dist/"]
     # For debugging
     stdin_open: true
@@ -91,10 +91,10 @@ services:
           target: /app
           ignore: [node_modules]
     environment:
-      VITE_BACKEND_URL: http://localhost:3000
+      VITE_BACKEND_URL: http://localhost:3001
     healthcheck:
       test: ["CMD", "sh", "-c", "curl --fail http://localhost:5173 || exit 1"]
-    ports: ["5173:5173"]
+    ports: ["5174:5174"]
     # entrypoint: ls /app
     volumes:
       - ./frontend:/app
@@ -108,10 +108,10 @@ services:
       dockerfile: Dockerfile
     environment:
       NODE_ENV: development
-      PORT: 5173
-      VITE_BACKEND_URL: http://localhost:3000
+      PORT: 5174
+      VITE_BACKEND_URL: http://localhost:3001
       LOG_LEVEL: info
-    ports: ["5173:5173"]
+    ports: ["5174:5174"]
     volumes: ["./frontend/Caddyfile:/etc/caddy/Caddyfile"]
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:5173"]
