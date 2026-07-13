@@ -153,6 +153,9 @@ function FormsPage() {
                 <Button variant="primary" onPress={() => navigate("/")}>
                     Test App
                 </Button>
+                <Button variant="primary" onPress={() => navigate("/dashboard/metabase")}>
+                    View Dashboard
+                </Button>
                 <Button variant="primary" onPress={() => navigate("/dashboard/formBuilder")}>
                     Form Builder
                 </Button>

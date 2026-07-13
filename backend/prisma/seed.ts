@@ -237,7 +237,7 @@ async function makeRandomSubmissions(form: any, count: number, users: any[]) {
                 min: 1,
                 max: question.options.length
               })
-              answerValue.answerText = selectedOptions.map(option => option.optionText).join(", ")
+              answerValue.answerText = selectedOptions.map((option:any) => option.optionText).join(", ")
             } 
             else if(question.questionType === QuestionType.DROPDOWN) {
               const options = faker.helpers.arrayElement(question.options)

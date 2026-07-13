@@ -6,6 +6,7 @@ import FormBuilderPage from "./dashboard/pages/FormBuilderPage";
 import FormsPage from "./dashboard/pages/FormsPage";
 import "./App.css";
 import { AuthProvider } from "./auth/AuthContext.tsx";
+import MetabaseDashboard from "./dashboard/pages/MetabaseDashboard.tsx";
 
 function App() {
   return (
@@ -24,6 +25,7 @@ function App() {
           />
           <Route path="/dashboard/formBuilder" element={<FormBuilderPage />} />
           <Route path="/dashboard/forms" element={<FormsPage />} />
+          <Route path="/dashboard/metabase" element={<MetabaseDashboard apiBaseUrl="http://localhost:3000" />} />
         </Routes>
       </Router>
     </AuthProvider>

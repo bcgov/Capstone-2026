@@ -1,0 +1,83 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: capstone-2026-metabase
+spec:
+  selector:
+    matchLabels:
+      app: metabase
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: metabase
+    spec:
+      containers:
+        - name: metabase
+          image: docker.io/metabase/metabase:v0.62.4.2
+          securityContext:
+            allowPrivilegeEscalation: false
+            runAsNonRoot: true
+            runAsUser: 10001
+            runAsGroup: 10001
+            readOnlyRootFilesystem: true
+            seccompProfile:
+              type: RuntimeDefault
+            capabilities:
+              drop:
+                - ALL
+          ports:
+            - containerPort: 3000
+              protocol: TCP
+          env:
+            - name: MB_DB_TYPE
+              value: "postgres"
+            - name: MB_DB_HOST
+              value: "capstone-2026-151-database"
+            - name: MB_DB_PORT
+              value: "5432"
+            - name: MB_DB_DBNAME
+              value: "metabase_metadata"
+            - name: MB_DB_USER
+              value: "postgres"
+            - name: MB_DB_PASS
+              value: "default"
+            - name: MB_ENCRYPTION_SECRET_KEY
+              value: "Ij9BIxilMImF4RzMs3Z7+RKqAj2uXdsp2m8x6FRgkwA="
+            - name: MB_DB_AUTOMATIC_CREATION
+              value: "true"
+            - name: JAVA_OPTS
+              value: "-Xms512m -Xmx1024m"
+          resources:
+            requests:
+              memory: "512Mi"
+              cpu: "250m"
+            limits:
+              memory: "1500Mi"
+              cpu: "1000m"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: metabase-svc
+spec:
+  type: ClusterIP
+  selector:
+    app: metabase
+  ports:
+    - name: http
+      port: 8080
+      targetPort: 3000
+---
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  name: metabase-route
+spec:
+  to:
+    kind: Service
+    name: metabase-svc
+  port:
+    targetPort: http
+  tls:
+    termination: edge
