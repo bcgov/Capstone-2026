@@ -3,10 +3,9 @@ import jwt from 'jsonwebtoken';
 
 const metabaseRouter = express.Router();
 
-// Match your frontend's endpoint: /api/metabase
-metabaseRouter.get('/metabase', (req, res) => {
+metabaseRouter.get('/metabase/:dashboardId', (req, res) => {
     const payload = {
-        resource: { dashboard: 1 }, // Your dashboard ID
+        resource: { dashboard: parseInt(req.params.dashboardId) + 1 }, //dashboard 1 is the example dashboard on metabase, so we add 1 to get our self-made dashboard
         params: {},
         iat: Math.floor(Date.now() / 1000),
         exp: Math.floor(Date.now() / 1000) + (60 * 10) // 10 minutes
@@ -17,10 +16,8 @@ metabaseRouter.get('/metabase', (req, res) => {
         return res.status(500).json({ error: "METABASE_SECURE_KEY is not defined on the server." });
     }
 
-    // Sign the token
     const token = jwt.sign(payload, secretKey);
 
-    // Return exactly what your frontend is looking for: data.token
     res.json({ token: token });
 });
 

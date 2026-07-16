@@ -25,7 +25,7 @@ function App() {
           />
           <Route path="/dashboard/formBuilder" element={<FormBuilderPage />} />
           <Route path="/dashboard/forms" element={<FormsPage />} />
-          <Route path="/dashboard/metabase" element={<MetabaseDashboard apiBaseUrl="http://localhost:3000" />} />
+          <Route path="/dashboard/metabase/:dashboardId" element={<MetabaseDashboard apiBaseUrl="http://localhost:3000" />} />
         </Routes>
       </Router>
     </AuthProvider>

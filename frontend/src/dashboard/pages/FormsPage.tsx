@@ -153,9 +153,6 @@ function FormsPage() {
                 <Button variant="primary" onPress={() => navigate("/")}>
                     Test App
                 </Button>
-                <Button variant="primary" onPress={() => navigate("/dashboard/metabase")}>
-                    View Dashboard
-                </Button>
                 <Button variant="primary" onPress={() => navigate("/dashboard/formBuilder")}>
                     Form Builder
                 </Button>
@@ -195,6 +192,9 @@ function FormsPage() {
                             <div style={styles.formCardActions}>
                                 <Button variant="secondary" onPress={() => handleView(form.id)}>
                                     View
+                                </Button>
+                                <Button variant="primary" onPress={() => navigate(`/dashboard/metabase/${form.id}`)}>
+                                    View Dashboard
                                 </Button>
                                 {form.is_active && (
                                     <Button variant="secondary" onPress={() => handleEdit(form.id)}>
