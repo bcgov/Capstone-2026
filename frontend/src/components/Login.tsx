@@ -8,21 +8,35 @@ function Login() {
     const navigate = useNavigate();
     const { login } = useAuth();
     const { apiBaseUrl } = useFeedback();
-    const [username, setUsername] = useState("");
+    const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    const isEmailValid = email === "" || emailRegex.test(email);
+
 
 
     const handleLogin = async (e: React.FormEvent) => {
         e.preventDefault();
 
+
+        if (!isEmailValid) {
+            alert("Please enter a valid email address.");
+            return;
+        }
+
         const res = await fetch(`${apiBaseUrl}/api/login`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
-                email: username,
-                password
+                email: email,
+                password: password
             })
         });
+
+        if (!res.ok) {
+            alert("Login failed. Please check your credentials and try again.");
+            return;
+        }
 
         const data = await res.json();
         login(data.id);
@@ -69,11 +83,18 @@ function Login() {
                     }}
                 >
                     <TextField
-                        label="Username"
-                        value={username}
-                        onChange={setUsername}
+                        label="Email"
+                        value={email}
+                        onChange={setEmail}
+                        type="email"
                     />
 
+                    {!isEmailValid && (
+                        <p style={{ color: "red", fontSize: "0.875rem" }}>
+                            Please enter a valid email address.
+                        </p>
+                    )
+                    }
                     <TextField
                         label="Password"
                         type="password"
