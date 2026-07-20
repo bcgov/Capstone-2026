@@ -3,15 +3,21 @@ import type { Key } from "react";
 import { Header, Button, Select } from "@bcgov/design-system-react-components";
 import { useNavigate, useParams } from "react-router-dom";
 import type { FormSummary } from "./FormsPage";
+import { useAuth } from "../../auth/AuthContext";
 
 interface MetabaseDashboardProps {
   apiBaseUrl: string;
   forms: FormSummary[];
+  setForms: React.Dispatch<React.SetStateAction<FormSummary[]>>;
 }
 
-export const MetabaseDashboard: React.FC<MetabaseDashboardProps> = ({ forms, apiBaseUrl }) => {
+export const MetabaseDashboard: React.FC<MetabaseDashboardProps> = ({ apiBaseUrl }) => {
     const navigate = useNavigate();
-    const { dashboardId: routeDashboardId } = useParams(); // Using react-router params if available
+    const { logout, isAuthenticated, userId } = useAuth();
+    const [ownedForms, setOwnedForms] = useState<FormSummary[]>([]);
+    const { dashboardId: routeDashboardId } = useParams(); 
+    
+    const MetabaseDashboardTag = "metabase-dashboard" as any;
     
     const fallbackId = window.location.pathname.split("/").pop() || "";
     const activeId = routeDashboardId || fallbackId;
@@ -19,12 +25,30 @@ export const MetabaseDashboard: React.FC<MetabaseDashboardProps> = ({ forms, api
     const [selectedId, setSelectedId] = useState<string>(activeId);
     const [token, setToken] = useState<string>("");
 
+    const handleLogout = () => {
+        logout();
+        navigate("/");
+    };
+
+    useEffect(() => {
+        if (!userId) return;
+
+        fetch(`${apiBaseUrl}/api/form/owner/${userId}`)
+            .then((res) => res.json())
+            .then((data) => {
+                setOwnedForms(Array.isArray(data) ? data : []);
+            })
+            .catch((err) => {
+                console.error("Failed to load forms", err);
+            });
+    }, [userId, apiBaseUrl]);
+
     // Keep state synced if URL changes externally
     useEffect(() => {
         if (activeId && activeId !== selectedId) {
             setSelectedId(activeId);
         }
-    }, [activeId]);
+    }, [activeId, selectedId]);
 
     // Fetch new token whenever selectedId changes
     useEffect(() => {
@@ -45,7 +69,7 @@ export const MetabaseDashboard: React.FC<MetabaseDashboardProps> = ({ forms, api
         fetchToken();
     }, [apiBaseUrl, selectedId]);
 
-    const selectOptions = forms ? forms.map((form) => ({
+    const selectOptions = ownedForms ? ownedForms.map((form) => ({
         id: form.id.toString(),
         label: form.name,
     })) : [];
@@ -58,12 +82,9 @@ export const MetabaseDashboard: React.FC<MetabaseDashboardProps> = ({ forms, api
         }
     };
 
-    if (!forms || forms.length === 0) {
-        return <div>Loading dashboards...</div>;
-    }
-
     return (
         <div style={{ margin: 0 }}>
+            {/* Header is now rendered independently at the top */}
             <Header title="Capstone 2026 - All Forms">
                 <Button variant="primary" onPress={() => navigate("/")}>
                     Test App
@@ -74,24 +95,42 @@ export const MetabaseDashboard: React.FC<MetabaseDashboardProps> = ({ forms, api
                 <Button variant="primary" onPress={() => navigate("/dashboard/formBuilder")}>
                     Form Builder
                 </Button>
+                {isAuthenticated ? (
+                    <Button variant="secondary" onPress={handleLogout}>
+                        Logout
+                    </Button>
+                ) : (
+                    <Button variant="primary" onPress={() => navigate("/login")}>
+                        Login
+                    </Button>
+                )}
             </Header>
-            <Select
-                style={{ margin: "20px", width: "300px" }}
-                key={selectedId}
-                description="Select a dashboard to view"
-                label="Available Dashboards"
-                items={selectOptions}
-                onChange={handleSelectChange}
-                value={selectedId}
-            />
-            <div style={{ width: "100%", height: "calc(100vh - 80px)" }}>
-                <metabase-dashboard 
-                    key={token} 
-                    token={token} 
-                    with-title="true" 
-                    with-downloads="true" 
-                />
-            </div>
+
+            {ownedForms && ownedForms.length > 0 ? (
+                <div style={{ margin: "20px" }}>
+                    <Select
+                        style={{ margin: "20px", width: "300px" }}
+                        key={selectedId}
+                        description="Select a dashboard to view"
+                        label="Available Dashboards"
+                        items={selectOptions}
+                        onChange={handleSelectChange}
+                        value={selectedId}
+                    />
+                    <div style={{ width: "100%", height: "calc(100vh - 80px)" }}>
+                        <MetabaseDashboardTag 
+                            key={token} 
+                            token={token} 
+                            with-title="true" 
+                            with-downloads="true" 
+                        />
+                    </div>
+                </div>
+            ) : (
+                <div style={{ margin: "40px", textAlign: "center" }}>
+                    <h1 style={{ fontFamily: "BC Sans" }}>No dashboards available yet.</h1>
+                </div>
+            )}
         </div>
     );
 };

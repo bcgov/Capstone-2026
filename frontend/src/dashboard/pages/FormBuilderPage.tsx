@@ -150,6 +150,9 @@ function FormBuilderPage() {
                     <Button variant="primary" onPress={() => navigate("/dashboard/forms")}>
                         View Forms
                     </Button>
+                    <Button variant="primary" onPress={() => navigate("/dashboard/metabase/1")}>
+                        View Dashboards
+                    </Button>
                     {isAuthenticated ? (
                         <Button variant="secondary" onPress={handleLogout}>
                             Logout
