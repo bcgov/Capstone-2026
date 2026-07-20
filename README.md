@@ -109,16 +109,19 @@ Run docker compose up and Compose will start and run your entire app.
 Docker compose up
 ```
 In the backend folder, migrate the schema to be up to date with database 
-```
-npx prisma migrate reset 
-for windows use - npx.cmd prisma migrate reset
+
+npx prisma migrate reset
 
 ### Prerequisites
 
 How to install what you need 
-* npm
-  ```sh
-  npm install npm@latest -g
+
+  ```
+  npm install 
+  ```
+In backend folder 
+  ```
+  npx prisma generate 
   ```
 
 ### Installation
@@ -129,14 +132,29 @@ How to install what you need
    ```
 2. Create a .env file in the project root:
    ```sh
-   DATABASE_URL=postgresql://postgres:default@database:5432/postgres
+    DATABASE_URL=postgresql://postgres:default@database:5432/postgres?schema=public
+    METABASE_SECURE_KEY=30840854a96967a37927f4f4cebb54171a31792f1ce6fb52159e0db2e8858045
+    
+    METABASE_SITE_URL=https://metabase-route-b4cd74-dev.apps.silver.devops.gov.bc.ca
+   ```
+   And one in the backend folder 
+   ```sh
+    DATABASE_URL=postgresql://postgres:default@localhost:5432/postgres?schema=public
+    METABASE_SECURE_KEY=30840854a96967a37927f4f4cebb54171a31792f1ce6fb52159e0db2e8858045
+    METABASE_SITE_URL=https://metabase-route-b4cd74-dev.apps.silver.devops.gov.bc.ca
    ```
 3. Start Docker Desktop.
 4. Build and start the containers 
    ```sh
    docker compose up --build
    ```
-5. Access the application:
+5. Get the updated database and open studio editor
+    ```
+    npx prisma db pull
+
+    npx prisma studio
+    ```
+6. Access the application:
    ```sh
    Frontend: http://localhost:5173
    ```
@@ -154,11 +172,11 @@ How to install what you need
 
 This project is intended to be an interactable modal that pops up when user completes a transaction on a BC gov website. The user should be able to engage or decline with the pop up 
 
-![alt text](image.png)
+![alt text](image-5.png)
 
 When the feedback form opens the user is met with a variety of questions that are pulled from the database. Our project was built to be reusable and as such admins may change questions from our dashboard interface 
 
-![alt text](image-1.png)
+![alt text](image-6.png)
 
 Once user fills in the form they are free to submit or cancel 
 
@@ -166,9 +184,35 @@ Once user fills in the form they are free to submit or cancel
 
 And a message should inform the user if their action was successful or not as well as give them an ID attatched to their form! 
 
-![alt text](image-3.png)
+![alt text](image-7.png)
 
-**Add dashboard interface when completed
+Dashboard is only available to logged in users
+
+![alt text](image-10.png)
+
+When logged in admin or product owners may make new forms and view existing created forms. 
+
+![alt text](image-8.png)
+
+Admin and product owners can select question type and customize heavily to gather relevant data. 
+
+![alt text](image-11.png)
+
+Forms saved have form ids which are connected to the users id. This is why the user must sign in to use the dashboard. 
+
+![alt text](image-12.png)
+
+Product users can then see their own forms and edit them in the database.
+
+![alt text](image-13.png)
+
+Edited forms that are out of date will show as invalid 
+
+![alt text](image-14.png)
+
+Once a user logs out they are booted from dashboard view back to test app preventing unauthorized access. 
+
+![alt text](image-15.png)
 
 _For more examples, please refer to the [Documentation](https://code.visualstudio.com/docs/languages/markdown)
 
@@ -183,7 +227,7 @@ _For more examples, please refer to the [Documentation](https://code.visualstudi
 - [X] A button that opens a modal asking user to engage in feedback
 - [X] A feedback form that opens and pulls questions from the database
 - [X] A confirmation or error message depending on the success or failure of the feedback. 
-- [] A dashboard for admin or product owners to modify questions or view aggregated data. 
+- [X] A dashboard for admin or product owners to modify questions or view aggregated data. 
 
 See the [open issues](https://github.com/bcgov/Capstone-2026/issues) for a full list of proposed features (and known issues).
 
