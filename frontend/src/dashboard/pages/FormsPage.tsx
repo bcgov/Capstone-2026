@@ -6,13 +6,19 @@ import { useNavigate } from "react-router-dom";
 import FormPreview from "../components/FormPreview";
 import type { FeedbackFormData } from "../../feedback/types/feedback";
 import { useAuth } from "../../auth/AuthContext";
+import { MetabaseDashboard } from "./MetabaseDashboard";
 
-interface FormSummary {
+export interface FormSummary {
     id: number;
     name: string;
     description: string;
     is_active?: boolean;
     version?: number;
+}
+
+interface FormsPageProps {
+  forms: FormSummary[];
+  setForms: React.Dispatch<React.SetStateAction<FormSummary[]>>;
 }
 
 const styles = {
@@ -80,11 +86,11 @@ const styles = {
     },
 };
 
-function FormsPage() {
+export const FormsPage: React.FC<FormsPageProps> = ({ forms, setForms }) => {
     const navigate = useNavigate();
     const { apiBaseUrl } = useFeedback();
     const { logout, isAuthenticated, userId } = useAuth();
-    const [forms, setForms] = useState<FormSummary[]>([]);
+//const [forms, setForms] = useState<FormSummary[]>([]);
     const [loading, setLoading] = useState(true);
     const [selectedForm, setSelectedForm] = useState<FeedbackFormData | null>(null);
     const [isPreviewOpen, setIsPreviewOpen] = useState(false);
@@ -155,6 +161,9 @@ function FormsPage() {
                 </Button>
                 <Button variant="primary" onPress={() => navigate("/dashboard/formBuilder")}>
                     Form Builder
+                </Button>
+                <Button variant="primary" onPress={() => navigate("/dashboard/metabase/1")}>
+                    View Dashboards
                 </Button>
                 {isAuthenticated ? (
                     <Button variant="secondary" onPress={handleLogout}>
