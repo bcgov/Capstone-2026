@@ -202,9 +202,6 @@ export const FormsPage: React.FC<FormsPageProps> = ({ forms, setForms }) => {
                                 <Button variant="secondary" onPress={() => handleView(form.id)}>
                                     View
                                 </Button>
-                                <Button variant="primary" onPress={() => navigate(`/dashboard/metabase/${form.id}`)}>
-                                    View Dashboard
-                                </Button>
                                 {form.is_active && (
                                     <Button variant="secondary" onPress={() => handleEdit(form.id)}>
                                         Edit
