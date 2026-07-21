@@ -225,7 +225,12 @@ async function makeRandomSubmissions(form: any, count: number, users: any[]) {
             }
 
             if(question.questionType === QuestionType.TEXTAREA) {
-              answerValue.answerText = faker.color.human()
+              if(form.id==2){
+                answerValue.answerText = faker.helpers.arrayElements(["Jersey","Ayrshire","Milking Shorthorn"], {min: 1, max: 3}).join(", ")
+              }
+              else {
+                answerValue.answerText = faker.color.human()
+              }
             } 
             else if(question.questionType === QuestionType.RADIO) {
               const options = faker.helpers.arrayElement(question.options)
