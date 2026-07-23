@@ -19,10 +19,10 @@ spec:
           resources:
             requests:
               cpu: "10m"
-              memory: "20Mi"
+              memory: "128Mi"
             limits:
-              cpu: "100m"
-              memory: "50Mi"
+              cpu: "250m"
+              memory: "512Mi"
           securityContext:
             allowPrivilegeEscalation: false
             runAsNonRoot: true
@@ -81,7 +81,7 @@ spec:
             - name: MB_DB_PORT
               value: "5432"
             - name: MB_DB_DBNAME
-              value: "metabase_metadata"
+              value: "metabase"
             - name: MB_DB_USER
               value: "postgres"
             - name: MB_DB_PASS

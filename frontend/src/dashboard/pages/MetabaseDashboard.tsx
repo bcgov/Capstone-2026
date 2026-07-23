@@ -17,8 +17,6 @@ export const MetabaseDashboard: React.FC<MetabaseDashboardProps> = ({ apiBaseUrl
     const [ownedForms, setOwnedForms] = useState<FormSummary[]>([]);
     const { dashboardId: routeDashboardId } = useParams(); 
     
-    const MetabaseDashboardTag = "metabase-dashboard" as any;
-    
     const fallbackId = window.location.pathname.split("/").pop() || "";
     const activeId = routeDashboardId || fallbackId;
 
@@ -82,9 +80,11 @@ export const MetabaseDashboard: React.FC<MetabaseDashboardProps> = ({ apiBaseUrl
         }
     };
 
+    const metabaseSiteUrl = "https://metabase-route-b4cd74-dev.apps.silver.devops.gov.bc.ca";
+    const iframeSrc = token ? `${metabaseSiteUrl}/embed/dashboard/${token}#bordered=true&titled=true` : "";
+
     return (
         <div style={{ margin: 0 }}>
-            {/* Header is now rendered independently at the top */}
             <Header title="Capstone 2026 - All Forms">
                 <Button variant="primary" onPress={() => navigate("/")}>
                     Test App
@@ -117,13 +117,18 @@ export const MetabaseDashboard: React.FC<MetabaseDashboardProps> = ({ apiBaseUrl
                         onChange={handleSelectChange}
                         value={selectedId}
                     />
-                    <div style={{ width: "100%", height: "calc(100vh - 80px)" }}>
-                        <MetabaseDashboardTag 
-                            key={token} 
-                            token={token} 
-                            with-title="true" 
-                            with-downloads="true" 
-                        />
+                    <div style={{ width: "100%", height: "calc(100vh - 180px)" }}>
+                        {token ? (
+                            <iframe
+                                title="Metabase Dashboard"
+                                src={iframeSrc}
+                                width="100%"
+                                height="100%"
+                                allow="fullscreen"
+                            />
+                        ) : (
+                            <p style={{ textAlign: "center", padding: "40px" }}>Loading dashboard token...</p>
+                        )}
                     </div>
                 </div>
             ) : (
