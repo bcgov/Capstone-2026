@@ -85,7 +85,7 @@ export const MetabaseDashboard: React.FC<MetabaseDashboardProps> = ({ apiBaseUrl
 
     return (
         <div style={{ margin: 0 }}>
-            <Header title="Capstone 2026 - All Forms">
+            <Header title="Capstone 2026 - Dashboards">
                 <Button variant="primary" onPress={() => navigate("/")}>
                     Test App
                 </Button>
