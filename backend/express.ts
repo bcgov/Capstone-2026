@@ -7,8 +7,8 @@ const app = express();
 const port = process.env.PORT || 3000;
 
 const allowedOrigins: (string | RegExp)[] = [
-  'http://localhost:5173', // consuming app
-  'http://localhost:5174', // dashboard
+  'http://localhost:5173', // dashboard
+  'http://localhost:5174', // nmp consuming app
   /^https:\/\/capstone-2026-(\d+|test)\.apps\.silver\.devops\.gov\.bc\.ca$/,
 ]
 

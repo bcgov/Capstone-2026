@@ -6,7 +6,7 @@ import {
     type ReactNode
 } from "react";
 
-const API_BASE_URL = "http://localhost:3001";
+const API_BASE_URL = "http://localhost:3000";
 
 type AuthContextType = {
     userId: string | null;

@@ -49,7 +49,7 @@ export default defineConfig(({ mode }) => {
       react()
     ],
     server: {
-      port: 5174,
+      port: 5173,
       fs: {
         allow: ['..'],
       },
