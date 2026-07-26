@@ -6,6 +6,7 @@ import userRouter from './routes/user-router';
 import { createForm } from './controllers/form-controller';
 import ownerRouter from './routes/owner-router';
 import * as jwt from 'jsonwebtoken';
+import metabaseRouter from './routes/metabase';
 
 const port = 3000;
 
@@ -14,6 +15,7 @@ app.use('/api', dataRouter);
 app.use('/api', submissionRouter);
 app.use('/api', userRouter);
 app.use('/api', ownerRouter);
+app.use('/api', metabaseRouter);
 
 app.get('/hello', (req, res) => {
   res.send('hello world');

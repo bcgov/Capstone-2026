@@ -12,14 +12,54 @@ spec:
       labels:
         app: metabase
     spec:
-      containers:
-        - name: metabase
-          image: docker.io/metabase/metabase:v0.62.4.2
+      initContainers:
+        - name: init-metabase-dirs
+          image: docker.io/library/busybox:1.36.1
+          command: ["sh", "-c", "mkdir -p /tmp /plugins /metabase-data"]
+          resources:
+            requests:
+              cpu: "10m"
+              memory: "128Mi"
+            limits:
+              cpu: "250m"
+              memory: "512Mi"
           securityContext:
             allowPrivilegeEscalation: false
             runAsNonRoot: true
-            runAsUser: 10001
-            runAsGroup: 10001
+            runAsUser: 1011540000
+            runAsGroup: 1011540000
+            readOnlyRootFilesystem: true
+            seccompProfile:
+              type: RuntimeDefault
+            capabilities:
+              drop:
+                - ALL
+          volumeMounts:
+            - name: tmp-dir
+              mountPath: /tmp
+            - name: plugins-dir
+              mountPath: /plugins
+            - name: metabase-data-dir
+              mountPath: /metabase-data
+      containers:
+        - name: metabase
+          image: docker.io/metabase/metabase:v0.50.15
+          # command:
+          #   [
+          #     "java",
+          #     "--add-opens",
+          #     "java.base/java.nio=ALL-UNNAMED",
+          #     "-Djava.io.tmpdir=/tmp",
+          #     "-jar",
+          #     "/app/metabase.jar",
+          #     "migrate",
+          #     "down",
+          #   ]
+          securityContext:
+            allowPrivilegeEscalation: false
+            runAsNonRoot: true
+            runAsUser: 1011540000
+            runAsGroup: 1011540000
             readOnlyRootFilesystem: true
             seccompProfile:
               type: RuntimeDefault
@@ -30,14 +70,18 @@ spec:
             - containerPort: 3000
               protocol: TCP
           env:
+            - name: MB_PLUGINS_DIR
+              value: "/plugins"
+            - name: JAVA_OPTS
+              value: "-Xms512m -Xmx1024m -Djava.io.tmpdir=/tmp"
             - name: MB_DB_TYPE
               value: "postgres"
             - name: MB_DB_HOST
-              value: "capstone-2026-151-database"
+              value: "capstone-db-service"
             - name: MB_DB_PORT
               value: "5432"
             - name: MB_DB_DBNAME
-              value: "metabase_metadata"
+              value: "metabase"
             - name: MB_DB_USER
               value: "postgres"
             - name: MB_DB_PASS
@@ -46,15 +90,27 @@ spec:
               value: "Ij9BIxilMImF4RzMs3Z7+RKqAj2uXdsp2m8x6FRgkwA="
             - name: MB_DB_AUTOMATIC_CREATION
               value: "true"
-            - name: JAVA_OPTS
-              value: "-Xms512m -Xmx1024m"
           resources:
             requests:
               memory: "512Mi"
-              cpu: "250m"
+              cpu: "50m"
             limits:
               memory: "1500Mi"
               cpu: "1000m"
+          volumeMounts:
+            - name: tmp-dir
+              mountPath: /tmp
+            - name: plugins-dir
+              mountPath: /plugins
+            - name: metabase-data-dir
+              mountPath: /metabase-data
+      volumes:
+        - name: tmp-dir
+          emptyDir: {}
+        - name: plugins-dir
+          emptyDir: {}
+        - name: metabase-data-dir
+          emptyDir: {}
 ---
 apiVersion: v1
 kind: Service
