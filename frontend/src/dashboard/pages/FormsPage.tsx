@@ -6,7 +6,6 @@ import { useNavigate } from "react-router-dom";
 import FormPreview from "../components/FormPreview";
 import type { FeedbackFormData } from "../../feedback/types/feedback";
 import { useAuth } from "../../auth/AuthContext";
-import { MetabaseDashboard } from "./MetabaseDashboard";
 
 export interface FormSummary {
     id: number;
@@ -17,8 +16,8 @@ export interface FormSummary {
 }
 
 interface FormsPageProps {
-  forms: FormSummary[];
-  setForms: React.Dispatch<React.SetStateAction<FormSummary[]>>;
+    forms: FormSummary[];
+    setForms: React.Dispatch<React.SetStateAction<FormSummary[]>>;
 }
 
 const styles = {
@@ -90,7 +89,7 @@ export const FormsPage: React.FC<FormsPageProps> = ({ forms, setForms }) => {
     const navigate = useNavigate();
     const { apiBaseUrl } = useFeedback();
     const { logout, isAuthenticated, userId } = useAuth();
-//const [forms, setForms] = useState<FormSummary[]>([]);
+    //const [forms, setForms] = useState<FormSummary[]>([]);
     const [loading, setLoading] = useState(true);
     const [selectedForm, setSelectedForm] = useState<FeedbackFormData | null>(null);
     const [isPreviewOpen, setIsPreviewOpen] = useState(false);
