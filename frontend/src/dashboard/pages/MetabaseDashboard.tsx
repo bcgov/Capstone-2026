@@ -64,7 +64,7 @@ export const MetabaseDashboard: React.FC<MetabaseDashboardProps> = ({ apiBaseUrl
                 const data = await response.json();
                 setToken(data.token);
                 setHasError(false);
-            } catch (error) {
+;            } catch (error) {
                 console.error("Error fetching Metabase token:", error);
                 setHasError(true);
             }
@@ -90,7 +90,7 @@ export const MetabaseDashboard: React.FC<MetabaseDashboardProps> = ({ apiBaseUrl
     const iframeSrc = token ? `${metabaseSiteUrl}/embed/dashboard/${token}#bordered=false&titled=false` : "";
 
     return (
-        <div style={{ margin: 0 }}>
+        <div style={{ display: "flex", flexDirection: "column", height: "100vh", overflow: "hidden" }}>
             <Header title="Capstone 2026 - Dashboards">
                 <Button variant="primary" onPress={() => navigate("/")}>
                     Test App
@@ -113,9 +113,9 @@ export const MetabaseDashboard: React.FC<MetabaseDashboardProps> = ({ apiBaseUrl
             </Header>
 
             {ownedForms && ownedForms.length > 0 ? (
-                <div style={{ margin: "20px" }}>
+                <div style={{ display: "flex", flexDirection: "column", flex: 1, padding: "20px", overflow: "hidden", }}>
                     <Select
-                        style={{ margin: "20px", width: "300px" }}
+                        style={{ marginBottom: "20px", width: "300px" }}
                         key={selectedId}
                         description="Select a dashboard to view"
                         label="Available Dashboards"
@@ -123,7 +123,7 @@ export const MetabaseDashboard: React.FC<MetabaseDashboardProps> = ({ apiBaseUrl
                         onChange={handleSelectChange}
                         value={selectedId}
                     />
-                    <div style={{ width: "100%", height: "100vh" }}>
+                    <div style={{ flex: 1, overflow: "hidden", minHeight: 0}}>
                         {hasError ? (
                             <div style={{ textAlign: "center", padding: "60px" }}>
                                 <h2 style={{ fontFamily: "BC Sans", color: "#333" }}>Dashboard Not Available Yet</h2>
