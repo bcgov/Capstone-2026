@@ -9,6 +9,7 @@ const port = process.env.PORT || 3000;
 const allowedOrigins: (string | RegExp)[] = [
   'http://localhost:5173', // dashboard
   'http://localhost:5174', // nmp consuming app
+  /^https:\/\/(\d+|test)\.apps\.silver\.devops\.gov\.bc\.ca$/,
   /^https:\/\/capstone-2026-(\d+|test)\.apps\.silver\.devops\.gov\.bc\.ca$/,
 ]
 
