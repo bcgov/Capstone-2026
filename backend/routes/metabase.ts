@@ -9,17 +9,16 @@ metabaseRouter.get('/metabase/:dashboardId', async (req, res) => {
     const formId = parseInt(req.params.dashboardId);
 
     try {
-        // Query your Form model using Prisma
+        //Check if form exists in database.
         const form = await prisma.feedbackForm.findUnique({
             where: { id: formId },
         });
 
-        // If the form doesn't exist, return 404
         if (!form) {
             return res.status(404).json({ error: "Form does not exist" });
         }
 
-        // Apply your offset rule (e.g., Form ID 1 -> Metabase ID 2)
+        // Metabase have an example dashboard so every dashboard made starts from 2 (e.g., Form ID 1 -> Metabase ID 2)
         const metabaseId = formId + 1;
 
         // Optional: If you only have built dashboards up to a certain ID limit

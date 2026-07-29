@@ -90,7 +90,7 @@ function Login() {
                     />
 
                     {!isEmailValid && (
-                        <p style={{ color: "red", fontSize: "0.875rem" }}>
+                        <p style={{ color: "red", fontSize: "0.875rem", margin : 0}}>
                             Please enter a valid email address.
                         </p>
                     )
@@ -105,6 +105,10 @@ function Login() {
                     <Button
                         type="submit"
                         variant="primary"
+                        style={{
+                            display: "flex",
+                            alignSelf: "flex-end"
+                        }}
                     >
                         Sign In
                     </Button>
