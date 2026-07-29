@@ -136,7 +136,7 @@ export const FormsPage: React.FC<FormsPageProps> = ({ forms, setForms }) => {
     };
 
     const deleteForm = async (id: number) => {
-        if (!window.confirm("Deleting this form will irreversibly delete all submissions and collected user data with it. Are you sure you want to conitue?")) return;
+        if (!window.confirm("Deleting this form will irreversibly delete all submissions and collected user data with it. Are you sure you want to continue?")) return;
 
         try {
             const response = await fetch(`${apiBaseUrl}/api/form/${id}`, { method: "DELETE" });
@@ -198,7 +198,7 @@ export const FormsPage: React.FC<FormsPageProps> = ({ forms, setForms }) => {
                             <p>{form.description}</p>
 
                             <div style={styles.formCardActions}>
-                                <Button variant="secondary" onPress={() => handleView(form.id)}>
+                                <Button variant="primary" onPress={() => handleView(form.id)}>
                                     View
                                 </Button>
                                 {form.is_active && (
@@ -206,7 +206,7 @@ export const FormsPage: React.FC<FormsPageProps> = ({ forms, setForms }) => {
                                         Edit
                                     </Button>
                                 )}
-                                <Button variant="secondary" onPress={() => deleteForm(form.id)}>
+                                <Button danger onPress={() => deleteForm(form.id)}>
                                     Delete
                                 </Button>
                             </div>

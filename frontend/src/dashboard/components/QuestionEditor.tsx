@@ -139,7 +139,7 @@ function QuestionEditor({ question, setForm, form }: Props) {
                 >
                     ↓ Move Down
                 </Button>
-                <Button onPress={deleteQuestion}>Delete</Button>
+                <Button danger onPress={deleteQuestion}>Delete</Button>
             </div>
         </div>
     );

@@ -22,6 +22,7 @@ export const MetabaseDashboard: React.FC<MetabaseDashboardProps> = ({ apiBaseUrl
 
     const [selectedId, setSelectedId] = useState<string>(activeId);
     const [token, setToken] = useState<string>("");
+    const [hasError, setHasError] = useState<boolean>(false);
 
     const handleLogout = () => {
         logout();
@@ -52,6 +53,9 @@ export const MetabaseDashboard: React.FC<MetabaseDashboardProps> = ({ apiBaseUrl
     useEffect(() => {
         const fetchToken = async () => {
             if (!selectedId) return;
+            setToken(""); // Clear previous token while fetching new one
+            setHasError(false); // Reset error state
+
             try {
                 const response = await fetch(`${apiBaseUrl}/api/metabase/${selectedId}`);
                 if (!response.ok) {
@@ -59,8 +63,10 @@ export const MetabaseDashboard: React.FC<MetabaseDashboardProps> = ({ apiBaseUrl
                 }
                 const data = await response.json();
                 setToken(data.token);
-            } catch (error) {
+                setHasError(false);
+;            } catch (error) {
                 console.error("Error fetching Metabase token:", error);
+                setHasError(true);
             }
         };
 
@@ -81,10 +87,10 @@ export const MetabaseDashboard: React.FC<MetabaseDashboardProps> = ({ apiBaseUrl
     };
 
     const metabaseSiteUrl = "https://metabase-route-b4cd74-dev.apps.silver.devops.gov.bc.ca";
-    const iframeSrc = token ? `${metabaseSiteUrl}/embed/dashboard/${token}#bordered=true&titled=true` : "";
+    const iframeSrc = token ? `${metabaseSiteUrl}/embed/dashboard/${token}#bordered=false&titled=false` : "";
 
     return (
-        <div style={{ margin: 0 }}>
+        <div style={{ display: "flex", flexDirection: "column", height: "100vh", overflow: "hidden" }}>
             <Header title="Capstone 2026 - Dashboards">
                 <Button variant="primary" onPress={() => navigate("/")}>
                     Test App
@@ -107,9 +113,9 @@ export const MetabaseDashboard: React.FC<MetabaseDashboardProps> = ({ apiBaseUrl
             </Header>
 
             {ownedForms && ownedForms.length > 0 ? (
-                <div style={{ margin: "20px" }}>
+                <div style={{ display: "flex", flexDirection: "column", flex: 1, padding: "20px", overflow: "hidden", }}>
                     <Select
-                        style={{ margin: "20px", width: "300px" }}
+                        style={{ marginBottom: "20px", width: "300px" }}
                         key={selectedId}
                         description="Select a dashboard to view"
                         label="Available Dashboards"
@@ -117,14 +123,22 @@ export const MetabaseDashboard: React.FC<MetabaseDashboardProps> = ({ apiBaseUrl
                         onChange={handleSelectChange}
                         value={selectedId}
                     />
-                    <div style={{ width: "100%", height: "calc(100vh - 180px)" }}>
-                        {token ? (
+                    <div style={{ flex: 1, overflow: "hidden", minHeight: 0}}>
+                        {hasError ? (
+                            <div style={{ textAlign: "center", padding: "60px" }}>
+                                <h2 style={{ fontFamily: "BC Sans", color: "#333" }}>Dashboard Not Available Yet</h2>
+                                <p style={{ color: "#666", marginTop: "8px" }}>
+                                    A Metabase dashboard has not been created or linked for this form yet.
+                                </p>
+                            </div>
+                        ) : token ? (
                             <iframe
                                 title="Metabase Dashboard"
                                 src={iframeSrc}
                                 width="100%"
                                 height="100%"
                                 allow="fullscreen"
+                                style={{ border: "none" }}
                             />
                         ) : (
                             <p style={{ textAlign: "center", padding: "40px" }}>Loading dashboard token...</p>

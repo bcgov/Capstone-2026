@@ -78,11 +78,10 @@ function OptionEditor({ question, setForm }: Props) {
             {options.map((option) => (
                 <div key={option.id} style={styles.optionRow}>
                     <TextField
-                        label="Option"
                         value={option.optionText}
                         onChange={(value) => updateOption(option.id, value)}
                     />
-                    <Button variant="secondary" onPress={() => deleteOption(option.id)}>
+                    <Button danger onPress={() => deleteOption(option.id)}>
                         Delete
                     </Button>
                 </div>
