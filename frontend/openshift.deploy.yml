@@ -14,6 +14,15 @@ parameters:
     description: Deployment target; e.g. PR number, test or prod
     required: true
 objects:
+  - kind: ConfigMap
+    apiVersion: v1
+    metadata:
+      name: ${REPO}-${TARGET}-frontend-config
+    data:
+      env.js: |
+        window.env = {
+          BACKEND_URL: "https://${REPO}-${TARGET}-backend.apps.silver.devops.gov.bc.ca"
+        };
   - kind: Service
     apiVersion: v1
     metadata:
@@ -61,8 +70,10 @@ objects:
               env:
                 - name: LOG_LEVEL
                   value: info
-                - name: VITE_BACKEND_URL
-                  value: https://${REPO}-${TARGET}-backend.apps.silver.devops.gov.bc.ca
+              volumeMounts:
+                - name: frontend-config
+                  mountPath: /srv/env.js
+                  subPath: env.js
               ports:
                 - name: http
                   containerPort: 5173
@@ -94,6 +105,10 @@ objects:
                 requests:
                   cpu: 50m
                   memory: 175Mi
+          volumes:
+            - name: frontend-config
+              configMap:
+                name: ${REPO}-${TARGET}-frontend-config
   - kind: Route
     apiVersion: route.openshift.io/v1
     metadata:

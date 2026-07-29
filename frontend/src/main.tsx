@@ -9,7 +9,7 @@ import { AuthProvider } from "./auth/AuthContext.tsx";
 
 createRoot(document.getElementById("root")!).render(
   <AuthProvider>
-    <FeedbackProvider apiBaseUrl={import.meta.env.VITE_BACKEND_URL || "http://localhost:3000"}>
+    <FeedbackProvider apiBaseUrl={window.env?.BACKEND_URL || "http://localhost:3000"}>      
       <App />
     </FeedbackProvider>
   </AuthProvider>
