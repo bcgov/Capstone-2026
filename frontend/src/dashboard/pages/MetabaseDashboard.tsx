@@ -63,6 +63,7 @@ export const MetabaseDashboard: React.FC<MetabaseDashboardProps> = ({ apiBaseUrl
                 }
                 const data = await response.json();
                 setToken(data.token);
+                setHasError(false);
             } catch (error) {
                 console.error("Error fetching Metabase token:", error);
                 setHasError(true);
