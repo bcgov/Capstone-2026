@@ -4,18 +4,19 @@ import { Header, Button, Select } from "@bcgov/design-system-react-components";
 import { useNavigate, useParams } from "react-router-dom";
 import type { FormSummary } from "./FormsPage";
 import { useAuth } from "../../auth/AuthContext";
+import { useFeedback } from "../../feedback/FeedbackProvider"; 
 
 interface MetabaseDashboardProps {
-  apiBaseUrl: string;
   forms: FormSummary[];
   setForms: React.Dispatch<React.SetStateAction<FormSummary[]>>;
 }
 
-export const MetabaseDashboard: React.FC<MetabaseDashboardProps> = ({ apiBaseUrl }) => {
+export const MetabaseDashboard: React.FC<MetabaseDashboardProps> = () => {
     const navigate = useNavigate();
     const { logout, isAuthenticated, userId } = useAuth();
     const [ownedForms, setOwnedForms] = useState<FormSummary[]>([]);
     const { dashboardId: routeDashboardId } = useParams(); 
+    const { apiBaseUrl } = useFeedback();
     
     const fallbackId = window.location.pathname.split("/").pop() || "";
     const activeId = routeDashboardId || fallbackId;
