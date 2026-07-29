@@ -20,9 +20,6 @@ parameters:
   - description: Name of PostgreSQL database host.
     name: POSTGRES_HOST
     required: true
-  - description: Database connection string
-    name: DATABASE_URL
-    required: true
 objects:
   - apiVersion: v1
     kind: Secret
