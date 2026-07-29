@@ -1,0 +1,29 @@
+apiVersion: template.openshift.io/v1
+kind: Template
+metadata:
+  name: seed-job
+
+parameters:
+  - name: TAG
+    required: true
+  - name: TARGET
+    required: true
+
+objects:
+  - apiVersion: batch/v1
+    kind: Job
+    metadata:
+      name: capstone-2026-${TARGET}-seed
+    spec:
+      template:
+        spec:
+          containers:
+            - name: seed
+              image: ghcr.io/bcgov/capstone-2026/backend:${TAG}
+              command:
+                - node
+                - dist/prisma/seed.js
+              envFrom:
+                - secretRef:
+                    name: capstone-2026-${TARGET}-database
+          restartPolicy: Never

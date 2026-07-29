@@ -70,9 +70,38 @@ jobs:
             -p TAG=${{ inputs.tag }} -p TARGET=${{ inputs.target }} -p POSTGRES_PASSWORD=${{
             secrets.POSTGRES_PASSWORD }}
 
+  seed:
+    name: Seed Database
+    needs: [backend]
+    environment: ${{ inputs.environment }}
+    runs-on: ubuntu-24.04
+
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Delete previous seed job
+        uses: bcgov/action-login-openshift@v1
+        with:
+          oc_namespace: ${{ vars.OC_NAMESPACE }}
+          oc_server: ${{ vars.OC_SERVER }}
+          oc_token: ${{ secrets.OC_TOKEN }}
+
+      - name: Remove old seed job
+        run: |
+          oc delete job capstone-2026-${{ inputs.target }}-seed --ignore-not-found
+
+      - name: Deploy seed job
+        uses: bcgov-nr/action-deployer-openshift@v4.0.0
+        with:
+          oc_namespace: ${{ vars.OC_NAMESPACE }}
+          oc_server: ${{ vars.OC_SERVER }}
+          oc_token: ${{ secrets.OC_TOKEN }}
+          file: seed-job.yaml
+          overwrite: true
+          parameters: -p TAG=${{ inputs.tag }} -p TARGET=${{ inputs.target }}
   frontend:
     name: Frontend
-    needs: [backend]
+    needs: [backend, seed]
     environment: ${{ inputs.environment }}
     runs-on: ubuntu-24.04
     steps:

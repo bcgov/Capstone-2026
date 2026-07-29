@@ -20,6 +20,9 @@ parameters:
   - description: Name of PostgreSQL database host.
     name: POSTGRES_HOST
     required: true
+  - description: Database connection string
+    name: DATABASE_URL
+    required: true
 objects:
   - apiVersion: v1
     kind: Secret
@@ -32,6 +35,7 @@ objects:
       database-password: ${POSTGRES_PASSWORD}
       database-user: ${POSTGRES_USER}
       database-host: ${POSTGRES_HOST}
+      DATABASE_URL: ${DATABASE_URL}
   - apiVersion: networking.k8s.io/v1
     kind: NetworkPolicy
     metadata:
