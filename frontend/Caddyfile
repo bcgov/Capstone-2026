@@ -45,7 +45,6 @@
 		Cross-Origin-Resource-Policy "cross-origin"
 		Cross-Origin-Opener-Policy "same-origin"
 	}
-
 }
 :5174 {
 	handle /health {
