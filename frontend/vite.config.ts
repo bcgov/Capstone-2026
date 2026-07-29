@@ -1,3 +1,9 @@
+// Source - https://stackoverflow.com/a/75778958
+// Posted by sandersrd33
+// Retrieved 2026-07-29, License - CC BY-SA 4.0
+
+/// <reference types="vite/client" />
+
 import { defineConfig, loadEnv } from 'vite'
 import { fileURLToPath, URL } from 'node:url'
 import react from '@vitejs/plugin-react'
