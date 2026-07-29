@@ -81,7 +81,7 @@ export const MetabaseDashboard: React.FC<MetabaseDashboardProps> = ({ apiBaseUrl
     };
 
     const metabaseSiteUrl = "https://metabase-route-b4cd74-dev.apps.silver.devops.gov.bc.ca";
-    const iframeSrc = token ? `${metabaseSiteUrl}/embed/dashboard/${token}#bordered=true&titled=true` : "";
+    const iframeSrc = token ? `${metabaseSiteUrl}/embed/dashboard/${token}#bordered=false&titled=false` : "";
 
     return (
         <div style={{ margin: 0 }}>
@@ -117,13 +117,14 @@ export const MetabaseDashboard: React.FC<MetabaseDashboardProps> = ({ apiBaseUrl
                         onChange={handleSelectChange}
                         value={selectedId}
                     />
-                    <div style={{ width: "100%", height: "calc(100vh - 180px)" }}>
+                    <div style={{ width: "100%", height: "100vh", overflow: "hidden"}}>
                         {token ? (
                             <iframe
                                 title="Metabase Dashboard"
                                 src={iframeSrc}
                                 width="100%"
                                 height="100%"
+                                style={{ border: "none", display: "block" }}
                                 allow="fullscreen"
                             />
                         ) : (

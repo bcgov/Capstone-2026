@@ -198,7 +198,7 @@ export const FormsPage: React.FC<FormsPageProps> = ({ forms, setForms }) => {
                             <p>{form.description}</p>
 
                             <div style={styles.formCardActions}>
-                                <Button variant="secondary" onPress={() => handleView(form.id)}>
+                                <Button variant="primary" onPress={() => handleView(form.id)}>
                                     View
                                 </Button>
                                 {form.is_active && (
@@ -206,7 +206,7 @@ export const FormsPage: React.FC<FormsPageProps> = ({ forms, setForms }) => {
                                         Edit
                                     </Button>
                                 )}
-                                <Button variant="secondary" onPress={() => deleteForm(form.id)}>
+                                <Button danger onPress={() => deleteForm(form.id)}>
                                     Delete
                                 </Button>
                             </div>

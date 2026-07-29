@@ -81,7 +81,7 @@ function OptionEditor({ question, setForm }: Props) {
                         value={option.optionText}
                         onChange={(value) => updateOption(option.id, value)}
                     />
-                    <Button variant="secondary" onPress={() => deleteOption(option.id)}>
+                    <Button danger onPress={() => deleteOption(option.id)}>
                         Delete
                     </Button>
                 </div>
