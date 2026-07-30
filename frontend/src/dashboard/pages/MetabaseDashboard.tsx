@@ -67,6 +67,7 @@ export const MetabaseDashboard: React.FC<MetabaseDashboardProps> = () => {
                 setHasError(false);
 ;            } catch (error) {
                 console.error("Error fetching Metabase token:", error);
+                setToken("");
                 setHasError(true);
             }
         };
