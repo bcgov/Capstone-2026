@@ -36,6 +36,7 @@ function FeedbackForm({
     const [confirmationMessage, setConfirmationMessage] = useState("");
     const [confirmationTitle, setConfirmationTitle] = useState("");
     const [isSuccess, setIsSuccess] = useState(false);
+    const [confirmationVarient, setConfirmationVarient] = useState("");
 
     useEffect(() => {
         if (!formData) return;
@@ -93,16 +94,19 @@ function FeedbackForm({
 
             if (response.ok) {
                 setIsSuccess(true);
+                setConfirmationVarient("confirmation");
                 setConfirmationTitle("Successful Feedback Submission!");
                 setConfirmationMessage(`Submission ID: ${data.id}`);
                 onSuccess?.(data.id);
             } else {
                 setIsSuccess(false);
+                setConfirmationVarient("error");
                 setConfirmationTitle("Unsuccessful Submission");
                 setConfirmationMessage(`Server returned ${response.status}`);
             }
         } catch {
             setIsSuccess(false);
+            setConfirmationVarient("error");
             setConfirmationTitle("Unsuccessful Submission");
             setConfirmationMessage("Unable to connect to server.");
         }
@@ -144,6 +148,7 @@ function FeedbackForm({
                 message={confirmationMessage}
                 onClose={handleCloseConfirmation}
                 title={confirmationTitle}
+                variant={confirmationVarient}
             />
         </>
     );

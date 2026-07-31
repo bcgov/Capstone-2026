@@ -62,6 +62,7 @@ function FormBuilderPage() {
     const [showConfirmation, setShowConfirmation] = useState(false);
     const [confirmationTitle, setConfirmationTitle] = useState("");
     const [confirmationMessage, setConfirmationMessage] = useState("");
+    const [confirmationVarient, setConfirmationVarient] = useState("");
 
     const editForm = location.state?.editForm as FeedbackFormData | undefined;
     const [form, setForm] = useState<FeedbackFormData>(
@@ -95,6 +96,7 @@ function FormBuilderPage() {
 
     const handleSave = async () => {
         if (!userId) {
+            setConfirmationVarient("error");
             setConfirmationTitle("Not Logged In");
             setConfirmationMessage("You must be logged in to save a form.");
             setShowConfirmation(true);
@@ -102,6 +104,7 @@ function FormBuilderPage() {
         }
 
         if (!form.name.trim() || !form.description.trim()) {
+            setConfirmationVarient("error");
             setConfirmationTitle("Missing Fields");
             setConfirmationMessage("Please provide both a form name and description before saving.");
             setShowConfirmation(true);
@@ -123,7 +126,7 @@ function FormBuilderPage() {
                         method: "PATCH",
                     });
                 }
-
+                setConfirmationVarient("confirmation");
                 setConfirmationTitle("Form Saved");
                 setConfirmationMessage(
                     `Your form "${savedForm.name}" was saved successfully.\n(ID: ${savedForm.id})`
@@ -131,6 +134,7 @@ function FormBuilderPage() {
                 setForm(EMPTY_FORM);
                 window.scrollTo({ top: 0, behavior: "smooth" });
             } else {
+                setConfirmationVarient("error");
                 setConfirmationTitle("Save Failed");
                 setConfirmationMessage(await response.text());
             }
@@ -201,6 +205,7 @@ function FormBuilderPage() {
                     setShowConfirmation(false);
                     if (confirmationTitle === "Form Saved") navigate("/dashboard/forms");
                 }}
+                variant={confirmationVarient}
             />
         </>
     );
