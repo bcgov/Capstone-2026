@@ -52,20 +52,22 @@ export const MetabaseDashboard: React.FC<MetabaseDashboardProps> = () => {
 
     // Fetch new token whenever selectedId changes
     useEffect(() => {
+        if (!selectedId) return;
+        const controller = new AbortController();
+
         const fetchToken = async () => {
-            if (!selectedId) return;
             setToken(""); // Clear previous token while fetching new one
             setHasError(false); // Reset error state
 
             try {
-                const response = await fetch(`${apiBaseUrl}/api/metabase/${selectedId}`);
+                const response = await fetch(`${apiBaseUrl}/api/metabase/${selectedId}`, { signal: controller.signal });
                 if (!response.ok) {
                     throw new Error(`HTTP error! status: ${response.status}`);
                 }
                 const data = await response.json();
                 setToken(data.token);
                 setHasError(false);
-;            } catch (error) {
+            } catch (error) {
                 console.error("Error fetching Metabase token:", error);
                 setToken("");
                 setHasError(true);
@@ -73,6 +75,7 @@ export const MetabaseDashboard: React.FC<MetabaseDashboardProps> = () => {
         };
 
         fetchToken();
+        return () => controller.abort(); // Cleanup if component unmounts or selectedId changes
     }, [apiBaseUrl, selectedId]);
 
     const selectOptions = ownedForms ? ownedForms.map((form) => ({
