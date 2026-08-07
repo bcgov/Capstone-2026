@@ -19,13 +19,13 @@ async function makeAdminUser() {
   console.log(`✅ Admin user created: ${adminUser.name} (${adminUser.email})`)
 }
 
-async function makeColorChangeForm() {
+async function makeColourChangeForm() {
   const feedbackForm = await prisma.feedbackForm.upsert({
     where: { id: 1 },
     update: {},
     create: {
-      name: "Color change form",
-      description: "A feedback form about the background color change button",
+      name: "colour change form",
+      description: "A feedback form about the background colour change button",
       owner: {
         connect: { email: 'admin@cst.com' }
       },
@@ -35,13 +35,13 @@ async function makeColorChangeForm() {
         create: [
           {
             questionType: QuestionType.TEXTAREA,
-            question_text: "What color showed up when you clicked the button?",
+            question_text: "What colour showed up when you clicked the button?",
             is_required: true,
             display_order: 1,
           },
           {
             questionType: QuestionType.RADIO,
-            question_text: "Does the color affect the visibility of the other content of the page?",
+            question_text: "Does the colour affect the visibility of the other content of the page?",
             options: {
               create: [
                 {
@@ -106,7 +106,7 @@ async function makeColorChangeForm() {
           },
           {
             questionType: QuestionType.SLIDER,
-            question_text: "How happy are you with the color change?",
+            question_text: "How happy are you with the colour change?",
             is_required: true,
             display_order: 5,
           }
@@ -162,7 +162,7 @@ async function makeNpmForm() {
                 {
                   displayOrder: 3,
                   optionText: "Milk Production",
-                  optionValue: "milk_production"  
+                  optionValue: "milk_production"
                 },
                 {
                   displayOrder: 4,
@@ -205,7 +205,7 @@ async function makeRandomUsers(count: number) {
 async function makeRandomSubmissions(form: any, count: number, users: any[]) {
   const feedbackForm = await prisma.feedbackForm.findFirst({
     where: { name: form.name },
-    include: { questions: {include: { options: true } } }
+    include: { questions: { include: { options: true } } }
   })
 
   if (!feedbackForm) {
@@ -220,35 +220,35 @@ async function makeRandomSubmissions(form: any, count: number, users: any[]) {
         userId: users[Math.floor(Math.random() * users.length)].id,
         answers: {
           create: feedbackForm.questions.map(question => {
-            const answerValue : any = {
+            const answerValue: any = {
               questionId: question.id,
             }
 
-            if(question.questionType === QuestionType.TEXTAREA) {
-              if(form.id==2){
-                answerValue.answerText = faker.helpers.arrayElements(["Jersey","Ayrshire","Milking Shorthorn"], {min: 1, max: 3}).join(", ")
+            if (question.questionType === QuestionType.TEXTAREA) {
+              if (form.id == 2) {
+                answerValue.answerText = faker.helpers.arrayElements(["Jersey", "Ayrshire", "Milking Shorthorn"], { min: 1, max: 3 }).join(", ")
               }
               else {
-                answerValue.answerText = faker.color.human()
+                answerValue.answerText = faker.colour.human()
               }
-            } 
-            else if(question.questionType === QuestionType.RADIO) {
+            }
+            else if (question.questionType === QuestionType.RADIO) {
               const options = faker.helpers.arrayElement(question.options)
               answerValue.answerText = options.optionText
               answerValue.answerBoolean = options.optionText === "Yes"
-            } 
-            else if(question.questionType === QuestionType.CHECKBOX) {
+            }
+            else if (question.questionType === QuestionType.CHECKBOX) {
               const selectedOptions = faker.helpers.arrayElements(question.options, {
                 min: 1,
                 max: question.options.length
               })
-              answerValue.answerText = selectedOptions.map((option:any) => option.optionText).join(", ")
-            } 
-            else if(question.questionType === QuestionType.DROPDOWN) {
+              answerValue.answerText = selectedOptions.map((option: any) => option.optionText).join(", ")
+            }
+            else if (question.questionType === QuestionType.DROPDOWN) {
               const options = faker.helpers.arrayElement(question.options)
               answerValue.answerText = options.optionText
-            } 
-            else if(question.questionType === QuestionType.SLIDER) {
+            }
+            else if (question.questionType === QuestionType.SLIDER) {
               answerValue.answerNumber = faker.number.int({ min: 1, max: 10 })
             }
 
@@ -276,22 +276,22 @@ async function main() {
   );
   await makeAdminUser()
 
-  const colorChangeForm = await makeColorChangeForm()
+  const colourChangeForm = await makeColourChangeForm()
   const npmForm = await makeNpmForm()
-  
+
   const submissionCount = await prisma.feedbackSubmission.count();
 
   if (submissionCount > 50) {
     console.log(`⚠️  Skipping submission seeding. There are already ${submissionCount} submissions in the database.`)
     return
-  } 
-  else{
+  }
+  else {
     const users = await makeRandomUsers(10)
-    await makeRandomSubmissions(colorChangeForm, 10, users)
+    await makeRandomSubmissions(colourChangeForm, 10, users)
     await makeRandomSubmissions(npmForm, 10, users)
   }
 
-  console.log(`✅ Seeded: "${colorChangeForm.name}" created successfully!`)
+  console.log(`✅ Seeded: "${colourChangeForm.name}" created successfully!`)
   console.log(`✅ Seeded: "${npmForm.name}" created successfully!`)
 }
 
