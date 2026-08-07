@@ -229,7 +229,7 @@ async function makeRandomSubmissions(form: any, count: number, users: any[]) {
                 answerValue.answerText = faker.helpers.arrayElements(["Jersey", "Ayrshire", "Milking Shorthorn"], { min: 1, max: 3 }).join(", ")
               }
               else {
-                answerValue.answerText = faker.colour.human()
+                answerValue.answerText = faker.color.human()
               }
             }
             else if (question.questionType === QuestionType.RADIO) {
