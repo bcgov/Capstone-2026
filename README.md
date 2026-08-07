@@ -126,6 +126,10 @@ In backend folder
 
 ### Installation
 
+There are two options for installation, downloading our entire project or adding our component onto your own project via node packaging. 
+
+To Download the entire project Capslock app:
+
 1. Clone the repo
    ```sh
    git clone https://github.com/bcgov/Capstone-2026.git
@@ -162,6 +166,9 @@ In backend folder
    ```sh
    Backend API: http://localhost:3000
    ```
+
+To Download as a node package: 
+
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -209,6 +216,10 @@ Product users can then see their own forms and edit them in the database.
 Edited forms that are out of date will show as invalid 
 
 ![alt text](image-14.png)
+
+Each user owns their own forms and can only see the ones they have permission to view. This is our admin form view 
+
+![alt text](image-16.png)
 
 Once a user logs out they are booted from dashboard view back to test app preventing unauthorized access. 
 
