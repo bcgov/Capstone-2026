@@ -75,14 +75,14 @@ function Home() {
             incrementButtonCounter();
             changeBackground();
           }}>
-            Change Background Color
+            Change Background Colour
           </Button>
 
           <Button style={{ margin: "10px 0px" }} onPress={() => {
             handleButtonClick();
             openFeedbackForm(1);
           }}>
-            Select Background Color
+            Select Background Colour
           </Button>
 
           <h3 className="row" style={{ fontFamily: "BC Sans" }}>
