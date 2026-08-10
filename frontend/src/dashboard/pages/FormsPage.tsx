@@ -89,7 +89,6 @@ export const FormsPage: React.FC<FormsPageProps> = ({ forms, setForms }) => {
     const navigate = useNavigate();
     const { apiBaseUrl } = useFeedback();
     const { logout, isAuthenticated, userId } = useAuth();
-    //const [forms, setForms] = useState<FormSummary[]>([]);
     const [loading, setLoading] = useState(true);
     const [selectedForm, setSelectedForm] = useState<FeedbackFormData | null>(null);
     const [isPreviewOpen, setIsPreviewOpen] = useState(false);
