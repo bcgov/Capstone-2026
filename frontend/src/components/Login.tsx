@@ -13,11 +13,8 @@ function Login() {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     const isEmailValid = email === "" || emailRegex.test(email);
 
-
-
     const handleLogin = async (e: React.FormEvent) => {
         e.preventDefault();
-
 
         if (!isEmailValid) {
             alert("Please enter a valid email address.");
@@ -90,7 +87,7 @@ function Login() {
                     />
 
                     {!isEmailValid && (
-                        <p style={{ color: "red", fontSize: "0.875rem", margin : 0}}>
+                        <p style={{ color: "red", fontSize: "0.875rem", margin: 0 }}>
                             Please enter a valid email address.
                         </p>
                     )

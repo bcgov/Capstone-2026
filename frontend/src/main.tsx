@@ -1,6 +1,5 @@
 /// <reference types="vite/client" />
 
-//import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import App from "./App.tsx";
 import "@bcgov/bc-sans/css/BC_Sans.css";
@@ -9,7 +8,7 @@ import { AuthProvider } from "./auth/AuthContext.tsx";
 
 createRoot(document.getElementById("root")!).render(
   <AuthProvider>
-    <FeedbackProvider apiBaseUrl={window.env?.BACKEND_URL || "http://localhost:3000"}>      
+    <FeedbackProvider apiBaseUrl={window.env?.BACKEND_URL || "http://localhost:3000"}>
       <App />
     </FeedbackProvider>
   </AuthProvider>

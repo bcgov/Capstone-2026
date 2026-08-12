@@ -1,7 +1,6 @@
 import { PrismaClient, QuestionType } from '@prisma/client'
 import bcrypt from 'bcryptjs'
 import { faker } from '@faker-js/faker'
-import { create } from 'domain'
 
 const prisma = new PrismaClient()
 
