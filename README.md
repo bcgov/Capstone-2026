@@ -1,4 +1,4 @@
-# 🚀 capstone-2026
+# 🚀 Capstone-2026
 
 <a id="readme-top"></a>
 <!--
@@ -29,10 +29,12 @@
 <div align="center">
 
 ![alt text](image-4.png)
-<h3 align="center">Capstone-2026</h3>
+<h3 align="center">Client Satisfaction Tool</h3>
 
   <p align="center">
-    A feedback modal that is able to return meaningful results from aggregating data of BC Gov website users experiences.
+    A reusable feedback service designed for BC Public Service applications.
+
+The Client Satisfaction Tool (CST) allows application teams to collect meaningful feedback from users at specific points in their application. Teams can create and customize feedback forms, embed the feedback widget into their applications, and view the resulting data through a dashboard.
     <br />
     <a href="https://github.com/bcgov/Capstone-2026"><strong>Explore the docs »</strong></a>
     <br />
@@ -78,8 +80,18 @@
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
-Capstone 2026 project is a feedback modal that is resuable enough to be incorporated into many BC Government pages to recieve user feedback after completing a transaction. Our stretch goal included adding a dashboard feature for seeing compiled and meaningful data. 
+Many government applications need feedback from their users, but implementing and managing a feedback system independently for every application can be time-consuming and inconsistent.
 
+The Client Satisfaction Tool provides a common, reusable feedback service that application teams can integrate into their applications.
+
+#### The CST consists of two main components:
+```
+Feedback Widget — A customizable feedback form that can be triggered within an application.
+```
+```
+Dashboard — An authenticated interface where administrators and product owners can create, manage, and view their feedback forms. 
+```
+The project was developed as a 2026 capstone project in partnership with the BC Public Service.
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 
@@ -167,7 +179,17 @@ To Download the entire project Capslock app:
    Backend API: http://localhost:3000
    ```
 
-To Download as a node package: 
+## Using the Feedback Widget
+
+The Client Satisfaction Tool feedback widget is maintained in a separate repository so that it can be integrated into other applications independently of the CST dashboard and backend.
+
+https://github.com/bcgov/cst-feedback-pkg 
+
+To use the feedback widget in your application:
+
+1. Clone the cst-feedback-pkg repository.
+2. Follow the setup and installation instructions in the widget repository's README.md.
+3. Integrate the widget into your application following the instructions provided in the widget repository.
 
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
@@ -177,11 +199,11 @@ To Download as a node package:
 <!-- USAGE EXAMPLES -->
 ## Usage
 
-This project is intended to be an interactable modal that pops up when user completes a transaction on a BC gov website. The user should be able to engage or decline with the pop up 
+The CST is an interactive feedback modal that can be triggered at a specific point in a user's journey through a BC Government website, giving them the opportunity to provide feedback or dismiss the prompt.
 
 ![alt text](image-5.png)
 
-When the feedback form opens the user is met with a variety of questions that are pulled from the database. Our project was built to be reusable and as such admins may change questions from our dashboard interface 
+When the feedback form opens, users are presented with questions retrieved from the database. Since the CST is designed to be reusable, product owners and other authorized users can create and customize questions through the dashboard interface.
 
 ![alt text](image-6.png)
 
@@ -189,7 +211,7 @@ Once user fills in the form they are free to submit or cancel
 
 ![alt text](image-2.png)
 
-And a message should inform the user if their action was successful or not as well as give them an ID attatched to their form! 
+After submitting the form, users receive a confirmation message indicating whether their submission was successful. A unique submission ID is also provided for their records.
 
 ![alt text](image-7.png)
 
@@ -197,23 +219,23 @@ Dashboard is only available to logged in users
 
 ![alt text](image-10.png)
 
-When logged in admin or product owners may make new forms and view existing created forms. 
+When logged in product owners and other authorized users may make new forms and view existing created forms. 
 
 ![alt text](image-8.png)
 
-Admin and product owners can select question type and customize heavily to gather relevant data. 
+Product owners and other authorized users can select question type and customize heavily to gather relevant data. 
 
 ![alt text](image-11.png)
 
-Forms saved have form ids which are connected to the users id. This is why the user must sign in to use the dashboard. 
+Each saved form is assigned a unique form ID and associated with the product owner who created it. Users must sign in to the dashboard so that they can securely access and manage only the forms they have permission to view.
 
 ![alt text](image-12.png)
 
-Product users can then see their own forms and edit them in the database.
+Product owners can view and manage their forms through the dashboard, including editing existing forms.
 
 ![alt text](image-13.png)
 
-Edited forms that are out of date will show as invalid 
+Edited forms that are out of date will show as inactive 
 
 ![alt text](image-14.png)
 
@@ -225,20 +247,24 @@ Once a user logs out they are booted from dashboard view back to test app preven
 
 ![alt text](image-15.png)
 
-_For more examples, please refer to the [Documentation](https://code.visualstudio.com/docs/languages/markdown)
-
-
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 
 
 <!-- ROADMAP -->
 ## Roadmap
+The core functionality planned for the project has been implemented:
 
-- [X] A button that opens a modal asking user to engage in feedback
-- [X] A feedback form that opens and pulls questions from the database
-- [X] A confirmation or error message depending on the success or failure of the feedback. 
-- [X] A dashboard for admin or product owners to modify questions or view aggregated data. 
+- [X] Feedback prompt
+- [X] Dynamic feedback forms
+- [X] Database-backed questions
+- [X] Multiple question types
+- [X] Feedback submission
+- [X] Submission confirmation
+- [X] Dashboard
+- [X] Form creation and editing
+- [X] User-specific form access
+- [X] Aggregated feedback data 
 
 See the [open issues](https://github.com/bcgov/Capstone-2026/issues) for a full list of proposed features (and known issues).
 
@@ -277,16 +303,26 @@ Distributed under the project_license. See `LICENSE.txt` for more information.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
+## Sponsor
 
+This project was developed in partnership with the BC Public Service.
+
+We would like to thank our sponsors and mentors for their guidance, feedback, and support throughout the development of the Client Satisfaction Tool.
 
 <!-- CONTACT -->
 ## Contact
 
-Ebba de Groot - degrootebba@gmail.com
+#### Ebba de Groot - Frontend Lead
+- degrootebba@gmail.com
+- https://www.linkedin.com/in/ebbadegroot
 
-Tey Cheng - pagnavathtey@gmail.com - (LinkedIn) https://www.linkedin.com/in/pagnavathtey-cheng-2858452b0
+#### Tey Cheng - Backend Lead
+- pagnavathtey@gmail.com 
+- https://www.linkedin.com/in/pagnavathtey-cheng-2858452b0
 
-Maia Grisch - maiagrisch@outlook.com
+#### Maia Grisch - Documentation Lead / Flex Developer
+- maiagrisch@outlook.com
+- https://www.linkedin.com/in/maia-grisch-b86589294 
 
 Project Link: [https://github.com/bcgov/Capstone-2026](https://github.com/bcgov/Capstone-2026)
 
@@ -298,8 +334,7 @@ Project Link: [https://github.com/bcgov/Capstone-2026](https://github.com/bcgov/
 ## Acknowledgments
 
 * []() Thank you to namecheap.com for the amazing free logo <a href> https://www.namecheap.com/
-* []()
-* []()
+* []() Thank you to BC Public Service and the Ministry of Citizen Services for this exciting oppourtunity
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
